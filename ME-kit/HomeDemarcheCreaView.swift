@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct HomeDemarcheCreaView: View {
     
     var body: some View {

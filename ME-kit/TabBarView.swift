@@ -8,26 +8,49 @@
 import SwiftUI
 
 struct TabBarView: View {
+    
+    @AppStorage("showOnboarding") private var showOnboarding: Bool = true
+    @AppStorage("homeScreen") private var homeScreen: String = ""
+    
     var body: some View {
-        TabView {
-            //AJOUTER UNE CONDITION EN FONCTION DE ENTREPRISE.AVANCEMENT!!
-            HomeDemarcheCreaView()
-                .tabItem {
-                    Image(systemName: "doc.text")
-                    Text("Démarches")
+        
+        VStack {
+            //Text(homeScreen)
+            TabView {
+                if (homeScreen == "creation") {
+                    HomeDemarcheCreaView()
+                        .tabItem {
+                            Image(systemName: "doc.text")
+                            Text("Démarches")
+                        }
                 }
-            HomeMonEntrepriseView()
-                .tabItem {
-                    Image(systemName: "suitcase")
-                    Text("Mon entreprise")
+                else {
+                    HomeDemarcheSuiviView()
+                        .tabItem {
+                            Image(systemName: "doc.text")
+                            Text("Démarches")
+                        }
                 }
-            HomeRevenuNetView()
-                .tabItem {
-                    Image(systemName: "wrench.and.screwdriver.fill")
-                    Text("Revenu net")
-                    
-                }
-        }.accentColor(Color("greenMEkit"))
+                
+                HomeMonEntrepriseView()
+                    .tabItem {
+                        Image(systemName: "suitcase")
+                        Text("Mon entreprise")
+                    }
+                HomeRevenuNetView()
+                    .tabItem {
+                        Image(systemName: "wrench.and.screwdriver.fill")
+                        Text("Revenu net")
+                        
+                    }
+            }.accentColor(Color("greenMEkit"))
+            Button { showOnboarding.toggle() } label: {
+                Rectangle()
+                    .frame(height: 3.0)
+                    .foregroundColor(.red)
+            }
+            
+        }.fullScreenCover(isPresented: $showOnboarding, content: { OnboardingQuestionView(showOnboarding: $showOnboarding, homeScreen: $homeScreen)})
     }
 }
 

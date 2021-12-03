@@ -32,6 +32,7 @@
 		A7878B7C275A340600B51D0B /* EtapeDemarche.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7878B79275A340600B51D0B /* EtapeDemarche.swift */; };
 		A7878B7D275A340600B51D0B /* Alertes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7878B7A275A340600B51D0B /* Alertes.swift */; };
 		A7878B7E275A340600B51D0B /* Entreprise.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7878B7B275A340600B51D0B /* Entreprise.swift */; };
+		A7878B80275A414800B51D0B /* OnboardingQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7878B7F275A414800B51D0B /* OnboardingQuestionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +62,7 @@
 		A7878B79275A340600B51D0B /* EtapeDemarche.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EtapeDemarche.swift; sourceTree = "<group>"; };
 		A7878B7A275A340600B51D0B /* Alertes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alertes.swift; sourceTree = "<group>"; };
 		A7878B7B275A340600B51D0B /* Entreprise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entreprise.swift; sourceTree = "<group>"; };
+		A7878B7F275A414800B51D0B /* OnboardingQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingQuestionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 			children = (
 				A7878B45275A31C400B51D0B /* ME_kitApp.swift */,
 				A7878B47275A31C400B51D0B /* TabBarView.swift */,
+				A7878B7F275A414800B51D0B /* OnboardingQuestionView.swift */,
 				A7878B5D275A337800B51D0B /* HomeDemarcheCreaView.swift */,
 				A7878B53275A32BD00B51D0B /* HomeDemarcheSuiviView.swift */,
 				A7878B55275A32EF00B51D0B /* HomeMonEntrepriseView.swift */,
@@ -222,6 +225,7 @@
 				A7878B7C275A340600B51D0B /* EtapeDemarche.swift in Sources */,
 				A7878B48275A31C400B51D0B /* TabBarView.swift in Sources */,
 				A7878B74275A33E600B51D0B /* ImagePicker.swift in Sources */,
+				A7878B80275A414800B51D0B /* OnboardingQuestionView.swift in Sources */,
 				A7878B56275A32EF00B51D0B /* HomeMonEntrepriseView.swift in Sources */,
 				A7878B46275A31C400B51D0B /* ME_kitApp.swift in Sources */,
 				A7878B5C275A335E00B51D0B /* MesAlertesParamView.swift in Sources */,
