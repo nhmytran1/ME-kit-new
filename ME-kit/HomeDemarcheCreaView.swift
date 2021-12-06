@@ -39,6 +39,7 @@ struct HomeDemarcheCreaView: View {
                     NavigationLink {
                         //AJOUTER UNE POP-UP POUR CONFIRMATION + REDIRECTION VERS MON ENTREPRISE POUR REMPLIR LES INFOS ?
                         HomeDemarcheSuiviView()
+                        //MAJ LA VARIABLE @APPSTORAGE QUI REPRESENTE L'AVANCEMENT (crea, suivi ou cloture) POUR SAVOIR QUEL ECRAN OUVRIR EN PREMIER
                     } label: {
                         Text("Passer")
                     }

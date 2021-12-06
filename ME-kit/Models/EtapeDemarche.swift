@@ -12,7 +12,7 @@ struct EtapeDemarche: Identifiable {
     let name: String
     let description: String
     let url: String
-    let documents: [Document]
+    let documents: [DocumentNecessaires]
     let category: DemarcheCategorie
 }
 
@@ -22,17 +22,17 @@ enum DemarcheCategorie: String {
     case cloture = "Clôture"
 }
 
-struct Document: Identifiable {
+struct DocumentNecessaires: Identifiable {
     let id = UUID()
     let docname: String
 }
 
 
 //source de données
-var documentsNecessaires: [Document] = [
-    Document(docname: "Extrait Kbis"),
-    Document(docname: "Compte de résultat"),
-    Document(docname: "Certificat publication annonces légales")
+var documentsNecessaires: [DocumentNecessaires] = [
+    DocumentNecessaires(docname: "Extrait Kbis"),
+    DocumentNecessaires(docname: "Compte de résultat"),
+    DocumentNecessaires(docname: "Certificat publication annonces légales")
 ]
 
 let etape1: EtapeDemarche = EtapeDemarche(name: "Inscription en ligne", description: "Comment s'inscrire en ligne blablabla", url:"https://www.google.fr" , documents: documentsNecessaires, category: .creation)
