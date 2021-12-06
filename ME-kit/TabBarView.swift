@@ -44,6 +44,7 @@ struct TabBarView: View {
                         
                     }
             }.accentColor(Color("greenMEkit"))
+            //Bouton pour faire réapparaitre l'onboarding
             Button { showOnboarding.toggle() } label: {
                 Rectangle()
                     .frame(height: 3.0)

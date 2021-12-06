@@ -33,7 +33,9 @@ struct MesAlertesView: View {
                         Image(systemName: "gearshape")
                     }
                     .foregroundColor(Color("greenMEkit"))
-                }.navigationBarHidden(true)
+                }
+                .navigationBarHidden(true)
+                //.navigationBarBackButtonHidden(true)
             }
         }
     }

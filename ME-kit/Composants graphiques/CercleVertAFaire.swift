@@ -21,7 +21,7 @@ struct CercleVertAFaire: View {
                     .padding(0.0)
                     .frame(width: 25.0, height: 25.0).foregroundColor(.white)
             }
-            Text(text).font(.title2).foregroundColor(Color("greenMEkit"))
+            Text(text).font(.title3).foregroundColor(Color("greenMEkit"))
         }
     }
 }

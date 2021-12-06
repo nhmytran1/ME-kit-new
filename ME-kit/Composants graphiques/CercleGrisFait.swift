@@ -24,7 +24,7 @@ struct CercleGrisFait: View {
                     .foregroundColor(.white)
                     
             }
-            Text(text).font(.title2).foregroundColor(.gray)
+            Text(text).font(.title3).foregroundColor(.gray)
         }    }
 }
 

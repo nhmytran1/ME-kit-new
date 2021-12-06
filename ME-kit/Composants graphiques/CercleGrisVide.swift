@@ -14,7 +14,7 @@ struct CercleGrisVide: View {
             Circle()
                     .frame(width: 60.0, height: 60.0)
                 .foregroundColor(.gray)
-            Text(text).font(.title2).foregroundColor(.gray)
+            Text(text).font(.title3).foregroundColor(.gray)
         }
     }
 }

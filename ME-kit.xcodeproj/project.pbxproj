@@ -11,6 +11,7 @@
 		A7032D60275E0E95007FFCB9 /* CerclePartager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7032D5F275E0E95007FFCB9 /* CerclePartager.swift */; };
 		A7032D62275E124C007FFCB9 /* AlertesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7032D61275E124C007FFCB9 /* AlertesViewModel.swift */; };
 		A7032D64275E128C007FFCB9 /* ToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7032D63275E128C007FFCB9 /* ToggleView.swift */; };
+		A754176B275E686F005EFA50 /* DetailEtapeCreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A754176A275E686F005EFA50 /* DetailEtapeCreaView.swift */; };
 		A7878B46275A31C400B51D0B /* ME_kitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7878B45275A31C400B51D0B /* ME_kitApp.swift */; };
 		A7878B48275A31C400B51D0B /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7878B47275A31C400B51D0B /* TabBarView.swift */; };
 		A7878B4A275A31C500B51D0B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7878B49275A31C500B51D0B /* Assets.xcassets */; };
@@ -44,6 +45,7 @@
 		A7032D5F275E0E95007FFCB9 /* CerclePartager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CerclePartager.swift; sourceTree = "<group>"; };
 		A7032D61275E124C007FFCB9 /* AlertesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertesViewModel.swift; sourceTree = "<group>"; };
 		A7032D63275E128C007FFCB9 /* ToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleView.swift; sourceTree = "<group>"; };
+		A754176A275E686F005EFA50 /* DetailEtapeCreaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailEtapeCreaView.swift; sourceTree = "<group>"; };
 		A7878B42275A31C400B51D0B /* ME-kit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ME-kit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7878B45275A31C400B51D0B /* ME_kitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ME_kitApp.swift; sourceTree = "<group>"; };
 		A7878B47275A31C400B51D0B /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 				A7878B59275A333200B51D0B /* MesAlertesView.swift */,
 				A7878B5B275A335E00B51D0B /* MesAlertesParamView.swift */,
 				A7878B5F275A33A200B51D0B /* DetailEtapeView.swift */,
+				A754176A275E686F005EFA50 /* DetailEtapeCreaView.swift */,
 				A7878B78275A33EB00B51D0B /* Models */,
 				A7878B61275A33C400B51D0B /* Composants graphiques */,
 				A7878B49275A31C500B51D0B /* Assets.xcassets */,
@@ -241,6 +244,7 @@
 				A7878B74275A33E600B51D0B /* ImagePicker.swift in Sources */,
 				A7878B80275A414800B51D0B /* OnboardingQuestionView.swift in Sources */,
 				A7878B56275A32EF00B51D0B /* HomeMonEntrepriseView.swift in Sources */,
+				A754176B275E686F005EFA50 /* DetailEtapeCreaView.swift in Sources */,
 				A7878B46275A31C400B51D0B /* ME_kitApp.swift in Sources */,
 				A7878B5C275A335E00B51D0B /* MesAlertesParamView.swift in Sources */,
 				A7878B76275A33E600B51D0B /* CercleGrisAFaire.swift in Sources */,

@@ -10,8 +10,10 @@ import SwiftUI
 
 struct MesAlertesParamView: View {
     var body: some View {
-        VStack {
-            Text("Mes Alertes - Paramétrage")
+        NavigationView {
+            VStack {
+                Text("Mes Alertes - Paramétrage")
+            }
         }
     }
 }

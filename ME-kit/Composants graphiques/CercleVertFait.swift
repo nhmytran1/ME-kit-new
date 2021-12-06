@@ -23,7 +23,7 @@ struct CercleVertFait: View {
                     .foregroundColor(.white)
                     
             }
-            Text(text).font(.title2).foregroundColor(Color("greenMEkit"))
+            Text(text).font(.title3).foregroundColor(Color("greenMEkit"))
         }
     }
 }

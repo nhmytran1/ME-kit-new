@@ -11,39 +11,40 @@ struct HomeDemarcheCreaView: View {
     
     var body: some View {
         NavigationView {
-            ZStack {
-                HStack {
-                    Rectangle()
-                        .fill(.gray)
-                        .frame(width: 3, height: 400)
-                    Spacer()
-                }
-                .padding(.leading, 43.0)
-                
-                HStack {
-                    VStack (alignment: .leading) {
-                        ForEach(etapesCreation) { etape in
-                            NavigationLink(destination: DetailEtapeView(etape: etape)) {
-                                CercleVertPlay(text: etape.name)
+            ScrollView {
+                ZStack {
+                    HStack {
+                        Rectangle()
+                            .fill(.gray)
+                            .frame(width: 3, height: 470)
+                        Spacer()
+                    }
+                    .padding(.leading, 43.0)
+                    
+                    HStack {
+                        VStack (alignment: .leading) {
+                            ForEach(etapesCreation) { etape in
+                                NavigationLink(destination: DetailEtapeCreaView(etape: etape)) {
+                                    CercleVertPlay(text: etape.name)
+                                }
                             }
                         }
+                        Spacer()
                     }
-                    Spacer()
+                    .padding(.leading, 15.0)
                 }
-                .padding(.leading, 15.0)
-            }
-            .navigationBarTitle(Text("Démarches création"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem {
-                    NavigationLink {
-                        //AJOUTER UNE POP-UP POUR CONFIRMATION + REDIRECTION VERS MON ENTREPRISE POUR REMPLIR LES INFOS ?
-                        HomeDemarcheSuiviView()
-                        //MAJ LA VARIABLE @APPSTORAGE QUI REPRESENTE L'AVANCEMENT (crea, suivi ou cloture) POUR SAVOIR QUEL ECRAN OUVRIR EN PREMIER
-                    } label: {
-                        Text("Passer")
+                .navigationBarTitle(Text("Démarches création"))
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem {
+                        NavigationLink (destination: HomeDemarcheSuiviView().navigationBarHidden(true)) {
+                            //AJOUTER UNE POP-UP POUR CONFIRMATION + REDIRECTION VERS MON ENTREPRISE POUR REMPLIR LES INFOS ?
+                            //HomeDemarcheSuiviView()
+                            //MAJ LA VARIABLE @APPSTORAGE QUI REPRESENTE L'AVANCEMENT (crea, suivi ou cloture) POUR SAVOIR QUEL ECRAN OUVRIR EN PREMIER
+                            Text("Passer")
+                        }
+                        .foregroundColor(Color("greenMEkit"))
                     }
-                    .foregroundColor(Color("greenMEkit"))
                 }
             }
         }
