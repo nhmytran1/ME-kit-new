@@ -11,14 +11,15 @@ struct TabBarView: View {
     
     @AppStorage("showOnboarding") private var showOnboarding: Bool = true
     @AppStorage("homeScreen") private var homeScreen: String = ""
+    @AppStorage("etapeEnCours") private var etapeEnCours: Int = 1
+
     
     var body: some View {
         
         VStack {
-            //Text(homeScreen)
             TabView {
                 if (homeScreen == "creation") {
-                    HomeDemarcheCreaView()
+                    HomeDemarcheCreaView(etapeEnCours: $etapeEnCours)
                         .tabItem {
                             Image(systemName: "doc.text")
                             Text("Démarches")
@@ -51,7 +52,7 @@ struct TabBarView: View {
                     .foregroundColor(.red)
             }
             
-        }.fullScreenCover(isPresented: $showOnboarding, content: { OnboardingQuestionView(showOnboarding: $showOnboarding, homeScreen: $homeScreen)})
+        }.fullScreenCover(isPresented: $showOnboarding, content: { OnboardingQuestionView(showOnboarding: $showOnboarding, homeScreen: $homeScreen, etapeEnCours: $etapeEnCours)})
     }
 }
 

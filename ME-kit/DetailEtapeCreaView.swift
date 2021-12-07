@@ -9,10 +9,10 @@ import SwiftUI
 
 struct DetailEtapeCreaView: View {
     
-    @State var isDone:Bool = false
-    func toggle(){isDone = !isDone}
-    
     var etape: EtapeDemarche
+    @Binding var etapeEnCours: Int
+    @Binding var rootIsActive : Bool
+    
     var body: some View {
         NavigationView {
             ScrollView {
@@ -33,31 +33,33 @@ struct DetailEtapeCreaView: View {
                         .multilineTextAlignment(.trailing)
                         .padding()
                         .foregroundColor(Color("greenMEkit"))
-                        
+                    
                     VStack (alignment: .leading) {
                         Text(.init(etape.info)).padding(.horizontal, 40)
+                    }.padding(.vertical, 10)
+                                                    
+                    
+                    //Condition pour savoir quelles icônes afficher
+                    if etape.number == etapeEnCours {
+                        Button { //ACTION(S)
+                            etapeEnCours += 1
+                            self.rootIsActive = false //ATTENTION BUG A REGLER - NE REFERME PAS LA FENETRE
+                        } label: {
+                            BoutonPlein(label: "Terminé")
+                        }
+                        
+                    } else if etape.number < etapeEnCours {
+                        Text("Vous avez validé cette étape")
+                    } else {
+                        BoutonVide(label: "Terminé")
                     }
                     
-                    //BOUTON LIEN EXTERNE
-  //                  Spacer()
-   //                 BoutonExternalLink(label: "Site de \(etape.name)", url: etape.url)
-                    Spacer()
-                    Spacer()
-                    Spacer()
                     
-                    //BOUTON TERMINE
-                    Button { //ACTION(S)
-
-                        
-                        
-                        print("étape validée")
-                    } label: {
-                        BoutonPlein(label: "Terminé")
-                    }
+                    
+                    
                 }.padding(.horizontal, 10)
-                               
-                               
-                               
+                
+                
             }
         }
         .navigationBarTitle(Text(etape.name))
@@ -65,8 +67,8 @@ struct DetailEtapeCreaView: View {
     }
 }
 
-struct DetailEtapeCreaView_Previews: PreviewProvider {
-    static var previews: some View {
-        DetailEtapeCreaView(etape: etapesSuivi[0])
-    }
-}
+//struct DetailEtapeCreaView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        DetailEtapeCreaView(etape: <#T##EtapeDemarche#>, etapeEnCours: <#T##Binding<Int>#>)
+//    }
+//}

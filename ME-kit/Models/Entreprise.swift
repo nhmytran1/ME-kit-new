@@ -8,24 +8,42 @@
 
 import Foundation
 import SwiftUI
-import Combine
+import CoreImage.CIFilterBuiltins
 
-struct Entreprise {
-    var nomination: String
-    //var image : UIImage?
-    var Siret : Int
-    var dateeDebutActivite : String
-    var domiciliation : String
-    var secteur : SecteurDActivite
-    var typeActivite : TypeDActivite
-    var ACCRE : Reponses
-    var activitePrincipal : Reponses
-    var impot : Reponses
-    var etapeEnCours: String
-    var avancement: Avancement
+
+class Entreprise: ObservableObject {
+    internal init(nomination: String, Siret: Int, dateeDebutActivite : String, domiciliation : String, secteur : SecteurDActivite, typeActivite : TypeDActivite, CA: Double, ACCRE : Reponses, activitePrincipal : Reponses, impot : Reponses, avancement: Avancement) {
+        self.nomination = nomination
+        self.Siret = Siret
+        self.dateeDebutActivite = dateeDebutActivite
+        self.domiciliation = domiciliation
+        self.secteur = secteur
+        self.typeActivite = typeActivite
+        self.CA = CA
+        self.ACCRE = ACCRE
+        self.activitePrincipal = activitePrincipal
+        self.impot = impot
+//        self.etapeEnCours = etapeEnCours
+        self.avancement = avancement
+    }
+
+    @Published var nomination: String
+    @Published var Siret: Int
+    @Published var dateeDebutActivite : String
+    @Published var domiciliation : String
+    @Published var secteur : SecteurDActivite
+    @Published var typeActivite : TypeDActivite
+    @Published var CA : Double
+    @Published var ACCRE : Reponses
+    @Published var activitePrincipal : Reponses
+    @Published var impot : Reponses
+    //PAS NECESSAIRES, TESTS POUR L'AVANCEMENT
+//    @Published var etapeEnCours: Int
+    @Published var avancement: Avancement
+
+
 }
-
-var entrepriseParDefaut = Entreprise(nomination: "Mon Entreprise", Siret:  34567556078978, dateeDebutActivite: "15/03/2018", domiciliation: "Paris", secteur: .Artisanale, typeActivite: .ActiviteDeVente, ACCRE: .non, activitePrincipal: .non, impot: .non, etapeEnCours: "", avancement: .creation)
+var entrepriseParDefaut = Entreprise(nomination: "Mon Entreprise", Siret: 12345678901234, dateeDebutActivite: "15/03/2018", domiciliation: "Paris", secteur: .Artisanale, typeActivite: .ActiviteDeVente, CA: 5000.0, ACCRE: .non, activitePrincipal: .non, impot: .non, avancement: .suivi)
 
 enum Reponses : String, CaseIterable, Identifiable {
     
@@ -88,11 +106,29 @@ struct ActivityView: UIViewControllerRepresentable {
     }
 }
 
+let context = CIContext()
+let filter = CIFilter.qrCodeGenerator()
+func generateQRCode(from string: String) -> UIImage {
+    let data = Data(string.utf8)
+    filter.setValue(data, forKey: "inputMessage")
+
+    if let outputImage = filter.outputImage {
+        if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
+            return UIImage(cgImage: cgimg)
+        }
+    }
+
+    return UIImage(systemName: "xmark.circle") ?? UIImage()
+}
 
 struct Doc : Identifiable {
     var id = UUID()
     var texte: String
+    var dateDoc: Date
 }
+
+
+
 
 //struct Document: View {
 //    var element : Doc

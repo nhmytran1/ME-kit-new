@@ -10,17 +10,22 @@ import SwiftUI
 struct OnboardingQuestionView: View {
     @Binding var showOnboarding: Bool
     @Binding var homeScreen: String
+    @Binding var etapeEnCours: Int
+    
     var body: some View {
         VStack {
             Button {
-                homeScreen = "creation"
+                etapeEnCours = 1
+//                homeScreen = "creation"
                 showOnboarding.toggle()
             } label: {
                 BoutonPlein(label: "Je veux créer ma micro-entreprise")
             }
             
             Button {
-                homeScreen = "suivi"
+                //ICI FAIRE LES MÊMES ACTIONS QU'AVEC LE BOUTON TERMINE DE FIN DE DEMARCHE CREA "HomeDemarcheCrea
+                etapeEnCours = 8
+//                homeScreen = "suivi"
                 showOnboarding.toggle()
             } label: {
                 BoutonVide(label: "J'ai déjà créé ma micro-entreprise")

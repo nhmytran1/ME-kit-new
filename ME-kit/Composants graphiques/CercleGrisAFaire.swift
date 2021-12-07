@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CercleGrisAFaire: View {
     var text: String
+    
     var body: some View {
         
         HStack {

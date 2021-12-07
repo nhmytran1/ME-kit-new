@@ -13,16 +13,17 @@ struct HomeMonEntrepriseView_Previews: PreviewProvider {
         HomeMonEntrepriseView()
     }
 }
-//////////////////
-///
-///
 
 struct HomeMonEntrepriseView: View {
     @State private var selectorIndex = 0
     @State private var numbers = ["Mes données d'Entreprise","Mon CA et Mes Docs"]
-    var element = Doc(texte: "")
+    var element = Doc(texte: "", dateDoc: Date())
     @State var documents = [
-        Doc(texte: "KBIS.pdf")
+        Doc(texte: "KBIS.pdf", dateDoc: Date())
+    ]
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
     ]
     var body: some View {
         NavigationView{
@@ -37,35 +38,75 @@ struct HomeMonEntrepriseView: View {
                     StructureResumeInfos(affichage: true)
                 } else {
                     ScrollView{
-                        HStack{
-                            Text("Chiffre d'Affaire :")
-                            Spacer()
-                        }.padding()
-                        ProgressingView().padding()
-                        
+                        if entrepriseParDefaut.domiciliation == "DOM-TOM"
+                                               {
+                                                   if entrepriseParDefaut.typeActivite == .ActiviteDeVente {
+                                                       MaxCA(max: 100000)
+                                                       ProgressingView(max: 100000).padding()
+                                                   } else if entrepriseParDefaut.typeActivite == .PrestationDeServices {
+                                                       MaxCA2(max: 50000)
+                                                       ProgressingView(max: 50000).padding()
+                                                   } else {
+                                                       MaxCA(max: 100000)
+                                                       ProgressingView(max: 100000).padding()
+                                                       MaxCA2(max: 50000)
+                                                       ProgressingView(max: 50000).padding()
+                                                   }
+                                                   
+                                               } else {
+                                                   if entrepriseParDefaut.secteur == .Commerciale {
+                                                       MaxCA(max: 85800)
+                                                       ProgressingView(max: 85800).padding()
+                                                   } else if entrepriseParDefaut.secteur == .Artisanale || entrepriseParDefaut.secteur == .Liberales {
+                                                       MaxCA2(max: 34400)
+                                                       ProgressingView(max: 34400)
+                                                       
+                                                   } else {
+                                                       VStack{
+                                                           MaxCA(max: 85800)
+                                                           ProgressingView(max: 85800)
+                                                           MaxCA2(max: 34400)
+                                                           ProgressingView(max: 34400)
+                                                       }
+                                                   }
+                                               }
+
                         HStack {
                             Text("Mes Documents").padding()
                             Spacer()
                             Button(action: {
-                                self.documents.append(Doc(texte: "Greffe.pdf"))
+                                self.documents.append(Doc(texte: "Greffe.pdf", dateDoc: Date.now))
                             }) {
                                 ZStack {
                                     Image(systemName: "plus.circle.fill")
                                         .font(.system(size: 44, weight: .bold))
                                         .foregroundColor(Color("greenMEkit"))
                                 }
-                                .padding()
                             }
-                            Spacer()
-                        }.padding()
+                        }
                         
-                        ForEach(documents) { docSup in
-                            NavigationLink(destination: DetailDocumentView(element:docSup)) {
-                                HStack{
-                                    CardView(element: docSup)
-                                    Spacer()
+                        LazyVGrid(columns: columns) {
+                            ForEach(documents) { docSup in
+                                NavigationLink(destination: DetailDocumentView(element:docSup)) {
+                                    ZStack {
+                                            Button{
+                                                //documents.remove(where: { $0 == \.id.self }))
+                                            } label: {
+                                                VStack {
+                                                    Image(systemName: "multiply.circle").resizable()
+                                                        .aspectRatio(contentMode: .fit)
+                                                        .foregroundColor(Color("greenMEkit"))
+                                                        .frame(width: 44, height: 44)
+                                                        .padding(.leading, 80)
+                                                        .padding(.vertical, 5)
+                                                   Spacer()
+                                                }
+                                            }
+                                            CardView(element: docSup)
+                                        
+                                    }
                                 }
-                            }.frame(height: 150)
+                            }
                         }
                     }
                     
@@ -77,9 +118,11 @@ struct HomeMonEntrepriseView: View {
     }
 }
 
+
 // Modale
 struct Modifieur: View {
     @Environment(\.dismiss) var dismiss
+    @State var entreprise = entrepriseParDefaut
     @State var donneeNom : String
     @State var donneeLieu : String
     @State var donneeSiret : Int
@@ -89,15 +132,7 @@ struct Modifieur: View {
     @State var selectedAccre : Reponses
     @State var selectedActivitePrincipal : Reponses
     @State var selectedImpot : Reponses
-    @Binding var nomEntreprise : String
-    @Binding var siret : Int
-    @Binding var domiciliation : String
-    @Binding var debutActivite : String
-    @Binding var type : TypeDActivite
-    @Binding var secteur : SecteurDActivite
-    @Binding var accre : Reponses
-    @Binding var activitePrincipal : Reponses
-    @Binding var impot : Reponses
+    @StateObject var nomEntreprise = entrepriseParDefaut
     var body: some View {
         VStack {
             Button(){
@@ -120,7 +155,10 @@ struct Modifieur: View {
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .padding()
                     }.border(Color("greenMEkit"))
-                    Text("Domiciliation").padding(.leading)
+                    Text("Domiciliation *").padding(.leading)
+                    Text("* S'il se trouve à la Guadeloupe, la Martinique ou à La Réunion, veuillez inscrire DOM-TOM").foregroundColor(.gray)
+                        .font(.caption)
+                        .multilineTextAlignment(.leading)
                     TextField("Domiciliation de votre entreprise", text: $donneeLieu).background(RoundedRectangle(cornerRadius: 50).foregroundColor(.white))
                         .textFieldStyle(.roundedBorder)
                         .padding()
@@ -184,33 +222,16 @@ struct Modifieur: View {
                 }.padding()
                 
                 Button(action: {
-                    //                    if donneeNom.isEmpty || donneeSiret == Int() || donneeLieu.isEmpty {
-                    //                        if donneeNom.isEmpty && donneeSiret == Int() && donneeLieu.isEmpty {
-                    //                            nomEntreprise = entrepriseParDefaut.nomination
-                    //                            siret = entrepriseParDefaut.Siret
-                    //                            domiciliation = entrepriseParDefaut.domiciliation
-                    //                        } else if donneeNom.isEmpty{
-                    //                            nomEntreprise = entrepriseParDefaut.nomination
-                    //                            siret = donneeSiret
-                    //                            domiciliation = donneeLieu
-                    //                        } else if donneeLieu.isEmpty {
-                    //                            nomEntreprise = donneeNom
-                    //                            siret = entrepriseParDefaut.Siret
-                    //                            domiciliation = donneeLieu
-                    //                        } else {
-                    //
-                    //                        }
-                    //                    } else {
-                    nomEntreprise = donneeNom
-                    siret = donneeSiret
-                    domiciliation = donneeLieu
-                    debutActivite = dateFormatter.string(from: dateDebutDActivite)
-                    type = selectedType
-                    secteur = selectedSecteur
-                    accre = selectedAccre
-                    activitePrincipal = selectedActivitePrincipal
-                    impot = selectedImpot
-                    //                    }
+                    entrepriseParDefaut.nomination = donneeNom
+                    entrepriseParDefaut.Siret = donneeSiret
+                    entrepriseParDefaut.domiciliation = donneeLieu.uppercased()
+                    entrepriseParDefaut.dateeDebutActivite = dateFormatter.string(from: dateDebutDActivite)
+                    entrepriseParDefaut.typeActivite = selectedType
+                    entrepriseParDefaut.secteur = selectedSecteur
+                    entrepriseParDefaut.ACCRE = selectedAccre
+                    entrepriseParDefaut.activitePrincipal = selectedActivitePrincipal
+                    entrepriseParDefaut.impot = selectedImpot
+                    
                     dismiss()
                 }) {
                     Text("Valider").foregroundColor(.white)
@@ -223,12 +244,14 @@ struct Modifieur: View {
 }
 
 struct ProgressingView: View {
-    @State var CA = Double()
+    @State var CA = entrepriseParDefaut.CA
     @State var valueCA = Double()
+    @State var max : Double
     var body: some View {
         VStack {
             HStack{
-                NumberEntryField(value: self.$valueCA).background(RoundedRectangle(cornerRadius: 50).foregroundColor(.white))
+                TextField("Quel est votre CA ?", value: self.$valueCA,formatter: formatSiret).background(RoundedRectangle(cornerRadius: 50)
+                    .keyboardType(.numberPad).foregroundColor(.white))
                     .textFieldStyle(.roundedBorder)
                     .padding()
                 Text("\(Int(CA))").padding()
@@ -239,16 +262,14 @@ struct ProgressingView: View {
                         .foregroundColor(Color("greenMEkit"))
                 }
             }
-            if CA >= 720000 {
-                Progression(etatDeProgression: CA/720000.0, pourcentage: 100*Int(CA)/720000, color: .red)
-            } else if CA >=  500000  {
-                Progression(etatDeProgression: CA/720000.0, pourcentage: 100*Int(CA)/720000, color: .orange)
-            } else if CA >= 5000 {
-                Progression(etatDeProgression: CA/720000.0, pourcentage: 100*Int(CA)/720000, color: .green)
+            if CA >= max {
+                Progression(etatDeProgression: CA/max, pourcentage: Int(100*CA/max), color: .red)
+            } else if CA >=  max/2  {
+                Progression(etatDeProgression: CA/max, pourcentage: Int(100*CA/max), color: .orange)
+            } else if CA < max/2 {
+                Progression(etatDeProgression: CA/max, pourcentage: Int(100*CA/max), color: .green)
             } else if CA == Double() || CA == 0 {
                 Progression(etatDeProgression: 0.0, pourcentage: 0, color: .green)
-            } else if CA < 5000{
-                Progression(etatDeProgression: 0.1, pourcentage: 1, color: .green)
             } else {
                 Progression(etatDeProgression: 0.0, pourcentage: 0, color: .green)
                 Text("Erreur")
@@ -285,6 +306,26 @@ struct DarkBlueShadowProgressViewStyle: ProgressViewStyle {
         .padding()
     }
 }
+
+struct MaxCA: View {
+    @State var max : Int
+    var body: some View {
+        HStack{
+            Text("Mon Chiffre d'Affaire pour une activité de vente (max: \(max) € / 1 an):").padding(.leading)
+            Spacer()
+        }
+    }
+}
+struct MaxCA2: View {
+    @State var max : Int
+    var body: some View {
+        HStack{
+            Text("Mon Chiffre d'Affaire pour la prestation de service(max: \(max) € / 1 an):").padding(.leading)
+            Spacer()
+        }
+    }
+}
+
 struct NumberEntryField : View {
     @State private var enteredValue : String = ""
     @Binding var value : Double

@@ -34,10 +34,10 @@ struct HomeDemarcheSuiviView: View {
                                 }
                             }
                         }
-                        
+                        //afficher le bon chiffre dans le titre
                         titreTypeEtape(label: "TVA > XXXX €")
                             .padding(.leading, 50.0)
-                        
+                        //si tva > XX afficher ce bloc en vert
                         NavigationLink(destination: DetailEtapeView(etape: etapeTVA)) {
                             CercleGrisAFaire(text: etapeTVA.name)
                         }

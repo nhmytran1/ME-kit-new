@@ -6,38 +6,51 @@
 //
 
 import SwiftUI
+import CoreImage.CIFilterBuiltins
 
-//4 Structure RésuméInformation
+
 struct StructureResumeInfos: View {
+    @State private var name = "Anonymous"
+    @State private var emailAddress = "you@yoursite.com"
     @State var showingSheet : Bool = false
     var affichage : Bool
- @State var entreprise = entrepriseParDefaut
+    @StateObject var entreprise = entrepriseParDefaut
     var body: some View {
-        ZStack{
-            if affichage == true {
-                StructureRectangle(largueur: 350, hauteur: 300)
-                VStack {
-                    HStack{
-                        Text(entreprise.nomination).padding(.leading, 20)
-                            .padding(.trailing, 20)
-                        Spacer()
-                        Button(){
-                            showingSheet.toggle()
-                        } label: {
-                            Text("Modifier").font(.title3)
-                                .fontWeight(.semibold)
-                                .foregroundColor(Color("greenMEkit"))
-                        }
-                        .sheet(isPresented: $showingSheet) {
-                            Modifieur(donneeNom: "", donneeLieu: "", donneeSiret: Int(), selectedType: .ActiviteDeVente, selectedSecteur: .Artisanale, selectedAccre: .non, selectedActivitePrincipal: .non, selectedImpot: .non, nomEntreprise: $entreprise.nomination, siret: $entreprise.Siret, domiciliation: $entreprise.domiciliation, debutActivite: $entreprise.dateeDebutActivite,type: $entreprise.typeActivite, secteur: $entreprise.secteur, accre: $entreprise.ACCRE, activitePrincipal: $entreprise.activitePrincipal, impot: $entreprise.impot)
-                        }.padding(.leading, 20)
-                            .padding(.trailing, 20)
-                    }.padding()
-                    StructureBlocInfosMonEntreprise(valeurNomination: entreprise.nomination, valeurSiret: entreprise.Siret, valeurDomiciliation: entreprise.domiciliation, valeurDate: entreprise.dateeDebutActivite, valeurSecteur: entreprise.secteur.rawValue, valeurType: entreprise.typeActivite.rawValue, valeurActPrincipal: entreprise.activitePrincipal.rawValue, valeurAccre: entreprise.ACCRE.rawValue, valeurImpot: entreprise.impot.rawValue)
+        VStack {
+            TextField("Name", text: $name).padding(.leading)
+            
+            TextField("Email address", text: $emailAddress).padding(.leading)
+            
+            Image(uiImage: generateQRCode(from: "\(name)\n\(emailAddress)"))
+                .interpolation(.none)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 150, height: 150)
+            ZStack{
+                if affichage == true {
+                    StructureRectangle(largueur: 350, hauteur: 300)
+                    VStack {
+                        HStack{
+                            Text(entreprise.nomination).padding(.leading, 20)
+                                .padding(.trailing, 20)
+                            Spacer()
+                            Button(){
+                                showingSheet.toggle()
+                            } label: {
+                                Image (systemName: "pencil").font(.title3)
+                                    .foregroundColor(Color("greenMEkit"))
+                            }
+                            .sheet(isPresented: $showingSheet) {
+                                Modifieur(donneeNom: entrepriseParDefaut.nomination, donneeLieu: entrepriseParDefaut.domiciliation, donneeSiret: entrepriseParDefaut.Siret, selectedType: entrepriseParDefaut.typeActivite, selectedSecteur: entrepriseParDefaut.secteur, selectedAccre: entrepriseParDefaut.ACCRE, selectedActivitePrincipal: entrepriseParDefaut.activitePrincipal, selectedImpot: entrepriseParDefaut.impot)
+                            }.padding(.leading, 20)
+                                .padding(.trailing, 20)
+                        }.padding()
+                        StructureBlocInfosMonEntreprise(valeurNomination: entreprise.nomination, valeurSiret: entreprise.Siret, valeurDomiciliation: entreprise.domiciliation, valeurDate: entreprise.dateeDebutActivite, valeurSecteur: entreprise.secteur.rawValue, valeurType: entreprise.typeActivite.rawValue, valeurActPrincipal: entreprise.activitePrincipal.rawValue, valeurAccre: entreprise.ACCRE.rawValue, valeurImpot: entreprise.impot.rawValue)
+                    }
+                } else {
+                    StructureRectangle(largueur: 350, hauteur: 250)
+                    StructureBlocInfosRevenu(valeurDate: entreprise.dateeDebutActivite, valeurSecteur: entreprise.secteur.rawValue, valeurType: entreprise.typeActivite.rawValue, valeurAccre: entreprise.ACCRE.rawValue, valeurActPrincipal: entreprise.activitePrincipal.rawValue, valeurImpot: entreprise.impot.rawValue)
                 }
-            } else {
-                StructureRectangle(largueur: 350, hauteur: 250)
-                StructureBlocInfosRevenu(valeurDate: entreprise.dateeDebutActivite, valeurSecteur: entreprise.secteur.rawValue, valeurType: entreprise.typeActivite.rawValue, valeurAccre: entreprise.ACCRE.rawValue, valeurActPrincipal: entreprise.activitePrincipal.rawValue, valeurImpot: entreprise.impot.rawValue)
             }
         }
     }

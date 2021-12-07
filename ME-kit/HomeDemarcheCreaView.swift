@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct HomeDemarcheCreaView: View {
+    @Binding var etapeEnCours: Int
+    @State var isActive : Bool = false
+    
     
     var body: some View {
         NavigationView {
@@ -23,11 +26,34 @@ struct HomeDemarcheCreaView: View {
                     
                     HStack {
                         VStack (alignment: .leading) {
+                            
                             ForEach(etapesCreation) { etape in
-                                NavigationLink(destination: DetailEtapeCreaView(etape: etape)) {
-                                    CercleVertPlay(text: etape.name)
+                                NavigationLink(destination: DetailEtapeCreaView(etape: etape, etapeEnCours: $etapeEnCours, rootIsActive: self.$isActive)) {
+                                    //Condition pour savoir quelles icônes afficher
+                                    if etape.number == etapeEnCours {
+                                        CercleVertPlay(text: etape.name)
+                                    } else if etape.number < etapeEnCours {
+                                        CercleVertFait(text: etape.name)
+                                    } else {
+                                        CercleGrisVide(text: etape.name)
+                                    }
+                                    
                                 }
                             }
+                            
+                            //AJOUTER UN BOUTON TERMINE QUI :
+                            //- VA MODIFIER @AppStorage homeScreen = "suivi"
+                            //- VA REDIRIGER VERS HOME MON ENTREPRISE POUR REMPLIR
+                            
+                            if etapeEnCours > 8 {
+                                NavigationLink(destination: HomeMonEntrepriseView().navigationBarHidden(true)) {
+                                    BoutonPlein(label: "Terminé")
+                                }
+                                
+                            }
+                            
+                            
+                            
                         }
                         Spacer()
                     }
@@ -51,8 +77,8 @@ struct HomeDemarcheCreaView: View {
     }
 }
 
-struct HomeDemarcheCreaView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeDemarcheCreaView()
-    }
-}
+//struct HomeDemarcheCreaView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        HomeDemarcheCreaView()
+//    }
+//}
