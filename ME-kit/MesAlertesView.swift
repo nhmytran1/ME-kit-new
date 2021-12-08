@@ -17,6 +17,7 @@ struct MesAlertesView: View {
                 VStack {
                     Text("Mes alertes")
                     List(alertes) { a in
+                        Text("Github")
                         VStack (alignment: .leading) {
                             Toggle(a.title, isOn: $agreedToAlarm)
                                 .font(.headline)
