@@ -28,6 +28,13 @@ enum DemarcheCategorie: String {
     case cloture = "Clôture"
 }
 
+//tag pour chaque TabBarItem pour pouvoir choisir le TabBarItem actif
+enum Tab: Hashable {
+    case demarche
+    case monEntreprise
+    case revenuNet
+}
+
 struct DocumentNecessaire: Identifiable {
     let id = UUID()
     let docname: String

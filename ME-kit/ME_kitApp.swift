@@ -11,7 +11,7 @@ import SwiftUI
 struct ME_kitApp: App {
     var body: some Scene {
         WindowGroup {
-            TabBarView()
+            PreLaunchView()
         }
     }
 }

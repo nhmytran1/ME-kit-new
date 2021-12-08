@@ -12,18 +12,21 @@ struct TabBarView: View {
     @AppStorage("showOnboarding") private var showOnboarding: Bool = true
     @AppStorage("homeScreen") private var homeScreen: String = ""
     @AppStorage("etapeEnCours") private var etapeEnCours: Int = 1
-
+    //variable qui désigne le TabBarItem actif
+    @State private var currentTab: Tab = .demarche
     
     var body: some View {
         
         VStack {
-            TabView {
+            TabView(selection: $currentTab) {
+                
                 if (homeScreen == "creation") {
-                    HomeDemarcheCreaView(etapeEnCours: $etapeEnCours)
+                    HomeDemarcheCreaView(homeScreen: $homeScreen, currentTab: $currentTab, etapeEnCours: $etapeEnCours)
                         .tabItem {
                             Image(systemName: "doc.text")
                             Text("Démarches")
                         }
+                        .tag(Tab.demarche)
                 }
                 else {
                     HomeDemarcheSuiviView()
@@ -31,6 +34,7 @@ struct TabBarView: View {
                             Image(systemName: "doc.text")
                             Text("Démarches")
                         }
+                        .tag(Tab.demarche)
                 }
                 
                 HomeMonEntrepriseView()
@@ -38,13 +42,17 @@ struct TabBarView: View {
                         Image(systemName: "suitcase")
                         Text("Mon entreprise")
                     }
+                    .tag(Tab.monEntreprise)
+                
                 HomeRevenuNetView()
                     .tabItem {
                         Image(systemName: "wrench.and.screwdriver.fill")
                         Text("Revenu net")
                         
                     }
+                    .tag(Tab.revenuNet)
             }.accentColor(Color("greenMEkit"))
+            
             //Bouton pour faire réapparaitre l'onboarding
             Button { showOnboarding.toggle() } label: {
                 Rectangle()
@@ -52,7 +60,7 @@ struct TabBarView: View {
                     .foregroundColor(.red)
             }
             
-        }.fullScreenCover(isPresented: $showOnboarding, content: { OnboardingQuestionView(showOnboarding: $showOnboarding, homeScreen: $homeScreen, etapeEnCours: $etapeEnCours)})
+        }.fullScreenCover(isPresented: $showOnboarding, content: { OnboardingQuestionView(currentTab: $currentTab, showOnboarding: $showOnboarding, homeScreen: $homeScreen, etapeEnCours: $etapeEnCours)})
     }
 }
 

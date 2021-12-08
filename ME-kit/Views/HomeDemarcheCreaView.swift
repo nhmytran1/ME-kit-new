@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct HomeDemarcheCreaView: View {
+    @Binding var homeScreen: String
+    @Binding var currentTab: Tab
     @Binding var etapeEnCours: Int
     @State var isActive : Bool = false
+    @State private var showingAlert = false
     //variable globale pour pouvoir déballer la variable etape en dehors de la boucle ForEach (contournement du bug SwiftUI lié au NavLink DANS une boucle ForEach)
     @State var etapeTmp: EtapeDemarche?
     
@@ -64,17 +67,26 @@ struct HomeDemarcheCreaView: View {
                             //AJOUTER UN BOUTON TERMINE QUI :
                             //- VA MODIFIER @AppStorage homeScreen = "suivi"
                             //- VA REDIRIGER VERS HOME MON ENTREPRISE POUR REMPLIR
+                            //- AFFICHE UNE POP-UP DE CONFIRMATION
                             
                             HStack {
                                 Spacer()
                                 if etapeEnCours > 8 {
-                                    NavigationLink(destination: HomeMonEntrepriseView().navigationBarHidden(true)) {
-                                        BoutonPlein(label: "Terminé")
-                                    }
-                                    Spacer()
+                                    BoutonPlein(label: "Terminé")
+                                        .onTapGesture {
+                                            showingAlert = true
+                                        }
+                                        .alert("Félicitations !\r Vous avez créé votre entreprise, veuillez remplir vos informations pour pouvoir continuer.", isPresented: $showingAlert) {
+                                            Button("Aller à Mon Entreprise", role: .none) {
+                                                homeScreen = "suivi"
+                                                currentTab = Tab.monEntreprise
+                                            }
+                                            Button("Annuler", role: .cancel) { }
+                                        }
+                                    
                                 }
+                                Spacer()
                             }
-                           
                         }
                         Spacer()
                     }
@@ -84,13 +96,19 @@ struct HomeDemarcheCreaView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem {
-                        NavigationLink (destination: HomeDemarcheSuiviView().navigationBarHidden(true)) {
-                            //AJOUTER UNE POP-UP POUR CONFIRMATION + REDIRECTION VERS MON ENTREPRISE POUR REMPLIR LES INFOS ?
-                            //HomeDemarcheSuiviView()
-                            //MAJ LA VARIABLE @APPSTORAGE QUI REPRESENTE L'AVANCEMENT (crea, suivi ou cloture) POUR SAVOIR QUEL ECRAN OUVRIR EN PREMIER
+                        
+                        Button(action: {
+                            showingAlert = true
+                        }, label: {
                             Text("Passer")
-                        }
-                        .foregroundColor(Color("greenMEkit"))
+                        })
+                        .alert("Confirmez-vous votre action ? \r Veuillez remplir vos informations pour pouvoir continuer.", isPresented: $showingAlert) {
+                                Button("Aller à Mon Entreprise", role: .none) {
+                                    homeScreen = "suivi"
+                                    currentTab = Tab.monEntreprise
+                                }
+                                Button("Annuler", role: .cancel) { }
+                            }
                     }
                 }
             }

@@ -40,9 +40,9 @@ class notificationManager {
         // Calendar
         var dateComponents = DateComponents()
         
-        dateComponents.hour = 16
-        dateComponents.minute = 44
-        dateComponents.weekday = 6 // Friday number 6, monday is number two
+        dateComponents.hour = 14
+        dateComponents.minute = 52
+//        dateComponents.weekday = 6 // Friday number 6, monday is number two
         // This writing saying every Fryday at 9.27 am I'm notifying the user
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
