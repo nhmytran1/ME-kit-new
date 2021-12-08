@@ -25,6 +25,20 @@ class notificationManager {
         
     }
     
+    func notificationExempleAFE() {
+        let content = UNMutableNotificationContent()
+        content.title = "Achetez des AirPod"
+        content.subtitle = "apple.com"
+        content.sound = .defaultCritical
+        content.badge = 1
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
+        
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request)
+    }
+    
     //Scheduled notification in time, second tto calendar and trigger.
     func scheduledNotification() {
         let content = UNMutableNotificationContent()
@@ -141,7 +155,6 @@ class notificationManager {
         content.subtitle = "Tu as jusqu'au 31 décembre ! "
         content.sound = .default
         content.badge = 1
-        
         
         // dateComponents asked in the trigger for choose when notifying.
         var dateComponents = DateComponents()

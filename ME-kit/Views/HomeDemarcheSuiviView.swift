@@ -52,8 +52,7 @@ struct HomeDemarcheSuiviView: View {
                 ToolbarItem {
                     NavigationLink (destination: MesNotificationsView().navigationBarHidden(true)) {
                         Image(systemName: "bell")
-                    }
-                    .foregroundColor(Color("greenMEkit"))
+                    }.foregroundColor(Color("greenMEkit"))
                 }
             }
         }

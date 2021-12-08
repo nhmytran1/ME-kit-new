@@ -7,11 +7,12 @@
 import SwiftUI
 
 struct MesNotificationsView: View {
-    
-    @State var isUrssafActivated: Bool = true
-    @State var isCfeActivated: Bool = true
-    @State var isImpotIsActivated: Bool = true
-    @State var isQuarterlyDeclarationIsActivated: Bool = true
+    @State var isNotificationActivated = false
+    @State var isNotificationExtendedJury = false
+    @State var isUrssafActivated: Bool = false
+    @State var isCfeActivated: Bool = false
+    @State var isImpotIsActivated: Bool = false
+    @State var isQuarterlyDeclarationIsActivated: Bool = false
 
     let scheduledNotifications = notificationManager()
     
@@ -20,6 +21,20 @@ struct MesNotificationsView: View {
             VStack {
                 Form {
                     Section {
+                        //Notification permission
+                        ToggleView(isOn: $isNotificationActivated, nameOfNotification: isNotificationActivated == true ? "Notifications activées" : "Notifications désactivées")
+                            .onChange(of: isNotificationActivated) { isActivated in
+                                if isActivated {
+                                    scheduledNotifications.requestAuthorization()
+                                }
+                            }
+                        //Notification AFE Jury
+                        ToggleView(isOn: $isNotificationExtendedJury, nameOfNotification: "Jury Final")
+                            .onChange(of: isNotificationExtendedJury) { isActivated in
+                                if isActivated {
+                                    scheduledNotifications.notificationExempleAFE()
+                                }
+                            }
                             //URSSAF toggle notification
                             ToggleView( isOn: $isUrssafActivated, nameOfNotification: "Déclaration trimstrielle URSSAF")
                         .onChange(of: isUrssafActivated) { isActivated in
@@ -63,7 +78,11 @@ struct MesNotificationsView: View {
 
 struct MesNotifications_Previews: PreviewProvider {
     static var previews: some View {
-        MesNotificationsView()
+        Group {
+            MesNotificationsView()
+            MesNotificationsView()
+                .preferredColorScheme(.dark)
+        }
     }
 }
 
