@@ -33,9 +33,6 @@ class notificationManager {
         content.sound = .default
         content.badge = 1
         
-        
-        
-        
         // Time
         // let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5.0, repeats: false)
         // 5 seconds before scheduling the request
@@ -99,6 +96,58 @@ class notificationManager {
         dateComponents.minute = 04
         dateComponents.weekday = 2 // Friday number 6, monday is number two
         dateComponents.month = 10 // For quarterly notification
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        
+        //Notification Request
+        let request = UNNotificationRequest(identifier: UUID().uuidString,
+                                            content: content,
+                                            trigger: trigger)
+        UNUserNotificationCenter.current().add(request)
+    }
+    
+    func scheduledNotificationImpot() {
+        
+        // Content of my notification
+        let content = UNMutableNotificationContent()
+        content.title = "Hey ! Il faut que tu fasses ta décaration d'impot 😉"
+        content.subtitle = "Tu as jusqu'au 14 mars, mais ne traine pas ! "
+        content.sound = .default
+        content.badge = 1
+        
+        
+        // dateComponents asked in the trigger for choose when notifying.
+        var dateComponents = DateComponents()
+        dateComponents.hour = 14
+        dateComponents.minute = 04
+        dateComponents.weekday = 2 // Friday number 6, monday is number two
+        dateComponents.month = 09 // For quarterly notification
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        
+        //Notification Request
+        let request = UNNotificationRequest(identifier: UUID().uuidString,
+                                            content: content,
+                                            trigger: trigger)
+        UNUserNotificationCenter.current().add(request)
+    }
+    
+    func scheduledNotificationMonthly() {
+        
+        // Content of my notification
+        let content = UNMutableNotificationContent()
+        content.title = "Hey ! Il faut que tu fasses ta décaration mensuelle URSSAF"
+        content.subtitle = "Tu as jusqu'au 31 décembre ! "
+        content.sound = .default
+        content.badge = 1
+        
+        
+        // dateComponents asked in the trigger for choose when notifying.
+        var dateComponents = DateComponents()
+        dateComponents.hour = 12
+        dateComponents.minute = 04
+        dateComponents.weekday = 2 // Friday number 6, monday is number two
+        dateComponents.month = 12 % 12 // For monthly notification
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         
