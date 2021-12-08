@@ -54,6 +54,7 @@ class notificationManager {
                                             trigger: trigger)
         UNUserNotificationCenter.current().add(request)
     }
+    
     // URSSAF trimstriel Notification
     func scheduledNotificationUrssafQuarterly() {
         let content = UNMutableNotificationContent()
@@ -66,7 +67,7 @@ class notificationManager {
         dateComponents.hour = 16
         dateComponents.minute = 44
         dateComponents.weekday = 6 // Friday number 6, monday is number two
-        dateComponents.month = 12 % 4 // For quarterly notification
+        dateComponents.month = 12 / 4 // For quarterly notification
         
         // Ce qui lance la notification à une date, heure, précise
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
@@ -147,7 +148,7 @@ class notificationManager {
         dateComponents.hour = 12
         dateComponents.minute = 04
         dateComponents.weekday = 2 // Friday number 6, monday is number two
-        dateComponents.month = 12 % 12 // For monthly notification
+        dateComponents.month = 12 / 12 // For monthly notification
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         
