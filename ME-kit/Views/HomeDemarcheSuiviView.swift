@@ -50,7 +50,7 @@ struct HomeDemarcheSuiviView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem {
-                    NavigationLink (destination: MesAlertesView().navigationBarHidden(true)) {
+                    NavigationLink (destination: MesNotificationsView().navigationBarHidden(true)) {
                         Image(systemName: "bell")
                     }
                     .foregroundColor(Color("greenMEkit"))
