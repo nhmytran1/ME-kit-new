@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C0CED6F2760E5FB000FED6E /* MesNotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C0CED6E2760E5FB000FED6E /* MesNotificationsView.swift */; };
 		A7032D5E275E0AA8007FFCB9 /* DetailDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7032D5D275E0AA8007FFCB9 /* DetailDocumentView.swift */; };
 		A7032D60275E0E95007FFCB9 /* CerclePartager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7032D5F275E0E95007FFCB9 /* CerclePartager.swift */; };
 		A7032D62275E124C007FFCB9 /* AlertesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7032D61275E124C007FFCB9 /* AlertesViewModel.swift */; };
-		A7032D64275E128C007FFCB9 /* ToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7032D63275E128C007FFCB9 /* ToggleView.swift */; };
 		A754176B275E686F005EFA50 /* DetailEtapeCreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A754176A275E686F005EFA50 /* DetailEtapeCreaView.swift */; };
 		A7878B46275A31C400B51D0B /* ME_kitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7878B45275A31C400B51D0B /* ME_kitApp.swift */; };
 		A7878B48275A31C400B51D0B /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7878B47275A31C400B51D0B /* TabBarView.swift */; };
@@ -41,10 +41,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3C0CED6E2760E5FB000FED6E /* MesNotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MesNotificationsView.swift; sourceTree = "<group>"; };
 		A7032D5D275E0AA8007FFCB9 /* DetailDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDocumentView.swift; sourceTree = "<group>"; };
 		A7032D5F275E0E95007FFCB9 /* CerclePartager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CerclePartager.swift; sourceTree = "<group>"; };
 		A7032D61275E124C007FFCB9 /* AlertesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertesViewModel.swift; sourceTree = "<group>"; };
-		A7032D63275E128C007FFCB9 /* ToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleView.swift; sourceTree = "<group>"; };
 		A754176A275E686F005EFA50 /* DetailEtapeCreaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailEtapeCreaView.swift; sourceTree = "<group>"; };
 		A7878B42275A31C400B51D0B /* ME-kit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ME-kit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7878B45275A31C400B51D0B /* ME_kitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ME_kitApp.swift; sourceTree = "<group>"; };
@@ -114,6 +114,7 @@
 				A7032D5D275E0AA8007FFCB9 /* DetailDocumentView.swift */,
 				A7878B57275A330C00B51D0B /* HomeRevenuNetView.swift */,
 				A7878B59275A333200B51D0B /* MesAlertesView.swift */,
+				3C0CED6E2760E5FB000FED6E /* MesNotificationsView.swift */,
 				A7878B5B275A335E00B51D0B /* MesAlertesParamView.swift */,
 				A7878B5F275A33A200B51D0B /* DetailEtapeView.swift */,
 				A754176A275E686F005EFA50 /* DetailEtapeCreaView.swift */,
@@ -148,7 +149,6 @@
 				A7878B69275A33E600B51D0B /* ImagePicker.swift */,
 				A7878B65275A33E600B51D0B /* ResumeInfo.swift */,
 				A7032D5F275E0E95007FFCB9 /* CerclePartager.swift */,
-				A7032D63275E128C007FFCB9 /* ToggleView.swift */,
 			);
 			path = "Composants graphiques";
 			sourceTree = "<group>";
@@ -235,6 +235,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7878B72275A33E600B51D0B /* CercleGrisVide.swift in Sources */,
+				3C0CED6F2760E5FB000FED6E /* MesNotificationsView.swift in Sources */,
 				A7878B71275A33E600B51D0B /* CercleVertPlay.swift in Sources */,
 				A7878B77275A33E600B51D0B /* Boutons.swift in Sources */,
 				A7032D60275E0E95007FFCB9 /* CerclePartager.swift in Sources */,
@@ -255,7 +256,6 @@
 				A7878B54275A32BD00B51D0B /* HomeDemarcheSuiviView.swift in Sources */,
 				A7878B5E275A337800B51D0B /* HomeDemarcheCreaView.swift in Sources */,
 				A7878B7E275A340600B51D0B /* Entreprise.swift in Sources */,
-				A7032D64275E128C007FFCB9 /* ToggleView.swift in Sources */,
 				A7878B75275A33E600B51D0B /* BoutonExternalLink.swift in Sources */,
 				A7878B58275A330C00B51D0B /* HomeRevenuNetView.swift in Sources */,
 				A7878B7D275A340600B51D0B /* Alertes.swift in Sources */,
