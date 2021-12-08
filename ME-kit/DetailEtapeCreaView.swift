@@ -11,7 +11,7 @@ struct DetailEtapeCreaView: View {
     
     var etape: EtapeDemarche
     @Binding var etapeEnCours: Int
-    @Binding var rootIsActive : Bool
+    @Binding var shouldPopToRootView : Bool
     
     var body: some View {
         NavigationView {
@@ -43,13 +43,16 @@ struct DetailEtapeCreaView: View {
                     if etape.number == etapeEnCours {
                         Button { //ACTION(S)
                             etapeEnCours += 1
-                            self.rootIsActive = false //ATTENTION BUG A REGLER - NE REFERME PAS LA FENETRE
+                            self.shouldPopToRootView = false //ATTENTION BUG A REGLER - NE REFERME PAS LA FENETRE
                         } label: {
                             BoutonPlein(label: "Terminé")
                         }
                         
                     } else if etape.number < etapeEnCours {
-                        Text("Vous avez validé cette étape")
+                        Text("Etape validée !")
+                            .foregroundColor(Color("greenMEkit"))
+                            .bold()
+                            .padding()
                     } else {
                         BoutonVide(label: "Terminé")
                     }

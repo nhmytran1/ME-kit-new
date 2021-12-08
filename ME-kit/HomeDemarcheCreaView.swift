@@ -10,6 +10,8 @@ import SwiftUI
 struct HomeDemarcheCreaView: View {
     @Binding var etapeEnCours: Int
     @State var isActive : Bool = false
+    //variable globale pour pouvoir déballer la variable etape en dehors de la boucle ForEach (contournement du bug SwiftUI lié au NavLink DANS une boucle ForEach)
+    @State var etapeTmp: EtapeDemarche?
     
     
     var body: some View {
@@ -26,34 +28,53 @@ struct HomeDemarcheCreaView: View {
                     
                     HStack {
                         VStack (alignment: .leading) {
-                            
+                            //Boucle d'affichage des boutons avec conditions en fonction de etapeEnCours
                             ForEach(etapesCreation) { etape in
-                                NavigationLink(destination: DetailEtapeCreaView(etape: etape, etapeEnCours: $etapeEnCours, rootIsActive: self.$isActive)) {
-                                    //Condition pour savoir quelles icônes afficher
-                                    if etape.number == etapeEnCours {
-                                        CercleVertPlay(text: etape.name)
-                                    } else if etape.number < etapeEnCours {
-                                        CercleVertFait(text: etape.name)
-                                    } else {
-                                        CercleGrisVide(text: etape.name)
-                                    }
-                                    
+                                if etape.number == etapeEnCours {
+                                    CercleVertPlay(text: etape.name)
+                                    //nécessaire pour emballer l'etape dans la vairable globale etapeTmp
+                                        .onTapGesture {
+                                            etapeTmp = etape
+                                            isActive = true
+                                        }
+                                } else if etape.number < etapeEnCours {
+                                    CercleVertFait(text: etape.name)
+                                    //nécessaire pour emballer l'etape dans la vairable globale etapeTmp
+                                        .onTapGesture {
+                                            etapeTmp = etape
+                                            isActive = true
+                                        }
+                                } else {
+                                    CercleGrisVide(text: etape.name)
+                                    //nécessaire pour emballer l'etape dans la vairable globale etapeTmp
+                                        .onTapGesture {
+                                            etapeTmp = etape
+                                            isActive = true
+                                        }
                                 }
                             }
+                            
+                            //déballage de la variable globale pour la NavigationLink
+                            if let unwrappedEtape = etapeTmp {
+                                NavigationLink(destination: DetailEtapeCreaView(etape: unwrappedEtape, etapeEnCours: $etapeEnCours, shouldPopToRootView: self.$isActive),
+                                               isActive: $isActive) {EmptyView()}
+                            }
+                            
                             
                             //AJOUTER UN BOUTON TERMINE QUI :
                             //- VA MODIFIER @AppStorage homeScreen = "suivi"
                             //- VA REDIRIGER VERS HOME MON ENTREPRISE POUR REMPLIR
                             
-                            if etapeEnCours > 8 {
-                                NavigationLink(destination: HomeMonEntrepriseView().navigationBarHidden(true)) {
-                                    BoutonPlein(label: "Terminé")
+                            HStack {
+                                Spacer()
+                                if etapeEnCours > 8 {
+                                    NavigationLink(destination: HomeMonEntrepriseView().navigationBarHidden(true)) {
+                                        BoutonPlein(label: "Terminé")
+                                    }
+                                    Spacer()
                                 }
-                                
                             }
-                            
-                            
-                            
+                           
                         }
                         Spacer()
                     }
