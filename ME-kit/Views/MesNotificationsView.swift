@@ -13,7 +13,7 @@ struct MesNotificationsView: View {
     @State var isCfeActivated: Bool = false
     @State var isImpotIsActivated: Bool = false
     @State var isQuarterlyDeclarationIsActivated: Bool = false
-
+    
     let scheduledNotifications = notificationManager()
     
     var body: some View {
@@ -22,10 +22,25 @@ struct MesNotificationsView: View {
                 Form {
                     Section {
                         //Notification permission
-                        ToggleView(isOn: $isNotificationActivated, nameOfNotification: isNotificationActivated == true ? "Notifications activées" : "Notifications désactivées")
+                        ToggleView(isOn: $isNotificationActivated, nameOfNotification: isNotificationActivated == true ? "Notifications activées 💼" : "Activer les notifications 🔔")
                             .onChange(of: isNotificationActivated) { isActivated in
                                 if isActivated {
                                     scheduledNotifications.requestAuthorization()
+                                }
+                                //Active tous les boutons si le premier est en on
+                                if isNotificationActivated == true {
+                                    isNotificationExtendedJury = true
+                                    isUrssafActivated = true
+                                    isCfeActivated = true
+                                    isImpotIsActivated = true
+                                    isQuarterlyDeclarationIsActivated = true
+                                }else {
+                                    // Désactive tous les bouttons si le premier off
+                                    isNotificationExtendedJury = false
+                                    isUrssafActivated = false
+                                    isCfeActivated = false
+                                    isImpotIsActivated = false
+                                    isQuarterlyDeclarationIsActivated = false
                                 }
                             }
                         //Notification AFE Jury
@@ -35,14 +50,14 @@ struct MesNotificationsView: View {
                                     scheduledNotifications.notificationExempleAFE()
                                 }
                             }
-                            //URSSAF toggle notification
-                            ToggleView( isOn: $isUrssafActivated, nameOfNotification: "Déclaration trimstrielle URSSAF")
-                        .onChange(of: isUrssafActivated) { isActivated in
-                            if isActivated {
-                                scheduledNotifications.scheduledNotificationUrssafQuarterly()
+                        //URSSAF toggle notification
+                        ToggleView( isOn: $isUrssafActivated, nameOfNotification: "Déclaration trimstrielle URSSAF")
+                            .onChange(of: isUrssafActivated) { isActivated in
+                                if isActivated {
+                                    scheduledNotifications.scheduledNotificationUrssafQuarterly()
+                                }
                             }
-                        }
-    
+                        
                         // CFE toggle notification
                         ToggleView(isOn: $isCfeActivated, nameOfNotification: "CFE")
                         
@@ -51,17 +66,17 @@ struct MesNotificationsView: View {
                                     scheduledNotifications.scheduledNotificationCfe()
                                 }
                             }
-                      
+                        
                         // Impot toggle notification
                         ToggleView(isOn: $isImpotIsActivated, nameOfNotification: "Impot annuel")
-                    .onChange(of: isImpotIsActivated) { isActivated in
-                        if isActivated {
-                            scheduledNotifications.scheduledNotificationImpot()
-                            print("Notification impot activée")
-                        } else {
-                            print("Notification impot désactivée")
-                        }
-                    }
+                            .onChange(of: isImpotIsActivated) { isActivated in
+                                if isActivated {
+                                    scheduledNotifications.scheduledNotificationImpot()
+                                    print("Notification impot activée")
+                                } else {
+                                    print("Notification impot désactivée")
+                                }
+                            }
                         // URSSAF
                         ToggleView(isOn: $isQuarterlyDeclarationIsActivated, nameOfNotification: "Déclaration mensuelle URSSAF") }
                     .onChange(of: isQuarterlyDeclarationIsActivated) { isActivated in

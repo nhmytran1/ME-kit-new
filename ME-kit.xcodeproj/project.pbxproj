@@ -19,7 +19,6 @@
 		A7878B54275A32BD00B51D0B /* HomeDemarcheSuiviView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7878B53275A32BD00B51D0B /* HomeDemarcheSuiviView.swift */; };
 		A7878B56275A32EF00B51D0B /* HomeMonEntrepriseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7878B55275A32EF00B51D0B /* HomeMonEntrepriseView.swift */; };
 		A7878B58275A330C00B51D0B /* HomeRevenuNetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7878B57275A330C00B51D0B /* HomeRevenuNetView.swift */; };
-		A7878B5C275A335E00B51D0B /* MesAlertesParamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7878B5B275A335E00B51D0B /* MesAlertesParamView.swift */; };
 		A7878B5E275A337800B51D0B /* HomeDemarcheCreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7878B5D275A337800B51D0B /* HomeDemarcheCreaView.swift */; };
 		A7878B60275A33A200B51D0B /* DetailEtapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7878B5F275A33A200B51D0B /* DetailEtapeView.swift */; };
 		A7878B6D275A33E600B51D0B /* CercleVertAFaire.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7878B62275A33E600B51D0B /* CercleVertAFaire.swift */; };
@@ -54,7 +53,6 @@
 		A7878B53275A32BD00B51D0B /* HomeDemarcheSuiviView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDemarcheSuiviView.swift; sourceTree = "<group>"; };
 		A7878B55275A32EF00B51D0B /* HomeMonEntrepriseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMonEntrepriseView.swift; sourceTree = "<group>"; };
 		A7878B57275A330C00B51D0B /* HomeRevenuNetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRevenuNetView.swift; sourceTree = "<group>"; };
-		A7878B5B275A335E00B51D0B /* MesAlertesParamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MesAlertesParamView.swift; sourceTree = "<group>"; };
 		A7878B5D275A337800B51D0B /* HomeDemarcheCreaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDemarcheCreaView.swift; sourceTree = "<group>"; };
 		A7878B5F275A33A200B51D0B /* DetailEtapeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailEtapeView.swift; sourceTree = "<group>"; };
 		A7878B62275A33E600B51D0B /* CercleVertAFaire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CercleVertAFaire.swift; sourceTree = "<group>"; };
@@ -164,7 +162,6 @@
 				A7032D5D275E0AA8007FFCB9 /* DetailDocumentView.swift */,
 				A7878B57275A330C00B51D0B /* HomeRevenuNetView.swift */,
 				3C0CED6E2760E5FB000FED6E /* MesNotificationsView.swift */,
-				A7878B5B275A335E00B51D0B /* MesAlertesParamView.swift */,
 				A7878B5F275A33A200B51D0B /* DetailEtapeView.swift */,
 				A754176A275E686F005EFA50 /* DetailEtapeCreaView.swift */,
 			);
@@ -263,7 +260,6 @@
 				A7878B56275A32EF00B51D0B /* HomeMonEntrepriseView.swift in Sources */,
 				A754176B275E686F005EFA50 /* DetailEtapeCreaView.swift in Sources */,
 				A7878B46275A31C400B51D0B /* ME_kitApp.swift in Sources */,
-				A7878B5C275A335E00B51D0B /* MesAlertesParamView.swift in Sources */,
 				A7878B76275A33E600B51D0B /* CercleGrisAFaire.swift in Sources */,
 				A7878B73275A33E600B51D0B /* CercleGrisFait.swift in Sources */,
 				A7878B6E275A33E600B51D0B /* CercleVertFait.swift in Sources */,
