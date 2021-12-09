@@ -43,7 +43,7 @@ struct DetailEtapeCreaView: View {
                     if etape.number == etapeEnCours {
                         Button { //ACTION(S)
                             etapeEnCours += 1
-                            self.shouldPopToRootView = false //ATTENTION BUG A REGLER - NE REFERME PAS LA FENETRE
+                            self.shouldPopToRootView = false
                         } label: {
                             BoutonPlein(label: "Terminé")
                         }

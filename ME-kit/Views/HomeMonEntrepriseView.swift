@@ -1,12 +1,4 @@
-//
-//  HomeMonEntrepriseView.swift
-//  ME-kit
-//
-//  Created by Apprenant 82 on 03/12/2021.
-//
-
 import SwiftUI
-import Combine
 
 struct HomeMonEntrepriseView_Previews: PreviewProvider {
     static var previews: some View {
@@ -39,38 +31,38 @@ struct HomeMonEntrepriseView: View {
                 } else {
                     ScrollView{
                         if entrepriseParDefaut.domiciliation == "DOM-TOM"
-                                               {
-                                                   if entrepriseParDefaut.typeActivite == .ActiviteDeVente {
-                                                       MaxCA(max: 100000)
-                                                       ProgressingView(max: 100000).padding()
-                                                   } else if entrepriseParDefaut.typeActivite == .PrestationDeServices {
-                                                       MaxCA2(max: 50000)
-                                                       ProgressingView(max: 50000).padding()
-                                                   } else {
-                                                       MaxCA(max: 100000)
-                                                       ProgressingView(max: 100000).padding()
-                                                       MaxCA2(max: 50000)
-                                                       ProgressingView(max: 50000).padding()
-                                                   }
-                                                   
-                                               } else {
-                                                   if entrepriseParDefaut.secteur == .Commerciale {
-                                                       MaxCA(max: 85800)
-                                                       ProgressingView(max: 85800).padding()
-                                                   } else if entrepriseParDefaut.secteur == .Artisanale || entrepriseParDefaut.secteur == .Liberales {
-                                                       MaxCA2(max: 34400)
-                                                       ProgressingView(max: 34400)
-                                                       
-                                                   } else {
-                                                       VStack{
-                                                           MaxCA(max: 85800)
-                                                           ProgressingView(max: 85800)
-                                                           MaxCA2(max: 34400)
-                                                           ProgressingView(max: 34400)
-                                                       }
-                                                   }
-                                               }
-
+                        {
+                            if entrepriseParDefaut.typeActivite == .ActiviteDeVente {
+                                MaxCA(max: 100000)
+                                ProgressingView(max: 100000).padding()
+                            } else if entrepriseParDefaut.typeActivite == .PrestationDeServices {
+                                MaxCA2(max: 50000)
+                                ProgressingView(max: 50000).padding()
+                            } else {
+                                MaxCA(max: 100000)
+                                ProgressingView(max: 100000).padding()
+                                MaxCA2(max: 50000)
+                                ProgressingView(max: 50000).padding()
+                            }
+                            
+                        } else {
+                            if entrepriseParDefaut.secteur == .Commerciale {
+                                MaxCA(max: 85800)
+                                ProgressingView(max: 85800).padding()
+                            } else if entrepriseParDefaut.secteur == .Artisanale || entrepriseParDefaut.secteur == .Liberales {
+                                MaxCA2(max: 34400)
+                                ProgressingView(max: 34400)
+                                
+                            } else {
+                                VStack{
+                                    MaxCA(max: 85800)
+                                    ProgressingView(max: 85800)
+                                    MaxCA2(max: 34400)
+                                    ProgressingView(max: 34400)
+                                }
+                            }
+                        }
+                        
                         HStack {
                             Text("Mes Documents").padding()
                             Spacer()
@@ -89,21 +81,22 @@ struct HomeMonEntrepriseView: View {
                             ForEach(documents) { docSup in
                                 NavigationLink(destination: DetailDocumentView(element:docSup)) {
                                     ZStack {
+                                        VStack{
                                             Button{
-                                                //documents.remove(where: { $0 == \.id.self }))
+                                               // documents.remove(at: \.self.id(_documents))
                                             } label: {
-                                                VStack {
                                                     Image(systemName: "multiply.circle").resizable()
                                                         .aspectRatio(contentMode: .fit)
                                                         .foregroundColor(Color("greenMEkit"))
                                                         .frame(width: 44, height: 44)
-                                                        .padding(.leading, 80)
-                                                        .padding(.vertical, 5)
-                                                   Spacer()
-                                                }
                                             }
                                             CardView(element: docSup)
-                                        
+                                        }.overlay(
+                                            RoundedRectangle(cornerRadius: 20)
+                                                .stroke(lineWidth: 1)
+                                                .foregroundColor(.black)
+                                            
+                                    )
                                     }
                                 }
                             }
@@ -133,6 +126,7 @@ struct Modifieur: View {
     @State var selectedActivitePrincipal : Reponses
     @State var selectedImpot : Reponses
     @StateObject var nomEntreprise = entrepriseParDefaut
+    //@ObservedObject var input = TextLimiter(limit: 5)
     var body: some View {
         VStack {
             Button(){
@@ -251,7 +245,7 @@ struct ProgressingView: View {
         VStack {
             HStack{
                 TextField("Quel est votre CA ?", value: self.$valueCA,formatter: formatSiret).background(RoundedRectangle(cornerRadius: 50)
-                    .keyboardType(.numberPad).foregroundColor(.white))
+                                                                                                            .keyboardType(.numberPad).foregroundColor(.white))
                     .textFieldStyle(.roundedBorder)
                     .padding()
                 Text("\(Int(CA))").padding()
@@ -325,20 +319,3 @@ struct MaxCA2: View {
         }
     }
 }
-
-struct NumberEntryField : View {
-    @State private var enteredValue : String = ""
-    @Binding var value : Double
-    
-    var body: some View {
-        return TextField("", text: $enteredValue)
-            .onReceive(Just(enteredValue)) { typedValue in
-                if let newValue = Double(typedValue) {
-                    self.value = newValue
-                }
-            }.onAppear(perform:{self.enteredValue = "\(self.value)"})
-    }
-}
-
-
-

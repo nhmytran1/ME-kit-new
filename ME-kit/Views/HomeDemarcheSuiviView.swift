@@ -23,6 +23,8 @@ struct HomeDemarcheSuiviView: View {
                 HStack {
                     VStack (alignment: .leading) {
                         CercleGrisFait(text: "Création")
+                        // A METTRE EN FORME
+//                        Text(entrepriseParDefaut.dateeDebutActivite)
                         
                         titreTypeEtape(label: "MES DEMARCHES RECURRENTES")
                             .padding(.leading, 50.0)

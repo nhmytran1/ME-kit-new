@@ -12,7 +12,7 @@ import CoreImage.CIFilterBuiltins
 
 
 class Entreprise: ObservableObject {
-    internal init(nomination: String, Siret: Int, dateeDebutActivite : String, domiciliation : String, secteur : SecteurDActivite, typeActivite : TypeDActivite, CA: Double, ACCRE : Reponses, activitePrincipal : Reponses, impot : Reponses, avancement: Avancement) {
+    internal init(nomination: String, Siret: Int, dateeDebutActivite : String, domiciliation : String, secteur : SecteurDActivite, typeActivite : TypeDActivite, CA: Double, ACCRE : Reponses, activitePrincipal : Reponses, impot : Reponses, frequenceDeclURSSAF: FrequenceDeclarationURSSAF) {
         self.nomination = nomination
         self.Siret = Siret
         self.dateeDebutActivite = dateeDebutActivite
@@ -23,8 +23,9 @@ class Entreprise: ObservableObject {
         self.ACCRE = ACCRE
         self.activitePrincipal = activitePrincipal
         self.impot = impot
+        self.frequenceDeclURSSAF = frequenceDeclURSSAF
 //        self.etapeEnCours = etapeEnCours
-        self.avancement = avancement
+//        self.avancement = avancement
     }
 
     @Published var nomination: String
@@ -37,13 +38,14 @@ class Entreprise: ObservableObject {
     @Published var ACCRE : Reponses
     @Published var activitePrincipal : Reponses
     @Published var impot : Reponses
+    @Published var frequenceDeclURSSAF : FrequenceDeclarationURSSAF
     //PAS NECESSAIRES, TESTS POUR L'AVANCEMENT
 //    @Published var etapeEnCours: Int
-    @Published var avancement: Avancement
+//    @Published var avancement: Avancement
 
 
 }
-var entrepriseParDefaut = Entreprise(nomination: "Mon Entreprise", Siret: 12345678901234, dateeDebutActivite: "15/03/2018", domiciliation: "Paris", secteur: .Artisanale, typeActivite: .ActiviteDeVente, CA: 5000.0, ACCRE: .non, activitePrincipal: .non, impot: .non, avancement: .suivi)
+var entrepriseParDefaut = Entreprise(nomination: "Mon Entreprise", Siret: 12345678901234, dateeDebutActivite: "15/03/2018", domiciliation: "Paris", secteur: .Artisanale, typeActivite: .ActiviteDeVente, CA: 5000.0, ACCRE: .non, activitePrincipal: .non, impot: .non, frequenceDeclURSSAF: .mensuel)
 
 enum Reponses : String, CaseIterable, Identifiable {
     
@@ -52,6 +54,7 @@ enum Reponses : String, CaseIterable, Identifiable {
     
     var id: Reponses { self }
 }
+
 enum Avancement : String, CaseIterable, Identifiable {
     
     case creation = "Création"
@@ -79,6 +82,12 @@ enum TypeDActivite : String, CaseIterable, Identifiable {
     
     var id: TypeDActivite { self }
 }
+
+enum FrequenceDeclarationURSSAF: String {
+    case mensuel = "mensuel"
+    case trimestriel = "trimestre"
+}
+
 let formatSiret: NumberFormatter = {
     let formatter = NumberFormatter()
     formatter.numberStyle = .decimal
