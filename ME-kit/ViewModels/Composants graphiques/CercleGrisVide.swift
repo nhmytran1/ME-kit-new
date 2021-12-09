@@ -12,7 +12,7 @@ struct CercleGrisVide: View {
     var body: some View {
         HStack {
             Circle()
-                    .frame(width: 60.0, height: 60.0)
+                .frame(width: 55.0, height: 55.0)
                 .foregroundColor(.gray)
             Text(text).font(.title3).foregroundColor(.gray)
         }

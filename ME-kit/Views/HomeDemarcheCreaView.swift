@@ -21,6 +21,7 @@ struct HomeDemarcheCreaView: View {
         NavigationView {
             ScrollView {
                 ZStack {
+                    //BARRE GRISE QUI REPRESENTE LE FIL DES ETAPES
                     HStack {
                         Rectangle()
                             .fill(.gray)
@@ -31,6 +32,7 @@ struct HomeDemarcheCreaView: View {
                     
                     HStack {
                         VStack (alignment: .leading) {
+                            Spacer()
                             //Boucle d'affichage des boutons avec conditions en fonction de etapeEnCours
                             ForEach(etapesCreation) { etape in
                                 if etape.number == etapeEnCours {
@@ -64,9 +66,9 @@ struct HomeDemarcheCreaView: View {
                             }
                             
                             
-                            //AJOUTER UN BOUTON TERMINE QUI :
-                            //- VA MODIFIER @AppStorage homeScreen = "suivi"
-                            //- VA REDIRIGER VERS HOME MON ENTREPRISE POUR REMPLIR
+                            //BOUTON TERMINE QUI :
+                            //- MODIFIE @AppStorage homeScreen = "suivi"
+                            //- REDIRIGE VERS HOME MON ENTREPRISE POUR REMPLIR LES INFOS
                             //- AFFICHE UNE POP-UP DE CONFIRMATION
                             
                             HStack {
@@ -87,10 +89,11 @@ struct HomeDemarcheCreaView: View {
                                 }
                                 Spacer()
                             }
+                            .padding(10.0)
                         }
                         Spacer()
                     }
-                    .padding(.leading, 15.0)
+                    .padding(.leading, 16.5)
                 }
                 .navigationBarTitle(Text("Démarches création"))
                 .navigationBarTitleDisplayMode(.inline)

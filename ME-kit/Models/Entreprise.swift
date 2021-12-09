@@ -1,10 +1,3 @@
-//
-//  Entreprise.swift
-//  ME-kit (iOS)
-//
-//  Created by Apprenant 82 on 02/12/2021.
-//
-
 
 import Foundation
 import SwiftUI
@@ -42,7 +35,6 @@ class Entreprise: ObservableObject {
     //PAS NECESSAIRES, TESTS POUR L'AVANCEMENT
 //    @Published var etapeEnCours: Int
 //    @Published var avancement: Avancement
-
 
 }
 var entrepriseParDefaut = Entreprise(nomination: "Mon Entreprise", Siret: 12345678901234, dateeDebutActivite: "15/03/2018", domiciliation: "Paris", secteur: .Artisanale, typeActivite: .ActiviteDeVente, CA: 5000.0, ACCRE: .non, activitePrincipal: .non, impot: .non, frequenceDeclURSSAF: .mensuel)

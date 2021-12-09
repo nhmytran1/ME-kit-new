@@ -23,25 +23,28 @@ struct HomeDemarcheSuiviView: View {
                 HStack {
                     VStack (alignment: .leading) {
                         CercleGrisFait(text: "Création")
-                        // A METTRE EN FORME
-//                        Text(entrepriseParDefaut.dateeDebutActivite)
                         
                         titreTypeEtape(label: "MES DEMARCHES RECURRENTES")
                             .padding(.leading, 50.0)
                         
                         VStack (alignment: .leading) {
-                            ForEach(etapesSuivi) { etape in
-                                NavigationLink(destination: DetailEtapeView(etape: etape)) {
-                                    CercleVertAFaire(text: etape.name)
-                                }
+                            NavigationLink(destination: DetailEtapeView(etape: etape9)) {
+                                CercleVertAFaire(text: etape9.name)
                             }
+                            NavigationLink(destination: DetailEtapeView(etape: etape10)) {
+                                CercleVertAFaire(text: etape10.name)
+                            }
+                            NavigationLink(destination: DetailEtapeView(etape: etape11)) {
+                                CercleVertAFaire(text: etape11.name)
+                            }
+    
                         }
                         //afficher le bon chiffre dans le titre
-                        titreTypeEtape(label: "TVA > XXXX €")
+                        titreTypeEtape(label: "CA > XXXX €")
                             .padding(.leading, 50.0)
                         //si tva > XX afficher ce bloc en vert
-                        NavigationLink(destination: DetailEtapeView(etape: etapeTVA)) {
-                            CercleGrisAFaire(text: etapeTVA.name)
+                        NavigationLink(destination: DetailEtapeView(etape: etapeTVA12)) {
+                            CercleGrisAFaire(text: etapeTVA12.name)
                         }
                     }
                     Spacer()
