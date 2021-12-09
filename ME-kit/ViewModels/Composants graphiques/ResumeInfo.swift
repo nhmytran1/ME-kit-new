@@ -20,12 +20,13 @@ struct StructureResumeInfos: View {
             TextField("Name", text: $name).padding(.leading)
             
             TextField("Email address", text: $emailAddress).padding(.leading)
-            
-            Image(uiImage: generateQRCode(from: "\(name)\n\(emailAddress)"))
-                .interpolation(.none)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 150, height: 150)
+            NavigationLink(destination: ZoomQRCodeView(name: name, emailAddress: emailAddress)) {
+                Image(uiImage: generateQRCode(from: "\(name)\n\(emailAddress)"))
+                    .interpolation(.none)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 150, height: 150)
+            }
             ZStack{
                 if affichage == true {
                     StructureRectangle(largueur: 350, hauteur: 300)
@@ -137,5 +138,17 @@ struct StructureBlocInfosRevenu: View {
             BlocInfos(title: "Impôt libératoire", value: valeurImpot)
         }.padding(.leading, 20)
             .padding(.trailing, 20)
+    }
+}
+struct ZoomQRCodeView : View {
+    @State var name : String
+    @State var emailAddress : String
+    var body : some View{
+        Text("Ma Carte de Visite").font(.title).padding()
+        Image(uiImage: generateQRCode(from: "\(name)\n\(emailAddress)"))
+            .interpolation(.none)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 300, height: 300)
     }
 }
