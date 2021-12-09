@@ -13,15 +13,18 @@ struct CercleVertAFaire: View {
         HStack {
             ZStack {
                 Circle()
-                    .frame(width: 60.0, height: 60.0)
+                    .frame(width: 55.0, height: 55.0)
                     .foregroundColor(Color("greenMEkit"))
                
                 Image(systemName: "arrow.counterclockwise")
                     .resizable()
                     .padding(0.0)
-                    .frame(width: 25.0, height: 25.0).foregroundColor(.white)
+                    .frame(width: 20.0, height: 20.0).foregroundColor(.white)
             }
-            Text(text).font(.title3).foregroundColor(Color("greenMEkit"))
+            VStack(alignment: .leading) {
+                Text(text).font(.title3).foregroundColor(Color("greenMEkit"))
+                Text(entrepriseParDefaut.frequenceDeclURSSAF.rawValue).font(.footnote).foregroundColor(.gray)
+            }
         }
     }
 }
