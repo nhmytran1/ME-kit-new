@@ -17,9 +17,10 @@ struct StructureResumeInfos: View {
     @StateObject var entreprise = entrepriseParDefaut
     var body: some View {
         VStack {
-            TextField("Name", text: $name).padding(.leading)
-            
-            TextField("Email address", text: $emailAddress).padding(.leading)
+            HStack{
+//            TextField("Name", text: $name).padding(.leading)
+//
+//            TextField("Email address", text: $emailAddress).padding(.leading)
             NavigationLink(destination: ZoomQRCodeView(name: name, emailAddress: emailAddress)) {
                 Image(uiImage: generateQRCode(from: "\(name)\n\(emailAddress)"))
                     .interpolation(.none)
@@ -27,13 +28,19 @@ struct StructureResumeInfos: View {
                     .scaledToFit()
                     .frame(width: 150, height: 150)
             }
+                Button {
+                    
+                } label: {
+                    Text("Changer ma Carte de visite")
+                }
+            }
             ZStack{
                 if affichage == true {
                     StructureRectangle(largueur: 350, hauteur: 300)
                     VStack {
                         HStack{
-                            Text(entreprise.nomination).padding(.leading, 20)
-                                .padding(.trailing, 20)
+//                            Text(entreprise.nomination).padding(.leading, 20)
+//                                .padding(.trailing, 20)
                             Spacer()
                             Button(){
                                 showingSheet.toggle()
@@ -46,11 +53,11 @@ struct StructureResumeInfos: View {
                             }.padding(.leading, 20)
                                 .padding(.trailing, 20)
                         }.padding()
-                        StructureBlocInfosMonEntreprise(valeurNomination: entreprise.nomination, valeurSiret: entreprise.Siret, valeurDomiciliation: entreprise.domiciliation, valeurDate: entreprise.dateeDebutActivite, valeurSecteur: entreprise.secteur.rawValue, valeurType: entreprise.typeActivite.rawValue, valeurActPrincipal: entreprise.activitePrincipal.rawValue, valeurAccre: entreprise.ACCRE.rawValue, valeurImpot: entreprise.impot.rawValue)
+                        StructureBlocInfosMonEntreprise(valeurNomination: entreprise.nomination, valeurSiret: entreprise.Siret, valeurDomiciliation: entreprise.domiciliation.rawValue, valeurDate: dateFormatter.string(from: entreprise.dateeDebutActivite), valeurSecteur: entreprise.secteur.rawValue, valeurType: entreprise.typeActivite.rawValue, valeurActPrincipal: entreprise.activitePrincipal.rawValue, valeurAccre: entreprise.ACCRE.rawValue, valeurImpot: entreprise.impot.rawValue)
                     }
                 } else {
                     StructureRectangle(largueur: 350, hauteur: 250)
-                    StructureBlocInfosRevenu(valeurDate: entreprise.dateeDebutActivite, valeurSecteur: entreprise.secteur.rawValue, valeurType: entreprise.typeActivite.rawValue, valeurAccre: entreprise.ACCRE.rawValue, valeurActPrincipal: entreprise.activitePrincipal.rawValue, valeurImpot: entreprise.impot.rawValue)
+                    StructureBlocInfosRevenu(valeurDate: dateFormatter.string(from: entreprise.dateeDebutActivite), valeurSecteur: entreprise.secteur.rawValue, valeurType: entreprise.typeActivite.rawValue, valeurAccre: entreprise.ACCRE.rawValue, valeurActPrincipal: entreprise.activitePrincipal.rawValue, valeurImpot: entreprise.impot.rawValue)
                 }
             }
         }

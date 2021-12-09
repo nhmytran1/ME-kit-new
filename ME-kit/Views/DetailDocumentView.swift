@@ -10,6 +10,8 @@ import SwiftUI
 struct DetailDocumentView: View {
     var element : Doc
     @State private var showingSheet = false
+    @State private var isExporting: Bool = false
+    @State private var document: FilesDocuments = FilesDocuments(message: "Hello, World!")
     var body: some View {
         VStack{
             ZStack{
@@ -25,10 +27,19 @@ struct DetailDocumentView: View {
                         ActivityView(activityItems: [NSURL(string: "https://KBIS.pdf")!] as [Any], applicationActivities: nil) })
                 }.position(x: 300, y: 450)
             }
-            Button {
-                
-            } label: {
+            Button(action: { isExporting = true }, label: {
                 BoutonPlein(label: "Télécharger")
+            }).fileExporter(
+                isPresented: $isExporting,
+                document: document,
+                contentType: .plainText,
+                defaultFilename: "Message"
+            ) { result in
+                if case .success = result {
+                    print ("success")
+                } else {
+                    print ("Fail")
+                }
             }
         }.navigationTitle(element.texte)
     }
@@ -36,8 +47,8 @@ struct DetailDocumentView: View {
 
 struct DetailDocumentView_Previews: PreviewProvider {
     static var previews: some View {
-        // DetailDocumentView(element: Doc(texte: "KBIS.pdf", dateDoc: Date()))
-        CardView(element: Doc(texte: "ok", dateDoc: Date()))
+         DetailDocumentView(element: Doc(texte: "KBIS.pdf", dateDoc: Date()))
+        //CardView(element: Doc(texte: "ok", dateDoc: Date()))
     }
 }
 
