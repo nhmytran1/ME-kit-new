@@ -2,10 +2,10 @@
 import Foundation
 import SwiftUI
 import CoreImage.CIFilterBuiltins
-
+import UniformTypeIdentifiers
 
 class Entreprise: ObservableObject {
-    internal init(nomination: String, Siret: Int, dateeDebutActivite : String, domiciliation : String, secteur : SecteurDActivite, typeActivite : TypeDActivite, CA: Double, ACCRE : Reponses, activitePrincipal : Reponses, impot : Reponses, frequenceDeclURSSAF: FrequenceDeclarationURSSAF) {
+    internal init(nomination: String, Siret: Int, dateeDebutActivite : Date, domiciliation : Pays, secteur : SecteurDActivite, typeActivite : TypeDActivite, CA: Double, ACCRE : Reponses, activitePrincipal : Reponses, impot : Reponses, frequenceDeclURSSAF: FrequenceDeclarationURSSAF) {
         self.nomination = nomination
         self.Siret = Siret
         self.dateeDebutActivite = dateeDebutActivite
@@ -23,8 +23,8 @@ class Entreprise: ObservableObject {
 
     @Published var nomination: String
     @Published var Siret: Int
-    @Published var dateeDebutActivite : String
-    @Published var domiciliation : String
+    @Published var dateeDebutActivite : Date
+    @Published var domiciliation : Pays
     @Published var secteur : SecteurDActivite
     @Published var typeActivite : TypeDActivite
     @Published var CA : Double
@@ -37,7 +37,7 @@ class Entreprise: ObservableObject {
 //    @Published var avancement: Avancement
 
 }
-var entrepriseParDefaut = Entreprise(nomination: "Mon Entreprise", Siret: 12345678901234, dateeDebutActivite: "15/03/2018", domiciliation: "Paris", secteur: .Artisanale, typeActivite: .ActiviteDeVente, CA: 5000.0, ACCRE: .non, activitePrincipal: .non, impot: .non, frequenceDeclURSSAF: .mensuel)
+var entrepriseParDefaut = Entreprise(nomination: "Mon Entreprise", Siret: 12345678901234, dateeDebutActivite: Date(), domiciliation: .France, secteur: .Artisanale, typeActivite: .ActiviteDeVente, CA: 5000.0, ACCRE: .non, activitePrincipal: .non, impot: .non, frequenceDeclURSSAF: .mensuel)
 
 enum Reponses : String, CaseIterable, Identifiable {
     
@@ -46,7 +46,13 @@ enum Reponses : String, CaseIterable, Identifiable {
     
     var id: Reponses { self }
 }
-
+enum Pays : String, Identifiable, CaseIterable{
+    case France = "France Métropolitaine"
+    case DomTom = "DOM-TOM"
+//    case Autre = "A l'Etranger"
+    
+    var id: Pays { self }
+}
 enum Avancement : String, CaseIterable, Identifiable {
     
     case creation = "Création"
@@ -128,14 +134,27 @@ struct Doc : Identifiable {
     var dateDoc: Date
 }
 
-
-
-
-//struct Document: View {
-//    var element : Doc
-//    var body: some View {
-//        //Text(element.texte)
-//        CardView(element: Doc(texte: element.texte))
-//
-//    }
-//}
+struct FilesDocuments: FileDocument {
+    
+    static var readableContentTypes: [UTType] { [.plainText] }
+    
+    var message: String
+    
+    init(message: String) {
+        self.message = message
+    }
+    
+    init(configuration: ReadConfiguration) throws {
+        guard let data = configuration.file.regularFileContents,
+              let string = String(data: data, encoding: .utf8)
+        else {
+            throw CocoaError(.fileReadCorruptFile)
+        }
+        message = string
+    }
+    
+    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
+        return FileWrapper(regularFileWithContents: message.data(using: .utf8)!)
+    }
+    
+}

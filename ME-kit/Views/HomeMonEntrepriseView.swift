@@ -6,11 +6,16 @@ struct HomeMonEntrepriseView_Previews: PreviewProvider {
     }
 }
 
+//func delete(indexSet: IndexSet) {
+//        documents.remove(atOffsets: indexSet)
+//}
 struct HomeMonEntrepriseView: View {
+    @State private var document: FilesDocuments = FilesDocuments(message: "Hello, World!")
+    @State private var isImporting: Bool = false
     @State private var selectorIndex = 0
     @State private var numbers = ["Mes données d'Entreprise","Mon CA et Mes Docs"]
     var element = Doc(texte: "", dateDoc: Date())
-    @State var documents = [
+ @State var documents = [
         Doc(texte: "KBIS.pdf", dateDoc: Date())
     ]
     let columns = [
@@ -30,7 +35,7 @@ struct HomeMonEntrepriseView: View {
                     StructureResumeInfos(affichage: true)
                 } else {
                     ScrollView{
-                        if entrepriseParDefaut.domiciliation == "DOM-TOM"
+                        if entrepriseParDefaut.domiciliation == .DomTom
                         {
                             if entrepriseParDefaut.typeActivite == .ActiviteDeVente {
                                 MaxCA(max: 100000)
@@ -45,7 +50,7 @@ struct HomeMonEntrepriseView: View {
                                 ProgressingView(max: 50000).padding()
                             }
                             
-                        } else {
+                        } else if entrepriseParDefaut.domiciliation == .France {
                             if entrepriseParDefaut.secteur == .Commerciale {
                                 MaxCA(max: 85800)
                                 ProgressingView(max: 85800).padding()
@@ -61,18 +66,35 @@ struct HomeMonEntrepriseView: View {
                                     ProgressingView(max: 34400)
                                 }
                             }
+                        } else {
+                            Text("Votre Chiffre d'affaire est de \(entrepriseParDefaut.CA)")
                         }
                         
                         HStack {
                             Text("Mes Documents").padding()
                             Spacer()
                             Button(action: {
+                                isImporting = true
                                 self.documents.append(Doc(texte: "Greffe.pdf", dateDoc: Date.now))
                             }) {
                                 ZStack {
                                     Image(systemName: "plus.circle.fill")
                                         .font(.system(size: 44, weight: .bold))
                                         .foregroundColor(Color("greenMEkit"))
+                                }
+                                        .fileImporter(
+                                    isPresented: $isImporting,
+                                    allowedContentTypes: [.plainText],
+                                    allowsMultipleSelection: false
+                                ) { result in
+                                    do {
+                                        guard let selectedFile: URL = try result.get().first else { return }
+                                        guard let message = String(data: try Data(contentsOf: selectedFile), encoding: .utf8) else { return }
+
+                                        document.message = message
+                                    } catch {
+                                        print ("Fail")
+                                    }
                                 }
                             }
                         }
@@ -82,8 +104,10 @@ struct HomeMonEntrepriseView: View {
                                 NavigationLink(destination: DetailDocumentView(element:docSup)) {
                                     ZStack {
                                         VStack{
+                                            
                                             Button{
-                                               // documents.remove(at: \.self.id(_documents))
+                                               // delete(indexSet: IndexSet())
+                                                //                                            documents.remove(atOffsets: IndexSet)
                                             } label: {
                                                     Image(systemName: "multiply.circle").resizable()
                                                         .aspectRatio(contentMode: .fit)
@@ -106,7 +130,7 @@ struct HomeMonEntrepriseView: View {
                 }
                 Spacer()
             }.navigationTitle("Mon Entreprise")
-                .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
@@ -117,7 +141,7 @@ struct Modifieur: View {
     @Environment(\.dismiss) var dismiss
     @State var entreprise = entrepriseParDefaut
     @State var donneeNom : String
-    @State var donneeLieu : String
+    @State var donneeLieu : Pays
     @State var donneeSiret : Int
     @State var dateDebutDActivite = Date()
     @State var selectedType : TypeDActivite
@@ -153,9 +177,20 @@ struct Modifieur: View {
                     Text("* S'il se trouve à la Guadeloupe, la Martinique ou à La Réunion, veuillez inscrire DOM-TOM").foregroundColor(.gray)
                         .font(.caption)
                         .multilineTextAlignment(.leading)
-                    TextField("Domiciliation de votre entreprise", text: $donneeLieu).background(RoundedRectangle(cornerRadius: 50).foregroundColor(.white))
-                        .textFieldStyle(.roundedBorder)
-                        .padding()
+                    HStack{
+                        Section(header: Text("Domiciliation")){
+                            Spacer()
+                            Picker("Quel est votre domiciliation ?", selection: $donneeLieu, content: {
+                                ForEach(Pays.allCases, content: { lieu in
+                                    Text(lieu.rawValue.capitalized)
+                                })
+                            })
+                        }
+                        
+                    }.padding()
+//                    TextField("Domiciliation de votre entreprise", text: $donneeLieu).background(RoundedRectangle(cornerRadius: 50).foregroundColor(.white))
+//                        .textFieldStyle(.roundedBorder)
+//                        .padding()
                     DatePicker("Date début d'activité", selection: $dateDebutDActivite, displayedComponents: [.date])
                         .padding()
                     HStack{
@@ -218,8 +253,8 @@ struct Modifieur: View {
                 Button(action: {
                     entrepriseParDefaut.nomination = donneeNom
                     entrepriseParDefaut.Siret = donneeSiret
-                    entrepriseParDefaut.domiciliation = donneeLieu.uppercased()
-                    entrepriseParDefaut.dateeDebutActivite = dateFormatter.string(from: dateDebutDActivite)
+                    entrepriseParDefaut.domiciliation = donneeLieu
+                    entrepriseParDefaut.dateeDebutActivite = dateDebutDActivite
                     entrepriseParDefaut.typeActivite = selectedType
                     entrepriseParDefaut.secteur = selectedSecteur
                     entrepriseParDefaut.ACCRE = selectedAccre
