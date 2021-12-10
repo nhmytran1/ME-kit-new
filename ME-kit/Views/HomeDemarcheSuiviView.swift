@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct HomeDemarcheSuiviView: View {
+    @State var isActive : Bool = false
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -15,7 +17,7 @@ struct HomeDemarcheSuiviView: View {
                 HStack {
                     Rectangle()
                         .fill(.gray)
-                        .frame(width: 3, height: 325)
+                        .frame(width: 3, height: 480)
                     Spacer()
                 }
                 .padding(.leading, 43.0)
@@ -28,20 +30,47 @@ struct HomeDemarcheSuiviView: View {
                             .padding(.leading, 50.0)
                         
                         VStack (alignment: .leading) {
-                            NavigationLink(destination: DetailEtapeView(etape: etape9)) {
+                            NavigationLink(destination: DetailEtapeView(etape: etape9, shouldPopToRootView: self.$isActive),
+                                           isActive: $isActive) {
                                 CercleVertAFaire(text: etape9.name, echeance: etape9.echeance)
+                                    .onTapGesture {
+                                        isActive = true
+                                    }
                             }
-                            NavigationLink(destination: DetailEtapeView(etape: etape10)) {
+                            NavigationLink(destination: DetailEtapeView(etape: etape10, shouldPopToRootView: self.$isActive),
+                                           isActive: $isActive) {
                                 CercleVertAFaire(text: etape10.name, echeance: etape10.echeance)
+                                    .onTapGesture {
+                                        isActive = true
+                                    }
                             }
-    
+                            
                         }
+                        
                         //afficher le bon chiffre dans le titre
-                        titreTypeEtape(label: "CA > XXXX €")
+                        titreTypeEtape(label: "CA > 34 400€")
                             .padding(.leading, 50.0)
-                        //si ca > XX afficher ce bloc en vert
-                        NavigationLink(destination: DetailEtapeView(etape: etapeTVA11)) {
+                        
+                        //ajouter condition si CA > XX afficher ce bloc en vert
+                        NavigationLink(destination: DetailEtapeView(etape: etapeTVA11, shouldPopToRootView: self.$isActive),
+                                       isActive: $isActive) {
                             CercleGrisAFaire(text: etapeTVA11.name)
+                                .onTapGesture {
+                                    isActive = true
+                                }
+                        }
+                        
+                        //CLÔTURER MON ENTREPRISE
+                        titreTypeEtape(label: "CA > 72 600€ OU CA = 0€")
+                            .padding(.leading, 50.0)
+                        
+                        //ajouter condition si CA > XX afficher ce bloc
+                        NavigationLink(destination: DetailEtapeView(etape: etapeCloture12, shouldPopToRootView: self.$isActive),
+                                       isActive: $isActive) {
+                            CercleGrisVide(text: etapeCloture12.name)
+                                .onTapGesture {
+                                    isActive = true
+                                }
                         }
                     }
                     Spacer()
@@ -65,11 +94,12 @@ struct HomeDemarcheSuiviView: View {
 struct titreTypeEtape: View {
     let label: String
     var body: some View {
-        ZStack {
+        ZStack (alignment: .leading) {
             Rectangle()
                 .stroke(.gray, lineWidth: 2.0)
-                .frame(width: 270.0, height: 30.0, alignment: .center)
+                .frame(width: 280.0, height: 30.0, alignment: .center)
             Text(label)
+                .font(.callout)
                 .foregroundColor(.gray)
                 .padding()
         }
