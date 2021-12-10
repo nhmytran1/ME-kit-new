@@ -53,6 +53,6 @@ struct DetailEtapeView: View {
 
 struct DetailEtapeView_Previews: PreviewProvider {
     static var previews: some View {
-        DetailEtapeView(etape: etapesSuivi[0])
+        DetailEtapeView(etape: etape9)
     }
 }

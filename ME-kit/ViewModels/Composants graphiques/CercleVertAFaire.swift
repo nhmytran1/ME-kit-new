@@ -7,9 +7,13 @@
 
 import SwiftUI
 
+
+
 struct CercleVertAFaire: View {
     var text : String
-    var body: some View {
+    var echeance : String
+    
+    var body: some View {      
         HStack {
             ZStack {
                 Circle()
@@ -23,7 +27,7 @@ struct CercleVertAFaire: View {
             }
             VStack(alignment: .leading) {
                 Text(text).font(.title3).foregroundColor(Color("greenMEkit"))
-                Text(entrepriseParDefaut.frequenceDeclURSSAF.rawValue).font(.footnote).foregroundColor(.gray)
+                Text(echeance).font(.footnote).foregroundColor(.gray)
             }
         }
     }
@@ -31,6 +35,6 @@ struct CercleVertAFaire: View {
 
 struct CercleVertAFaire_Previews: PreviewProvider {
     static var previews: some View {
-        CercleVertAFaire(text: "PREVIEW")
+        CercleVertAFaire(text: "PREVIEW", echeance: "Tous les trimestres")
     }
 }

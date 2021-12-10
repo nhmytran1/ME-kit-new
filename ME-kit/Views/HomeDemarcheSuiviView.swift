@@ -15,7 +15,7 @@ struct HomeDemarcheSuiviView: View {
                 HStack {
                     Rectangle()
                         .fill(.gray)
-                        .frame(width: 3, height: 400)
+                        .frame(width: 3, height: 325)
                     Spacer()
                 }
                 .padding(.leading, 43.0)
@@ -29,22 +29,19 @@ struct HomeDemarcheSuiviView: View {
                         
                         VStack (alignment: .leading) {
                             NavigationLink(destination: DetailEtapeView(etape: etape9)) {
-                                CercleVertAFaire(text: etape9.name)
+                                CercleVertAFaire(text: etape9.name, echeance: etape9.echeance)
                             }
                             NavigationLink(destination: DetailEtapeView(etape: etape10)) {
-                                CercleVertAFaire(text: etape10.name)
-                            }
-                            NavigationLink(destination: DetailEtapeView(etape: etape11)) {
-                                CercleVertAFaire(text: etape11.name)
+                                CercleVertAFaire(text: etape10.name, echeance: etape10.echeance)
                             }
     
                         }
                         //afficher le bon chiffre dans le titre
                         titreTypeEtape(label: "CA > XXXX €")
                             .padding(.leading, 50.0)
-                        //si tva > XX afficher ce bloc en vert
-                        NavigationLink(destination: DetailEtapeView(etape: etapeTVA12)) {
-                            CercleGrisAFaire(text: etapeTVA12.name)
+                        //si ca > XX afficher ce bloc en vert
+                        NavigationLink(destination: DetailEtapeView(etape: etapeTVA11)) {
+                            CercleGrisAFaire(text: etapeTVA11.name)
                         }
                     }
                     Spacer()
