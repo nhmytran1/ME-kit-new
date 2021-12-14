@@ -30,9 +30,11 @@ struct HomeMonEntrepriseView: View {
                 }.pickerStyle(SegmentedPickerStyle())
                 Text(numbers[selectorIndex]).padding()
                 if selectorIndex == 0 {
-                    StructureResumeInfos(affichage: true)
-                    NavigationLink(destination: DetailEtapeClotureView(etape: etape13)){
-                        BoutonPlein(label: "Cloturer son entreprise")
+                    ScrollView {
+                        StructureResumeInfos(affichage: true)
+                        NavigationLink(destination: DetailEtapeClotureView(etape: etape13)){
+                            BoutonPlein(label: "Cloturer son entreprise")
+                        }
                     }
                 } else {
                     ScrollView{

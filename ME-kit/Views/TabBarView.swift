@@ -48,10 +48,11 @@ struct TabBarView: View {
                     .tabItem {
                         Image(systemName: "wrench.and.screwdriver.fill")
                         Text("Revenu net")
-                        
                     }
                     .tag(Tab.revenuNet)
-            }.accentColor(Color("greenMEkit"))
+            }
+            .accentColor(Color("greenMEkit"))
+            .edgesIgnoringSafeArea(.bottom)
             
             //Bouton pour faire réapparaitre l'onboarding
             Button { showOnboarding.toggle() } label: {

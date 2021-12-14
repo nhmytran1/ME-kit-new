@@ -27,7 +27,7 @@ struct CercleVertAFaire: View {
             }
             VStack(alignment: .leading) {
                 Text(text).font(.title3).foregroundColor(Color("greenMEkit"))
-                Text(echeance).font(.footnote).foregroundColor(.gray)
+                Text("Prochaine déclaration le : \(echeance)").font(.footnote).foregroundColor(.gray)
             }
         }
     }

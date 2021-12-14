@@ -12,7 +12,8 @@ struct DetailEtapeView: View {
     @Binding var shouldPopToRootView : Bool
 
     var body: some View {
-        NavigationView {
+        //NavView à supprimer
+//        NavigationView {
             ScrollView {
                 VStack {
                     //BLOC DESCRIPTION
@@ -46,7 +47,7 @@ struct DetailEtapeView: View {
                     }
                 }
             }
-        }
+//        }
         .navigationBarTitle(Text(etape.name))
         .navigationBarTitleDisplayMode(.inline)
     }
