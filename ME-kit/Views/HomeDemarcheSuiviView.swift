@@ -68,7 +68,7 @@ struct HomeDemarcheSuiviView: View {
                 HStack {
                     Rectangle()
                         .fill(.gray)
-                        .frame(width: 3, height: 400)
+                        .frame(width: 3, height: 480)
                     Spacer()
                 }
                 .padding(.leading, 43.0)
@@ -231,12 +231,31 @@ struct HomeDemarcheSuiviView: View {
                             }
                             
                         }
+                        
                         //afficher le bon chiffre dans le titre
-                        titreTypeEtape(label: "CA > XXXX €")
+                        titreTypeEtape(label: "CA > 34 400€")
                             .padding(.leading, 50.0)
-                        //si tva > XX afficher ce bloc en vert
-                        NavigationLink(destination: DetailEtapeView(etape: etapeTVA12)) {
-                            CercleGrisAFaire(text: etapeTVA12.name)
+                        
+                        //ajouter condition si CA > XX afficher ce bloc en vert
+                        NavigationLink(destination: DetailEtapeView(etape: etapeTVA11, shouldPopToRootView: self.$isActive),
+                                       isActive: $isActive) {
+                            CercleGrisAFaire(text: etapeTVA11.name)
+                                .onTapGesture {
+                                    isActive = true
+                                }
+                        }
+                        
+                        //CLÔTURER MON ENTREPRISE
+                        titreTypeEtape(label: "CA > 72 600€ OU CA = 0€")
+                            .padding(.leading, 50.0)
+                        
+                        //ajouter condition si CA > XX afficher ce bloc
+                        NavigationLink(destination: DetailEtapeView(etape: etapeCloture12, shouldPopToRootView: self.$isActive),
+                                       isActive: $isActive) {
+                            CercleGrisVide(text: etapeCloture12.name)
+                                .onTapGesture {
+                                    isActive = true
+                                }
                         }
                         ///////////////////////////////////////////////TVA
                         ///activités artisanales et prestations de services:
@@ -299,7 +318,7 @@ struct HomeDemarcheSuiviView: View {
 struct titreTypeEtape: View {
     let label: String
     var body: some View {
-        ZStack {
+        ZStack (alignment: .leading) {
             Rectangle()
                 .stroke(.gray, lineWidth: 2.0)
                 .frame(width: 270.0, height: 30.0, alignment: .center)

@@ -9,6 +9,8 @@ import SwiftUI
 
 struct DetailEtapeView: View {
     var etape: EtapeDemarche
+    @Binding var shouldPopToRootView : Bool
+
     var body: some View {
         NavigationView {
             ScrollView {
@@ -38,7 +40,7 @@ struct DetailEtapeView: View {
                     
                     //BOUTON TERMINE
                     Button { //ACTION(S)
-                        print("étape validée")
+                        self.shouldPopToRootView = false
                     } label: {
                         BoutonPlein(label: "Terminé")
                     }
@@ -51,8 +53,8 @@ struct DetailEtapeView: View {
 }
 
 
-struct DetailEtapeView_Previews: PreviewProvider {
-    static var previews: some View {
-        DetailEtapeView(etape: etapesSuivi[0])
-    }
-}
+//struct DetailEtapeView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        DetailEtapeView(etape: etape9, shouldPopToRootView: <#T##Binding<Bool>#>)
+//    }
+//}

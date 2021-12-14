@@ -98,6 +98,11 @@ struct HomeDemarcheCreaView: View {
                 .navigationBarTitle(Text("Démarches création"))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
+                    //Bouton pour la démo - raccourci pour aller à la fin du workflow
+                    ToolbarItem (placement: .cancellationAction) {
+                        Button(action: { etapeEnCours = 8 } , label: { Text("Racc. démo")} )
+                    }
+                    
                     ToolbarItem {
                         
                         Button(action: {
