@@ -33,7 +33,7 @@ struct HomeMonEntrepriseView: View {
                     ScrollView {
                         StructureResumeInfos(affichage: true)
                         NavigationLink(destination: DetailEtapeClotureView(etape: etape13)){
-                            BoutonPlein(label: "Cloturer son entreprise")
+                            BoutonPlein(label: "Clôturer son entreprise")
                         }
                     }
                 } else {
@@ -225,7 +225,7 @@ struct Modifieur: View {
     @State var selectedAccre : Reponses
     @State var selectedActivitePrincipal : Reponses
     @State var selectedImpot : Reponses
-    @State var selectedUrsaff : FrequenceDeclarationURSSAF
+    @State var selectedUrsaff : FrequenceDeclaration
     @StateObject var nomEntreprise = entrepriseParDefaut
     //@ObservedObject var input = TextLimiter(limit: 5)
     var body: some View {
@@ -307,7 +307,7 @@ struct Modifieur: View {
                     Section(header: Text("Fréquence URSAFF")){
                         Spacer()
                         Picker("Quel est votre fréquence de déclaration ?", selection: $selectedUrsaff, content: {
-                            ForEach(FrequenceDeclarationURSSAF.allCases, content: { ursaff in
+                            ForEach(FrequenceDeclaration.allCases, content: { ursaff in
                                 Text(ursaff.rawValue.capitalized)
                             })
                         })

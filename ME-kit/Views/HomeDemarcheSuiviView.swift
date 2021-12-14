@@ -9,12 +9,12 @@ import SwiftUI
 
 struct HomeDemarcheSuiviView: View {
     
-    private func nameOfDayFormat(date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEEE"
-        dateFormatter.locale = Locale(identifier: "fr-FR")
-        return dateFormatter.string(from: date)
-    }
+    //    private func nameOfDayFormat(date: Date) -> String {
+    //        let dateFormatter = DateFormatter()
+    //        dateFormatter.dateFormat = "EEEE"
+    //        dateFormatter.locale = Locale(identifier: "fr-FR")
+    //        return dateFormatter.string(from: date)
+    //    }
     private func monthFormat(date: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMMM"
@@ -28,22 +28,23 @@ struct HomeDemarcheSuiviView: View {
         return dateFormatter.string(from: date)
     }
     
-    /////////// Variables pour afficher date déclaration mensuel
-    private var endDateOfMonthNameOfDay: String {
-        var components = Calendar.current.dateComponents([.year, .month], from: currentDate)
-        components.month = (components.month ?? 0) + 2
-        components.hour = (components.hour ?? 0) - 1
-        let endOfMonth = Calendar.current.date(from: components)!
-        return nameOfDayFormat(date: endOfMonth)
-    }
-    private var endDateOfMonthMonth: String {
+    //Variables pour afficher date déclaration mensuel
+    //    private var endDateOfMonthNameOfDay: String {
+    //        var components = Calendar.current.dateComponents([.year, .month], from: currentDate)
+    //        components.month = (components.month ?? 0) + 2
+    //        components.hour = (components.hour ?? 0) - 1
+    //        let endOfMonth = Calendar.current.date(from: components)!
+    //        return nameOfDayFormat(date: endOfMonth)
+    //    }
+    //Variables pour afficher date déclaration mensuelle URSSAF
+    private var endDateOfMonthMonthURSSAF: String {
         var components = Calendar.current.dateComponents([.year, .month], from: currentDate)
         components.month = (components.month ?? 0) + 2
         components.hour = (components.hour ?? 0) - 1
         let endOfMonth = Calendar.current.date(from: components)!
         return monthFormat(date: endOfMonth)
     }
-    private var endDateOfMonthDay: String {
+    private var endDateOfMonthDayURSSAF: String {
         var components = Calendar.current.dateComponents([.year, .month], from: currentDate)
         components.month = (components.month ?? 0) + 2
         components.hour = (components.hour ?? 0) - 1
@@ -51,7 +52,24 @@ struct HomeDemarcheSuiviView: View {
         return dayFormat(date: endOfMonth)
     }
     
-    /////////// Variables pour afficher date déclaration trimestriel
+    //Variables pour afficher date déclaration mensuelle IMPOTS
+    private var endDateOfMonthMonthImpots: String {
+        var components = Calendar.current.dateComponents([.year, .month], from: currentDate)
+        components.month = (components.month ?? 0) + 3
+        components.hour = (components.hour ?? 0) - 1
+        let endOfMonth = Calendar.current.date(from: components)!
+        return monthFormat(date: endOfMonth)
+    }
+    private var endDateOfMonthDayImpots: String {
+        var components = Calendar.current.dateComponents([.year, .month], from: currentDate)
+        components.month = (components.month ?? 0) + 3
+        components.hour = (components.hour ?? 0) - 1
+        let endOfMonth = Calendar.current.date(from: components)!
+        return dayFormat(date: endOfMonth)
+    }
+    
+    
+    //Variables pour afficher date déclaration trimestriel
     let components = Calendar.current.dateComponents([.month, .year], from: Date.now)
     @State private var currentDate = Date()
     var april : String = "30 avril"
@@ -59,9 +77,9 @@ struct HomeDemarcheSuiviView: View {
     var october : String = "31 octobre"
     var january : String = "31 janvier"
     @State var isActive : Bool = false
-//    var echeanceURSSAF : String = ""
     
     var body: some View {
+        
         NavigationView {
             ZStack {
                 //BARRE DE SUIVI LATERALE
@@ -77,30 +95,36 @@ struct HomeDemarcheSuiviView: View {
                     VStack (alignment: .leading) {
                         CercleGrisFait(text: "Création")
                         
-                        titreTypeEtape(label: "MES DEMARCHES RECURRENTES")
+                        titreTypeEtapeActif(label: "Démarches récurrentes")
                             .padding(.leading, 50.0)
                         
-                        //                        VStack (alignment: .leading) {
+                        
+                        //DECLARATION URSSAF
                         NavigationLink(destination: DetailEtapeView(etape: etape9, shouldPopToRootView: self.$isActive), isActive: $isActive) {
-                            //                                VStack {
                             
+                            if entrepriseParDefaut.frequenceDecl == .mensuel {
+                                CercleVertAFaire(text: etape9.name, echeance: "\(endDateOfMonthDayURSSAF) \(endDateOfMonthMonthURSSAF)")
+                            }
+                            else {
+                                if components.month == 1 || components.month == 2 || components.month == 3 {
+                                    CercleVertAFaire(text: etape9.name, echeance: april)
+                                }
+                                else if components.month == 4 || components.month == 5 || components.month == 6 {
+                                    CercleVertAFaire(text: etape9.name, echeance: july)
+                                }
+                                else if components.month == 7 || components.month == 8 || components.month == 9 {
+                                    CercleVertAFaire(text: etape9.name, echeance: october)
+                                }
+                                else {
+                                    CercleVertAFaire(text: etape9.name, echeance: january)
+                                }
+                            }
                             
-//                            if entrepriseParDefaut.frequenceDeclURSSAF.rawValue == "mensuel" {
-//                                echeanceURSSAF = "COUCOU"
-                                
-                                //endDateOfMonthNameOfDay + " " + endDateOfMonthDay + " " + endDateOfMonthMonth
-//                            }
-                            
-                            CercleVertAFaire(text: etape9.name, echeance: "COUCOU")
                             //                                    .onTapGesture {
                             //                                        isActive = true
                             //                                    }
                             
-                            //                                    HStack{
-                            //                                        Text("""
-                            //                            **Prochaine déclaration le:**
-                            //                            \(endDateOfMonthNameOfDay)  \(endDateOfMonthDay)  \(endDateOfMonthMonth)
-                            //                            """)
+                            //SI FREQUENCE MENSUELLE ET 1E DECLARATION
                             //                                        // premiere declaration mensuelle
                             //                                        // ajouter bouton 1ere declaration?
                             //                                        // if 1ere declarattion, else if
@@ -141,32 +165,7 @@ struct HomeDemarcheSuiviView: View {
                             //                                            Text("31 avril")
                             //                                        }
                             //                                    }
-                            // Si trimestriel
-                            //                                    HStack{
-                            //                                        if components.month == 1 || components.month == 2 || components.month == 3{
-                            //                                            Text("""
-                            //                                            **Prochaine déclaration le:**
-                            //                                            \(april)
-                            //                                            """)
-                            //                                        }
-                            //                                        else if components.month == 4 || components.month == 5 || components.month == 6{
-                            //                                            Text("""
-                            //                                            **Prochaine déclaration le:**
-                            //                                            \(july)
-                            //                                            """)
-                            //                                        }
-                            //                                        else if components.month == 7 || components.month == 8 || components.month == 9{
-                            //                                            Text("""
-                            //                                            **Prochaine déclaration le:**
-                            //                                            \(october)
-                            //                                            """)
-                            //                                        }
-                            //                                        else {
-                            //                                            Text("""
-                            //                                            **Prochaine déclaration le:**
-                            //                                            \(january)
-                            //                                            """)
-                            //                                        }
+                            //////////  SI TRIMESTRIEL ET 1E DECLARATION
                             //                                        //si 1ere declaration
                             //                                        //1er trim : 31 juillet
                             //                                        //2e trim : 31 octobre
@@ -176,39 +175,34 @@ struct HomeDemarcheSuiviView: View {
                             //                                }
                             
                         }
+                        
+                        
+                        //DECLARATION IMPÔTS
                         NavigationLink(destination: DetailEtapeView(etape: etape10, shouldPopToRootView: self.$isActive), isActive: $isActive) {
-                            //                                VStack {
-                            CercleVertAFaire(text: etape10.name, echeance: etape10.echeance)
+                            
+                            if entrepriseParDefaut.frequenceDecl == .mensuel {
+                                CercleVertAFaire(text: etape10.name, echeance: "\(endDateOfMonthDayImpots) \(endDateOfMonthMonthImpots)")
+                            }
+                            else {
+                                if components.month == 1 || components.month == 2 || components.month == 3 {
+                                    CercleVertAFaire(text: etape10.name, echeance: july)
+                                }
+                                else if components.month == 4 || components.month == 5 || components.month == 6 {
+                                    CercleVertAFaire(text: etape10.name, echeance: october)
+                                }
+                                else if components.month == 7 || components.month == 8 || components.month == 9 {
+                                    CercleVertAFaire(text: etape10.name, echeance: january)
+                                }
+                                else {
+                                    CercleVertAFaire(text: etape10.name, echeance: april)
+                                }
+                            }
+                            
                             //                                    .onTapGesture {
                             //                                        isActive = true
                             //                                    }
                             
-                            
-                            //                                    HStack{
-                            //                                        Text("")
-                            //                                        /////////////////////////////////////////// URSSAF + CA + IMPOTS si versement liberatoire
-                            //                                        //si mensuel et 1ere fois
-                            //                                        //janvier - 31 mai
-                            //                                        //février - 30 juin
-                            //                                        // mars - 31 juillet
-                            //                                        // avril - 31 août
-                            //                                        // mai - 30 septembre
-                            //                                        // juin - 31 octobre
-                            //                                        // juillet - 30 novembre
-                            //                                        // août - 31 décembre
-                            //                                        // septembre - 31 janvier
-                            //                                        // octobre - 28 février
-                            //                                        // novembre - 31 mars
-                            //                                        // décembre - 30 avril
-                            //                                        //
-                            //                                        //si trimestriel et 1ere fois
-                            //                                        // 1er trimestre (janvier-mars) - 31 juillet
-                            //                                        // 2e trimestre (avril-juin) - 31 octobre
-                            //                                        // 3e trimestre (juillet-septembre) - 31 janvier
-                            //                                        // 4e trimestre (octobre-décembre) - 30 avril
-                            //
-                            //
-                            //                                        /////////////////////////////////////////// IMPOTS si pas versement liberatoire
+                            /////////////////////////////////////////// IMPOTS si pas versement liberatoire
                             //                                        ///declaration mai-juin
                             //                                        ///paiement septembre
                             //                                        ///
@@ -220,57 +214,43 @@ struct HomeDemarcheSuiviView: View {
                             //                                        // dateComponents.month = 09
                             //                                        // dateComponents.day = 15 ??
                             //                                        ///
-                            //                                    }
-                            
-                            //                                }
-                            
                             
                         }
+                        
+                        //DECLARATION CFE
                         NavigationLink(destination: DetailEtapeView(etape: etape11, shouldPopToRootView: self.$isActive), isActive: $isActive) {
-                            //                                VStack {
+                            
                             CercleVertAFaire(text: etape11.name, echeance: etape11.echeance)
-                            //                                    HStack{
-                            //                                        Text("")
-                            //                                        /////////////////////////////////////////////CFE
-                            //                                        ///15 decembre
-                            //                                        ///possibilité versement moitié  30 juin
-                            //                                        ///
-                            //                                        ///dateComponents.year = 2022
-                            //                                        // dateComponents.month = 12
-                            //                                        // dateComponents.day = 15
-                            //                                        ///
-                            //
-                            //                                    }
+                            ///possibilité versement moitié  30 juin
+                            ///
+                            ///dateComponents.year = 2022
+                            // dateComponents.month = 12
+                            // dateComponents.day = 15
                         }
                         
-                        
-                        //                            }
-                        
-                        //afficher le bon chiffre dans le titre
-                        titreTypeEtape(label: "CA > 34 400€")
-                            .padding(.leading, 50.0)
                         
                         //ajouter condition si CA > XX afficher ce bloc en vert
                         NavigationLink(destination: DetailEtapeView(etape: etapeTVA12, shouldPopToRootView: self.$isActive),
                                        isActive: $isActive) {
-                            CercleGrisAFaire(text: etapeTVA12.name)
+                            if entrepriseParDefaut.CA <= 36500.0 {
+                                VStack (alignment: .leading) {
+                                    titreTypeEtapeInactif(label: "Seuil TVA dépassé")
+                                        .padding(.leading, 50.0)
+                                    CercleGrisAFaire(text: etapeTVA12.name)
+                                }
+                            }
+                            else {
+                                VStack (alignment: .leading) {
+                                    titreTypeEtapeActif(label: "Seuil TVA majoré dépassé")
+                                        .padding(.leading, 50.0)
+                                    CercleVertAFaire(text: etapeTVA12.name, echeance: etapeTVA12.echeance)
+                                }
+                            }
                             //                                .onTapGesture {
                             //                                    isActive = true
                             //                                }
                         }
                         
-                        //CLÔTURER MON ENTREPRISE
-                        //                        titreTypeEtape(label: "CA > 72 600€ OU CA = 0€")
-                        //                            .padding(.leading, 50.0)
-                        //
-                        //                        //ajouter condition si CA > XX afficher ce bloc
-                        //                        NavigationLink(destination: DetailEtapeView(etape: etape13, shouldPopToRootView: self.$isActive),
-                        //                                       isActive: $isActive) {
-                        //                            CercleGrisVide(text: etape13.name)
-                        //                            //                                .onTapGesture {
-                        //                            //                                    isActive = true
-                        //                            //                                }
-                        //                        }
                         ///////////////////////////////////////////////TVA
                         ///activités artisanales et prestations de services:
                         ///CA: 72 600€
@@ -327,16 +307,30 @@ struct HomeDemarcheSuiviView: View {
         }
     }
 }
-//}
 
 
-struct titreTypeEtape: View {
+struct titreTypeEtapeActif: View {
+    let label: String
+    var body: some View {
+        ZStack (alignment: .leading) {
+            Rectangle()
+                .stroke(Color("greenMEkit"), lineWidth: 2.0)
+                .frame(width: 240.0, height: 30.0, alignment: .center)
+            Text(label)
+                .foregroundColor(Color("greenMEkit"))
+                .padding()
+        }
+    }
+}
+
+
+struct titreTypeEtapeInactif: View {
     let label: String
     var body: some View {
         ZStack (alignment: .leading) {
             Rectangle()
                 .stroke(.gray, lineWidth: 2.0)
-                .frame(width: 290.0, height: 30.0, alignment: .center)
+                .frame(width: 240.0, height: 30.0, alignment: .center)
             Text(label)
                 .foregroundColor(.gray)
                 .padding()

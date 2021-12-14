@@ -72,7 +72,7 @@ struct StructureResumeInfos: View {
                                     .foregroundColor(Color("greenMEkit"))
                             }.padding()
                             .sheet(isPresented: $showingSheet) {
-                                Modifieur(donneeNom: entrepriseParDefaut.nomination, donneeLieu: entrepriseParDefaut.domiciliation, donneeSiret: entrepriseParDefaut.Siret, selectedType: entrepriseParDefaut.typeActivite, selectedSecteur: entrepriseParDefaut.secteur, selectedAccre: entrepriseParDefaut.ACCRE, selectedActivitePrincipal: entrepriseParDefaut.activitePrincipal, selectedImpot: entrepriseParDefaut.impot, selectedUrsaff: entrepriseParDefaut.frequenceDeclURSSAF)
+                                Modifieur(donneeNom: entrepriseParDefaut.nomination, donneeLieu: entrepriseParDefaut.domiciliation, donneeSiret: entrepriseParDefaut.Siret, selectedType: entrepriseParDefaut.typeActivite, selectedSecteur: entrepriseParDefaut.secteur, selectedAccre: entrepriseParDefaut.ACCRE, selectedActivitePrincipal: entrepriseParDefaut.activitePrincipal, selectedImpot: entrepriseParDefaut.impot, selectedUrsaff: entrepriseParDefaut.frequenceDecl)
                             }.padding(.leading, 20)
                                 .padding(.trailing, 20)
                         }
