@@ -6,17 +6,15 @@ struct HomeMonEntrepriseView_Previews: PreviewProvider {
     }
 }
 
-//func delete(indexSet: IndexSet) {
-//        documents.remove(atOffsets: indexSet)
-//}
 struct HomeMonEntrepriseView: View {
-    @State private var document: FilesDocuments = FilesDocuments(message: "Hello, World!")
+    @State var document: FilesDocuments = FilesDocuments(message: "Hello, World!")
     @State private var isImporting: Bool = false
+    @State var affichage : Bool = false
     @State private var selectorIndex = 0
     @State private var numbers = ["Mes données d'Entreprise","Mon CA et Mes Docs"]
-    var element = Doc(texte: "", dateDoc: Date())
- @State var documents = [
-        Doc(texte: "KBIS.pdf", dateDoc: Date())
+    var element = Doc(id: 1, texte: "", dateDoc: Date())
+    @State var documents = [
+        Doc(id: 1, texte: "KBIS.pdf", dateDoc: Date())
     ]
     let columns = [
         GridItem(.flexible()),
@@ -33,56 +31,133 @@ struct HomeMonEntrepriseView: View {
                 Text(numbers[selectorIndex]).padding()
                 if selectorIndex == 0 {
                     StructureResumeInfos(affichage: true)
+                    NavigationLink(destination: DetailEtapeClotureView(etape: etape13)){
+                        BoutonPlein(label: "Cloturer son entreprise")
+                    }
                 } else {
                     ScrollView{
-                        if entrepriseParDefaut.domiciliation == .DomTom
-                        {
-                            if entrepriseParDefaut.typeActivite == .ActiviteDeVente {
-                                MaxCA(max: 100000)
-                                ProgressingView(max: 100000).padding()
-                            } else if entrepriseParDefaut.typeActivite == .PrestationDeServices {
-                                MaxCA2(max: 50000)
-                                ProgressingView(max: 50000).padding()
-                            } else {
-                                MaxCA(max: 100000)
-                                ProgressingView(max: 100000).padding()
-                                MaxCA2(max: 50000)
-                                ProgressingView(max: 50000).padding()
-                            }
-                            
-                        } else if entrepriseParDefaut.domiciliation == .France {
-                            if entrepriseParDefaut.secteur == .Commerciale {
-                                MaxCA(max: 85800)
-                                ProgressingView(max: 85800).padding()
-                            } else if entrepriseParDefaut.secteur == .Artisanale || entrepriseParDefaut.secteur == .Liberales {
-                                MaxCA2(max: 34400)
-                                ProgressingView(max: 34400)
-                                
-                            } else {
-                                VStack{
-                                    MaxCA(max: 85800)
-                                    ProgressingView(max: 85800)
-                                    MaxCA2(max: 34400)
-                                    ProgressingView(max: 34400)
+                        HStack{
+                            Button{
+                                affichage = true
+                            } label: {
+                                if affichage == false {
+                                    Image(systemName: "chart.line.uptrend.xyaxis.circle").resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .opacity(0.5)
+                                        .foregroundColor(.gray)
+                                        .frame(width: 70, height: 70)
+                                        .padding()
+                                } else {
+                                    Image(systemName: "chart.line.uptrend.xyaxis.circle.fill").resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .opacity(0.5)
+                                        .foregroundColor(.gray)
+                                        .frame(width: 70, height: 70)
+                                        .padding()
                                 }
                             }
-                        } else {
-                            Text("Votre Chiffre d'affaire est de \(entrepriseParDefaut.CA)")
+                            Button{
+                                affichage = false
+                            } label: {
+                                if affichage == false {
+                                    Image(systemName: "capsule.lefthalf.filled").resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .opacity(0.5)
+                                        .foregroundColor(.gray)
+                                        .frame(width: 70, height: 70)
+                                        .padding()
+                                } else {
+                                    Image(systemName: "capsule").resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .opacity(0.5)
+                                        .foregroundColor(.gray)
+                                        .frame(width: 70, height: 70)
+                                        .padding()
+                                }
+                            }
                         }
-                        
+                        if affichage == false {
+                            if entrepriseParDefaut.domiciliation == .DomTom
+                            {
+                                if entrepriseParDefaut.typeActivite == .Mixte {
+                                    MaxCA(max: 100000)
+                                    ProgressingView(max: 100000).padding()
+                                    MaxCA2(max: 50000)
+                                    ProgressingView(max: 50000).padding()
+                                }
+                                if entrepriseParDefaut.typeActivite == .ActiviteDeVente {
+                                    MaxCA(max: 100000)
+                                    ProgressingView(max: 100000).padding()
+                                } else if entrepriseParDefaut.typeActivite == .PrestationDeServices {
+                                    MaxCA2(max: 50000)
+                                    ProgressingView(max: 50000).padding()
+                                }
+                                    
+                            } else if entrepriseParDefaut.domiciliation == .France {
+                                    if entrepriseParDefaut.typeActivite == .Mixte {
+                                        VStack{
+                                            MaxCA(max: 85800)
+                                            ProgressingView(max: 85800)
+                                            MaxCA2(max: 34400)
+                                            ProgressingView(max: 34400)
+                                        }
+                                    } else if entrepriseParDefaut.secteur == .Commerciale {
+                                        MaxCA(max: 85800)
+                                        ProgressingView(max: 85800).padding()
+                                    } else if entrepriseParDefaut.secteur == .Artisanale || entrepriseParDefaut.secteur == .Liberales {
+                                        MaxCA2(max: 34400)
+                                        ProgressingView(max: 34400)
+                                        
+                                    }
+                            } else {
+                                Text("Votre Chiffre d'affaire est de \(entrepriseParDefaut.CA)")
+                            }
+                        } else {
+                            if entrepriseParDefaut.domiciliation == .DomTom
+                            {
+                                if entrepriseParDefaut.typeActivite == .Mixte {
+                                    VStack{
+                                        LineGSecondView(max: 85800, maxSecond: 34400)
+                                    }
+                                } else if entrepriseParDefaut.typeActivite == .ActiviteDeVente {
+                                    MaxCA(max: 100000)
+                                    LineGView(max: 100000)
+                                } else if entrepriseParDefaut.typeActivite == .PrestationDeServices {
+                                    MaxCA2(max: 50000)
+                                    LineGView(max: 50000)
+                                } else {
+                                    LineGSecondView(max: 100000, maxSecond: 50000)
+                                }
+                                
+                            } else if entrepriseParDefaut.domiciliation == .France{
+                                if entrepriseParDefaut.typeActivite == .Mixte {
+                                    VStack{
+                                        LineGSecondView(max: 85800, maxSecond: 34400)
+                                    }
+                                } else if entrepriseParDefaut.secteur == .Commerciale {
+                                    MaxCA(max: 85800)
+                                    LineGView(max: 85800)
+                                } else if entrepriseParDefaut.secteur == .Artisanale || entrepriseParDefaut.secteur == .Liberales {
+                                    MaxCA2(max: 34400)
+                                    LineGView(max: 34400)
+                                }
+                            } else {
+                                Text("Votre Chiffre d'affaire est de \(entrepriseParDefaut.CA)")
+                            }
+                        }
                         HStack {
                             Text("Mes Documents").padding()
                             Spacer()
                             Button(action: {
                                 isImporting = true
-                                self.documents.append(Doc(texte: "Greffe.pdf", dateDoc: Date.now))
+                                self.documents.append(Doc(id: 2, texte: "Greffe.pdf", dateDoc: Date.now))
                             }) {
                                 ZStack {
                                     Image(systemName: "plus.circle.fill")
                                         .font(.system(size: 44, weight: .bold))
                                         .foregroundColor(Color("greenMEkit"))
                                 }
-                                        .fileImporter(
+                                .fileImporter(
                                     isPresented: $isImporting,
                                     allowedContentTypes: [.plainText],
                                     allowsMultipleSelection: false
@@ -90,7 +165,7 @@ struct HomeMonEntrepriseView: View {
                                     do {
                                         guard let selectedFile: URL = try result.get().first else { return }
                                         guard let message = String(data: try Data(contentsOf: selectedFile), encoding: .utf8) else { return }
-
+                                        
                                         document.message = message
                                     } catch {
                                         print ("Fail")
@@ -98,21 +173,20 @@ struct HomeMonEntrepriseView: View {
                                 }
                             }
                         }
-                        
                         LazyVGrid(columns: columns) {
-                            ForEach(documents) { docSup in
+                            ForEach(documents, id : \.self) { docSup in
                                 NavigationLink(destination: DetailDocumentView(element:docSup)) {
                                     ZStack {
                                         VStack{
-                                            
-                                            Button{
-                                               // delete(indexSet: IndexSet())
-                                                //                                            documents.remove(atOffsets: IndexSet)
-                                            } label: {
+                                            HStack{
+                                                Button{
+                                                    documents.remove(at: docSup.id)
+                                                } label: {
                                                     Image(systemName: "multiply.circle").resizable()
                                                         .aspectRatio(contentMode: .fit)
                                                         .foregroundColor(Color("greenMEkit"))
                                                         .frame(width: 44, height: 44)
+                                                }
                                             }
                                             CardView(element: docSup)
                                         }.overlay(
@@ -120,7 +194,7 @@ struct HomeMonEntrepriseView: View {
                                                 .stroke(lineWidth: 1)
                                                 .foregroundColor(.black)
                                             
-                                    )
+                                        )
                                     }
                                 }
                             }
@@ -130,15 +204,15 @@ struct HomeMonEntrepriseView: View {
                 }
                 Spacer()
             }.navigationTitle("Mon Entreprise")
-            .navigationBarTitleDisplayMode(.inline)
+                .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
 
-
 // Modale
 struct Modifieur: View {
     @Environment(\.dismiss) var dismiss
+    @FocusState private var clavier : Bool
     @State var entreprise = entrepriseParDefaut
     @State var donneeNom : String
     @State var donneeLieu : Pays
@@ -149,6 +223,7 @@ struct Modifieur: View {
     @State var selectedAccre : Reponses
     @State var selectedActivitePrincipal : Reponses
     @State var selectedImpot : Reponses
+    @State var selectedUrsaff : FrequenceDeclarationURSSAF
     @StateObject var nomEntreprise = entrepriseParDefaut
     //@ObservedObject var input = TextLimiter(limit: 5)
     var body: some View {
@@ -164,15 +239,28 @@ struct Modifieur: View {
             ScrollView{
                 Group{
                     Text("La dénomination de mon entreprise").padding(.leading)
-                    TextField("Nom de mon Entreprise", text: $donneeNom).background(RoundedRectangle(cornerRadius: 50).foregroundColor(.white))
+                    TextField("Nom de mon Entreprise", text: $donneeNom).onChange(of: donneeNom, perform: { value in
+                        if value.count > 30 {
+                            donneeNom = String(value.prefix(30))
+                        }
+                    }).background(RoundedRectangle(cornerRadius: 50).foregroundColor(.white))
                         .textFieldStyle(.roundedBorder)
                         .padding()
                     HStack{
                         Text("Siret :").padding(.leading)
                         TextField("Quel est le siret de ta société?", value: $donneeSiret, formatter: formatSiret)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .padding()
+                            .keyboardType(.numberPad)
+                            .focused($clavier)
+                        
+                        Button(action : {
+                            clavier.toggle()
+                        }) {
+                            Image(systemName: "keyboard.chevron.compact.down")
+                        }
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
                     }.border(Color("greenMEkit"))
+                    
                     Text("Domiciliation *").padding(.leading)
                     Text("* S'il se trouve à la Guadeloupe, la Martinique ou à La Réunion, veuillez inscrire DOM-TOM").foregroundColor(.gray)
                         .font(.caption)
@@ -188,9 +276,6 @@ struct Modifieur: View {
                         }
                         
                     }.padding()
-//                    TextField("Domiciliation de votre entreprise", text: $donneeLieu).background(RoundedRectangle(cornerRadius: 50).foregroundColor(.white))
-//                        .textFieldStyle(.roundedBorder)
-//                        .padding()
                     DatePicker("Date début d'activité", selection: $dateDebutDActivite, displayedComponents: [.date])
                         .padding()
                     HStack{
@@ -216,6 +301,17 @@ struct Modifieur: View {
                         
                     }.padding()
                 }
+                HStack{
+                    Section(header: Text("Fréquence URSAFF")){
+                        Spacer()
+                        Picker("Quel est votre fréquence de déclaration ?", selection: $selectedUrsaff, content: {
+                            ForEach(FrequenceDeclarationURSSAF.allCases, content: { ursaff in
+                                Text(ursaff.rawValue.capitalized)
+                            })
+                        })
+                    }
+                    
+                }.padding()
                 HStack{
                     Section(header: Text("ACCRE")){
                         Spacer()
@@ -267,8 +363,8 @@ struct Modifieur: View {
                         .padding()
                 }
                 .background(RoundedRectangle(cornerRadius: 50).foregroundColor(Color("greenMEkit")))
-            }
-        }.padding()
+            }.padding()
+        }
     }
 }
 
@@ -279,26 +375,27 @@ struct ProgressingView: View {
     var body: some View {
         VStack {
             HStack{
-                TextField("Quel est votre CA ?", value: self.$valueCA,formatter: formatSiret).background(RoundedRectangle(cornerRadius: 50)
-                                                                                                            .keyboardType(.numberPad).foregroundColor(.white))
+                TextField("Quel est votre CA ?", value: self.$valueCA,formatter: formatCA)
+                    .background(RoundedRectangle(cornerRadius: 50)
+                                    .keyboardType(.numberPad).foregroundColor(.white))
                     .textFieldStyle(.roundedBorder)
                     .padding()
-                Text("\(Int(CA))").padding()
+                Text("\(Int(CA)) €").padding()
                 Button(){
                     CA = valueCA
                 } label: {
-                    Image(systemName: "plus").font(.title3)
-                        .foregroundColor(Color("greenMEkit"))
+                    Image(systemName: "arrow.right.to.line.circle").font(.title3)
+                        .foregroundColor(Color("greenMEkit")).padding()
                 }
             }
-            if CA >= max {
-                Progression(etatDeProgression: CA/max, pourcentage: Int(100*CA/max), color: .red)
-            } else if CA >=  max/2  {
-                Progression(etatDeProgression: CA/max, pourcentage: Int(100*CA/max), color: .orange)
-            } else if CA < max/2 {
-                Progression(etatDeProgression: CA/max, pourcentage: Int(100*CA/max), color: .green)
-            } else if CA == Double() || CA == 0 {
+            if CA == Double() || CA == 0 {
                 Progression(etatDeProgression: 0.0, pourcentage: 0, color: .green)
+            } else if CA < max/2 && CA > 0 {
+                Progression(etatDeProgression: CA/max, pourcentage: Int(100*CA/max), color: .green)
+            } else if CA >=  max/2  &&  CA < max {
+                Progression(etatDeProgression: CA/max, pourcentage: Int(100*CA/max), color: .orange)
+            } else if CA >= max {
+                Progression(etatDeProgression: CA/max, pourcentage: Int(100*CA/max), color: .red)
             } else {
                 Progression(etatDeProgression: 0.0, pourcentage: 0, color: .green)
                 Text("Erreur")
@@ -340,7 +437,8 @@ struct MaxCA: View {
     @State var max : Int
     var body: some View {
         HStack{
-            Text("Mon Chiffre d'Affaire pour une activité de vente (max: \(max) € / 1 an):").padding(.leading)
+            Text("Mon Chiffre d'Affaire pour une activité de vente (max: \(max) € / 1 an):")
+                .padding(.leading)
             Spacer()
         }
     }
@@ -349,7 +447,8 @@ struct MaxCA2: View {
     @State var max : Int
     var body: some View {
         HStack{
-            Text("Mon Chiffre d'Affaire pour la prestation de service(max: \(max) € / 1 an):").padding(.leading)
+            Text("Mon Chiffre d'Affaire pour la prestation de service(max: \(max) € / 1 an):")
+                .padding(.leading)
             Spacer()
         }
     }

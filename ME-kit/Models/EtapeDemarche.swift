@@ -245,7 +245,7 @@ var etape8 : EtapeDemarche = EtapeDemarche(number: 8, name: "Obligations fiscale
                 **Formalités fiscales et déclaratives:**
                 
                 Déclaration des recettes encaissées (mensuellement ou trimestriellement) ou indication du montant total des recettes encaissées sur la déclaration personnelle des revenus de l’année.
-                Cette déclaration peut être effectuée en ligne, sur le site [autoentrepreneur.urssaf.fr/](https://www.autoentrepreneur.urssaf.fr/portail/accueil.html)
+                Cette déclaration peut être effectuée en ligne, sur le site [autoentrepreneur.urssaf.fr](https://www.autoentrepreneur.urssaf.fr/portail/accueil.html)
                 Il est à noter que cette déclaration est obligatoire dès que le chiffre d’affaires atteint la moitié du plafond légal. Dès que vos gains sont déclarés, le montant de vos **cotisations sociales**sera calculé automatiquement. Vous pourrez ensuite les régler en ligne.
                         
                 """, url:"https://www.google.fr" , echeance: "", duree: 0, dateDebut: "", dateFin:"", documents: [], info: """
@@ -288,3 +288,38 @@ let etapesSuivi: [EtapeDemarche] = [
 ]
 
 let etapeTVA12: EtapeDemarche = EtapeDemarche(number: 12, name: "Déclaration TVA", description: "En principe, en relevant de la micro-entreprise, vous ne facturez pas la TVA puisque vous bénéficiez du dispositif de \"franchise en base de TVA\". Vous ne déduisez donc pas de TVA. Vous devez alors mentionner sur vos factures : \"TVA non applicable, art. 293 B du CGI\". Vous pouvez néanmoins devenir redevable de la TVA : \r en optant pour un régime réel d'imposition à la TVA, ce qui vous permet de déduire la TVA sur vos achats ;\r en cas de dépassement des seuils de la franchise en base de TVA. Vous perdez en effet le bénéfice de la franchise en base de TVA : \r au 1er janvier N si vos chiffres d'affaires des années N-1 et N-2 ont excédé chacun la limite de 85 800€ (sans dépasser 94 300€) pour les activités de vente, ou 34 400€ (sans dépasser 36 500€) pour les prestations de service, \r dès le 1er jour du mois de dépassement si au cours de l'année civile, votre chiffre d'affaires excède le seuil de 94 300€ pour les activités de vente et de 36 500€ pour les activités de service. \r L'année de la création : la franchise s'applique de droit dès lors que le seuil de 94 300€ ou de 36 500€ n'est pas atteint (sans ajustement prorata temporis). \r L'année qui suit la création : pour déterminer si la franchise est applicable, les seuils doivent être proratisés en fonction de la durée d'activité pendant l'année de la création.\r Dès que vous perdez le bénéfice de la franchise en base de TVA, vous devez le signaler à votre service des impôts des entreprises, ce qui vous permettra ensuite de déclarer et payer la TVA dans votre espace professionnel.", url: "https://www.impots.gouv.fr/portail/professionnel/questions/en-tant-que-micro-entrepreneur-puis-je-etre-redevable-de-la-tva", echeance: "", duree: 0, dateDebut: "", dateFin:"", documents: [], info: "", category: .suivi)
+
+
+let etape13 : EtapeDemarche = EtapeDemarche(number: 13, name: "Cessation d'activité", description: """
+
+**Etape 1: Déclaration cessation activité**
+
+La déclaration de fermeture et radiation peut se faire:
+
+- en ligne, pour toute forme d'entreprise juridique, sur [le site guichet-entreprises](https://www.guichet-entreprises.fr/fr/demarches_en_ligne/formalites.html)
+
+- auprès de votre CFE, également en ligne ou **par courrier** en téléchargeant le formulaire correspondant (voir ci-dessous), le remplir et y joindre la copie de votre pièce d'identité (CNI ou passeport).
+- si l'activité commerciale ou artisanale est immatriculé au RCS ou RM, il s’agit de la déclaration de radiation d’une personne physique P4 CMB, il est accessible sur le lien  [formulaire P4 CMB](https://www.service-public.fr/professionnels-entreprises/vosdroits/R17345) .
+- sinon, il s’agit de la déclaration de modification ou de cessation d’activité P2-P4 micro-entrepreneur, disponible ici
+[formulaire P2-P4](https://www.service-public.fr/professionnels-entreprises/vosdroits/R17542) .
+
+A la réception du dossier de fermeture, le CFE transmet un accusé de réception.
+
+**Etape 2: Déclaration du dernier chiffre d'affaires**
+
+Dans tous les cas, il faut transmettre sa dernière déclaration de chiffre d’affaires, dans le mois suivant :
+- la fermeture définitive, en cas de declaration mensuelle
+- le trimestre civil de la fermeture définitive, en cas de déclaration trimestrielle
+
+De plus, en cas de **NON** versement libératoire, vous devez adresser dans les **45 jours** qui suivent la cessation, une *déclaration de revenus n°2042* et la *déclaration complémentaire n°2042-C-PRO*, au service des impôts des particuliers dont vous dépendez.
+
+**Etape 3: Le paiement du CFE**
+
+Si vous en êtes redevable et si la cessation de la micro-entreprise a lieu:
+
+**- en cours d'année:**
+demander au service des impôts des entreprises (SIE) dont vous relevez la réduction de votre cotisation en fonction de votre temps d'activité, sur [Service des impôts des entreprises (SIE)](https://www.impots.gouv.fr/portail/contacts)
+**- au 31 decembre:**
+Il faut payer la totalité de la cotisation foncière des entreprises due pour l'année de cessation.
+
+""", url: "https://www.guichet-entreprises.fr/fr/demarches_en_ligne/formalites.html", echeance: "", duree: 0, dateDebut: "", dateFin: "", documents: documentsNecessaires, info: "", category: .cloture)

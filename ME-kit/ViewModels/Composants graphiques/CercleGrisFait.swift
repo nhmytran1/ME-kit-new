@@ -26,7 +26,7 @@ struct CercleGrisFait: View {
             }
             VStack (alignment: .leading){
                 Text(text).font(.title3).foregroundColor(.gray)
-                Text(entrepriseParDefaut.dateeDebutActivite).font(.footnote).foregroundColor(.gray)
+                Text(dateFormatter.string(from: entrepriseParDefaut.dateeDebutActivite)).font(.footnote).foregroundColor(.gray)
             }
         }    }
 }

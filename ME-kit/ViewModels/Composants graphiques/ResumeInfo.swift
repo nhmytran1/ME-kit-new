@@ -10,6 +10,8 @@ import CoreImage.CIFilterBuiltins
 
 
 struct StructureResumeInfos: View {
+    @State private var document: FilesDocuments = FilesDocuments(message: "Hello, World!")
+    @State private var isImporting: Bool = false
     @State private var name = "Anonymous"
     @State private var emailAddress = "you@yoursite.com"
     @State var showingSheet : Bool = false
@@ -18,6 +20,7 @@ struct StructureResumeInfos: View {
     var body: some View {
         VStack {
             HStack{
+                Spacer()
 //            TextField("Name", text: $name).padding(.leading)
 //
 //            TextField("Email address", text: $emailAddress).padding(.leading)
@@ -27,11 +30,31 @@ struct StructureResumeInfos: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 150, height: 150)
-            }
-                Button {
+            }.padding()
+                Button(action: {
+                    isImporting = true
                     
-                } label: {
-                    Text("Changer ma Carte de visite")
+                }) {
+                    Image(systemName: "square.and.arrow.down")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .opacity(0.5)
+                        .foregroundColor(.gray)
+                        .frame(width: 70, height: 70)
+                        .padding()
+                }.fileImporter(
+                    isPresented: $isImporting,
+                    allowedContentTypes: [.plainText],
+                    allowsMultipleSelection: false
+                ) { result in
+                    do {
+                        guard let selectedFile: URL = try result.get().first else { return }
+                        guard let message = String(data: try Data(contentsOf: selectedFile), encoding: .utf8) else { return }
+
+                        document.message = message
+                    } catch {
+                        print ("Fail")
+                    }
                 }
             }
             ZStack{
@@ -47,12 +70,12 @@ struct StructureResumeInfos: View {
                             } label: {
                                 Image (systemName: "pencil").font(.title3)
                                     .foregroundColor(Color("greenMEkit"))
-                            }
+                            }.padding()
                             .sheet(isPresented: $showingSheet) {
-                                Modifieur(donneeNom: entrepriseParDefaut.nomination, donneeLieu: entrepriseParDefaut.domiciliation, donneeSiret: entrepriseParDefaut.Siret, selectedType: entrepriseParDefaut.typeActivite, selectedSecteur: entrepriseParDefaut.secteur, selectedAccre: entrepriseParDefaut.ACCRE, selectedActivitePrincipal: entrepriseParDefaut.activitePrincipal, selectedImpot: entrepriseParDefaut.impot)
+                                Modifieur(donneeNom: entrepriseParDefaut.nomination, donneeLieu: entrepriseParDefaut.domiciliation, donneeSiret: entrepriseParDefaut.Siret, selectedType: entrepriseParDefaut.typeActivite, selectedSecteur: entrepriseParDefaut.secteur, selectedAccre: entrepriseParDefaut.ACCRE, selectedActivitePrincipal: entrepriseParDefaut.activitePrincipal, selectedImpot: entrepriseParDefaut.impot, selectedUrsaff: entrepriseParDefaut.frequenceDeclURSSAF)
                             }.padding(.leading, 20)
                                 .padding(.trailing, 20)
-                        }.padding()
+                        }
                         StructureBlocInfosMonEntreprise(valeurNomination: entreprise.nomination, valeurSiret: entreprise.Siret, valeurDomiciliation: entreprise.domiciliation.rawValue, valeurDate: dateFormatter.string(from: entreprise.dateeDebutActivite), valeurSecteur: entreprise.secteur.rawValue, valeurType: entreprise.typeActivite.rawValue, valeurActPrincipal: entreprise.activitePrincipal.rawValue, valeurAccre: entreprise.ACCRE.rawValue, valeurImpot: entreprise.impot.rawValue)
                     }
                 } else {

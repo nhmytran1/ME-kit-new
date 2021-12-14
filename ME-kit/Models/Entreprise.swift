@@ -63,8 +63,8 @@ enum Avancement : String, CaseIterable, Identifiable {
 }
 enum SecteurDActivite : String, CaseIterable, Identifiable {
     
-    case Commerciale = "Commerçant/Commerçante"
-    case Artisanale = "Artisant/Artisante"
+    case Commerciale = "Commerçant"
+    case Artisanale = "Artisanat"
     case Liberales = "Libéraux/Libérales"
     case activitésAgricoles = "Activités Agricoles"
     case Immobiliere = "Immobiler"
@@ -76,21 +76,30 @@ enum TypeDActivite : String, CaseIterable, Identifiable {
     
     case ActiviteDeVente = "activités de vente"
     case PrestationDeServices = "Prestation de services"
-    case Mixte = "les deux(Ventes et Service)"
+    case Mixte = "Mixte(Ventes et Service)"
     
     var id: TypeDActivite { self }
 }
 
-enum FrequenceDeclarationURSSAF: String {
+enum FrequenceDeclarationURSSAF: String, CaseIterable, Identifiable {
     case mensuel = "mensuel"
     case trimestriel = "trimestre"
+    
+    var id: FrequenceDeclarationURSSAF { self }
 }
 
 let formatSiret: NumberFormatter = {
     let formatter = NumberFormatter()
-    formatter.numberStyle = .decimal
+    formatter.numberStyle = .none
     return formatter
 }()
+let formatCA: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.maximumFractionDigits = 2
+    formatter.numberStyle = .none
+    return formatter
+}()
+
 let dateFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.dateStyle = .short
@@ -128,8 +137,8 @@ func generateQRCode(from string: String) -> UIImage {
     return UIImage(systemName: "xmark.circle") ?? UIImage()
 }
 
-struct Doc : Identifiable {
-    var id = UUID()
+struct Doc : Identifiable, Hashable {
+    var id : Int
     var texte: String
     var dateDoc: Date
 }

@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		3C0CED6F2760E5FB000FED6E /* MesNotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C0CED6E2760E5FB000FED6E /* MesNotificationsView.swift */; };
+		670BA55F27664DCB00C9ACCF /* GraphiqueCA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670BA55E27664DCB00C9ACCF /* GraphiqueCA.swift */; };
+		677873E02767BD9C00C847C6 /* AjoutDeDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 677873DF2767BD9C00C847C6 /* AjoutDeDoc.swift */; };
+		67BBBB8A27688BB00056AA0F /* ClotureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BBBB8927688BB00056AA0F /* ClotureView.swift */; };
 		A7032D5E275E0AA8007FFCB9 /* DetailDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7032D5D275E0AA8007FFCB9 /* DetailDocumentView.swift */; };
 		A7032D60275E0E95007FFCB9 /* CerclePartager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7032D5F275E0E95007FFCB9 /* CerclePartager.swift */; };
 		A7032D62275E124C007FFCB9 /* AlertesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7032D61275E124C007FFCB9 /* AlertesViewModel.swift */; };
@@ -41,6 +44,9 @@
 
 /* Begin PBXFileReference section */
 		3C0CED6E2760E5FB000FED6E /* MesNotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MesNotificationsView.swift; sourceTree = "<group>"; };
+		670BA55E27664DCB00C9ACCF /* GraphiqueCA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphiqueCA.swift; sourceTree = "<group>"; };
+		677873DF2767BD9C00C847C6 /* AjoutDeDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjoutDeDoc.swift; sourceTree = "<group>"; };
+		67BBBB8927688BB00056AA0F /* ClotureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClotureView.swift; sourceTree = "<group>"; };
 		A7032D5D275E0AA8007FFCB9 /* DetailDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDocumentView.swift; sourceTree = "<group>"; };
 		A7032D5F275E0E95007FFCB9 /* CerclePartager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CerclePartager.swift; sourceTree = "<group>"; };
 		A7032D61275E124C007FFCB9 /* AlertesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertesViewModel.swift; sourceTree = "<group>"; };
@@ -159,6 +165,9 @@
 				A7878B5D275A337800B51D0B /* HomeDemarcheCreaView.swift */,
 				A7878B53275A32BD00B51D0B /* HomeDemarcheSuiviView.swift */,
 				A7878B55275A32EF00B51D0B /* HomeMonEntrepriseView.swift */,
+				677873DF2767BD9C00C847C6 /* AjoutDeDoc.swift */,
+				67BBBB8927688BB00056AA0F /* ClotureView.swift */,
+				670BA55E27664DCB00C9ACCF /* GraphiqueCA.swift */,
 				A7032D5D275E0AA8007FFCB9 /* DetailDocumentView.swift */,
 				A7878B57275A330C00B51D0B /* HomeRevenuNetView.swift */,
 				3C0CED6E2760E5FB000FED6E /* MesNotificationsView.swift */,
@@ -250,6 +259,7 @@
 				A7878B72275A33E600B51D0B /* CercleGrisVide.swift in Sources */,
 				3C0CED6F2760E5FB000FED6E /* MesNotificationsView.swift in Sources */,
 				A7878B71275A33E600B51D0B /* CercleVertPlay.swift in Sources */,
+				67BBBB8A27688BB00056AA0F /* ClotureView.swift in Sources */,
 				A7878B77275A33E600B51D0B /* Boutons.swift in Sources */,
 				A7032D60275E0E95007FFCB9 /* CerclePartager.swift in Sources */,
 				A7878B7C275A340600B51D0B /* EtapeDemarche.swift in Sources */,
@@ -258,11 +268,13 @@
 				A7878B74275A33E600B51D0B /* ImagePicker.swift in Sources */,
 				A7878B80275A414800B51D0B /* OnboardingQuestionView.swift in Sources */,
 				A7878B56275A32EF00B51D0B /* HomeMonEntrepriseView.swift in Sources */,
+				670BA55F27664DCB00C9ACCF /* GraphiqueCA.swift in Sources */,
 				A754176B275E686F005EFA50 /* DetailEtapeCreaView.swift in Sources */,
 				A7878B46275A31C400B51D0B /* ME_kitApp.swift in Sources */,
 				A7878B76275A33E600B51D0B /* CercleGrisAFaire.swift in Sources */,
 				A7878B73275A33E600B51D0B /* CercleGrisFait.swift in Sources */,
 				A7878B6E275A33E600B51D0B /* CercleVertFait.swift in Sources */,
+				677873E02767BD9C00C847C6 /* AjoutDeDoc.swift in Sources */,
 				A7878B70275A33E600B51D0B /* ResumeInfo.swift in Sources */,
 				A7EA87862760F6B80097F72F /* PreLaunchView.swift in Sources */,
 				A7878B6D275A33E600B51D0B /* CercleVertAFaire.swift in Sources */,
