@@ -251,26 +251,26 @@ struct HomeDemarcheSuiviView: View {
                             .padding(.leading, 50.0)
                         
                         //ajouter condition si CA > XX afficher ce bloc en vert
-                        NavigationLink(destination: DetailEtapeView(etape: etapeTVA11, shouldPopToRootView: self.$isActive),
+                        NavigationLink(destination: DetailEtapeView(etape: etapeTVA12, shouldPopToRootView: self.$isActive),
                                        isActive: $isActive) {
-                            CercleGrisAFaire(text: etapeTVA11.name)
-                                .onTapGesture {
-                                    isActive = true
-                                }
+                            CercleGrisAFaire(text: etapeTVA12.name)
+                            //                                .onTapGesture {
+                            //                                    isActive = true
+                            //                                }
                         }
                         
                         //CLÔTURER MON ENTREPRISE
-                        titreTypeEtape(label: "CA > 72 600€ OU CA = 0€")
-                            .padding(.leading, 50.0)
-                        
-                        //ajouter condition si CA > XX afficher ce bloc
-                        NavigationLink(destination: DetailEtapeView(etape: etapeCloture12, shouldPopToRootView: self.$isActive),
-                                       isActive: $isActive) {
-                            CercleGrisVide(text: etapeCloture12.name)
-                                .onTapGesture {
-                                    isActive = true
-                                }
-                        }
+                        //                        titreTypeEtape(label: "CA > 72 600€ OU CA = 0€")
+                        //                            .padding(.leading, 50.0)
+                        //
+                        //                        //ajouter condition si CA > XX afficher ce bloc
+                        //                        NavigationLink(destination: DetailEtapeView(etape: etape13, shouldPopToRootView: self.$isActive),
+                        //                                       isActive: $isActive) {
+                        //                            CercleGrisVide(text: etape13.name)
+                        //                            //                                .onTapGesture {
+                        //                            //                                    isActive = true
+                        //                            //                                }
+                        //                        }
                         ///////////////////////////////////////////////TVA
                         ///activités artisanales et prestations de services:
                         ///CA: 72 600€
