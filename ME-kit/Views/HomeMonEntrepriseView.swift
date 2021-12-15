@@ -39,7 +39,7 @@ struct HomeMonEntrepriseView: View {
                     ScrollView{
                     StructureResumeInfos(affichage: true)
                     NavigationLink(destination: DetailEtapeClotureView(showOnboarding: $showOnboarding, etape: etape13)){
-                        BoutonPlein(label: "Cloturer son entreprise")
+                        BoutonPlein(label: "Clôturer son entreprise")
                             .padding()
                     }
                     }

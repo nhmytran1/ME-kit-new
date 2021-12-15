@@ -38,12 +38,12 @@ class Entreprise: ObservableObject {
 
 }
 
-var entrepriseParDefaut = Entreprise(nomination: "GAFAZ", Siret: 123456789, dateeDebutActivite: Date(), domiciliation: .France, secteur: .Artisanale, typeActivite: .ActiviteDeVente, CA: 70600.0, ACCRE: .non, activitePrincipal: .non, impot: .non, frequenceDecl: .trimestriel)
+var entrepriseParDefaut = Entreprise(nomination: "GAFAZ", Siret: 123456789, dateeDebutActivite: Date(), domiciliation: .France, secteur: .Artisanale, typeActivite: .ActiviteDeVente, CA: 600.0, ACCRE: .non, activitePrincipal: .non, impot: .oui, frequenceDecl: .trimestriel)
 
 enum Reponses : String, CaseIterable, Identifiable {
     
-    case oui = "oui"
-    case non = "non"
+    case oui = "Oui"
+    case non = "Non"
     
     var id: Reponses { self }
 }
@@ -76,7 +76,7 @@ enum SecteurDActivite : String, CaseIterable, Identifiable {
 }
 enum TypeDActivite : String, CaseIterable, Identifiable {
     
-    case ActiviteDeVente = "activités de vente"
+    case ActiviteDeVente = "Activités de vente"
     case PrestationDeServices = "Prestation de services"
     case Mixte = "Mixte(Ventes et Service)"
     
@@ -84,8 +84,8 @@ enum TypeDActivite : String, CaseIterable, Identifiable {
 }
 
 enum FrequenceDeclaration: String, CaseIterable, Identifiable {
-    case mensuel = "mensuel"
-    case trimestriel = "trimestre"
+    case mensuel = "Mensuel"
+    case trimestriel = "Trimestriel"
     
     var id: FrequenceDeclaration { self }
 }

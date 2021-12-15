@@ -313,7 +313,7 @@ struct titreTypeEtapeActif: View {
     let label: String
     var body: some View {
         ZStack (alignment: .leading) {
-            Rectangle()
+            RoundedRectangle(cornerRadius: 20)
                 .stroke(Color("greenMEkit"), lineWidth: 2.0)
                 .frame(width: 240.0, height: 30.0, alignment: .center)
             Text(label)
@@ -328,7 +328,7 @@ struct titreTypeEtapeInactif: View {
     let label: String
     var body: some View {
         ZStack (alignment: .leading) {
-            Rectangle()
+            RoundedRectangle(cornerRadius: 20)
                 .stroke(.gray, lineWidth: 2.0)
                 .frame(width: 240.0, height: 30.0, alignment: .center)
             Text(label)
