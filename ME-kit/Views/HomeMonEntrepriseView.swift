@@ -7,7 +7,7 @@ struct HomeMonEntrepriseView: View {
     @State private var isImporting: Bool = false
     @State var affichage : Bool = false
     @State private var selectorIndex = 0
-    @State private var numbers = ["Mes données d'Entreprise","Mon CA et Mes Docs"]
+    @State private var numbers = ["Mes données","Mon CA et mes docs"]
     @State var documents = [
         Doc(texte: "KBIS.pdf", dateDoc: (Date.now - 1))
     ]
@@ -34,12 +34,13 @@ struct HomeMonEntrepriseView: View {
                         Text(self.numbers[index]).tag(index)
                     }
                 }.pickerStyle(SegmentedPickerStyle())
-                Text(numbers[selectorIndex]).padding()
+//                Text(numbers[selectorIndex]).padding()
                 if selectorIndex == 0 {
                     ScrollView{
                     StructureResumeInfos(affichage: true)
                     NavigationLink(destination: DetailEtapeClotureView(showOnboarding: $showOnboarding, etape: etape13)){
                         BoutonPlein(label: "Cloturer son entreprise")
+                            .padding()
                     }
                     }
                 } else {
