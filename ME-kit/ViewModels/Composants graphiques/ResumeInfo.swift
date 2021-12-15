@@ -1,10 +1,3 @@
-//
-//  ResumeInfo.swift
-//  ME-kit (iOS)
-//
-//  Created by Apprenant 82 on 01/12/2021.
-//
-
 import SwiftUI
 import CoreImage.CIFilterBuiltins
 
@@ -19,18 +12,17 @@ struct StructureResumeInfos: View {
     @StateObject var entreprise = entrepriseParDefaut
     var body: some View {
         VStack {
+            if affichage == true {
             HStack{
                 Spacer()
-//            TextField("Name", text: $name).padding(.leading)
-//
-//            TextField("Email address", text: $emailAddress).padding(.leading)
-            NavigationLink(destination: ZoomQRCodeView(name: name, emailAddress: emailAddress)) {
-                Image(uiImage: generateQRCode(from: "\(name)\n\(emailAddress)"))
+                NavigationLink(destination: ZoomQRCodeView(document: document)) {
+                Image(uiImage: generateQRCode(from: document.message))
                     .interpolation(.none)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 150, height: 150)
-            }.padding()
+                }.padding(.leading)
+                    .padding(.trailing)
                 Button(action: {
                     isImporting = true
                     
@@ -57,13 +49,12 @@ struct StructureResumeInfos: View {
                     }
                 }
             }
+            }
             ZStack{
                 if affichage == true {
-                    StructureRectangle(largueur: 350, hauteur: 300)
+                    StructureRectangle(largueur: 350, hauteur: 350)
                     VStack {
                         HStack{
-//                            Text(entreprise.nomination).padding(.leading, 20)
-//                                .padding(.trailing, 20)
                             Spacer()
                             Button(){
                                 showingSheet.toggle()
@@ -76,7 +67,7 @@ struct StructureResumeInfos: View {
                             }.padding(.leading, 20)
                                 .padding(.trailing, 20)
                         }
-                        StructureBlocInfosMonEntreprise(valeurNomination: entreprise.nomination, valeurSiret: entreprise.Siret, valeurDomiciliation: entreprise.domiciliation.rawValue, valeurDate: dateFormatter.string(from: entreprise.dateeDebutActivite), valeurSecteur: entreprise.secteur.rawValue, valeurType: entreprise.typeActivite.rawValue, valeurActPrincipal: entreprise.activitePrincipal.rawValue, valeurAccre: entreprise.ACCRE.rawValue, valeurImpot: entreprise.impot.rawValue)
+                        StructureBlocInfosMonEntreprise(valeurNomination: entreprise.nomination, valeurSiret: entreprise.Siret, valeurDomiciliation: entreprise.domiciliation.rawValue, valeurDate: dateFormatter.string(from: entreprise.dateeDebutActivite), valeurFréquence: entreprise.frequenceDecl.rawValue, valeurSecteur: entreprise.secteur.rawValue, valeurType: entreprise.typeActivite.rawValue, valeurActPrincipal: entreprise.activitePrincipal.rawValue, valeurAccre: entreprise.ACCRE.rawValue, valeurImpot: entreprise.impot.rawValue)
                     }
                 } else {
                     StructureRectangle(largueur: 350, hauteur: 250)
@@ -88,7 +79,7 @@ struct StructureResumeInfos: View {
 }
 struct StructureResumeInfos_Previews: PreviewProvider {
     static var previews: some View {
-        StructureResumeInfos(affichage: true)
+        StructureResumeInfos(affichage: false)
     }
 }
 //1 Rectangle
@@ -125,6 +116,7 @@ struct StructureBlocInfosMonEntreprise: View {
     var valeurSiret : Int
     var valeurDomiciliation : String
     var valeurDate : String
+    var valeurFréquence : String
     var valeurSecteur : String
     var valeurType : String
     var valeurActPrincipal : String
@@ -141,6 +133,7 @@ struct StructureBlocInfosMonEntreprise: View {
                 .padding(.trailing, 20)
             BlocInfos(title: "Domiciliation :", value: valeurDomiciliation)
             BlocInfos(title: "Début d'activité le", value: valeurDate)
+            BlocInfos(title: "Fréquence déclaration", value: valeurFréquence)
             BlocInfos(title: "Secteur d'activité", value: valeurSecteur)
             BlocInfos(title: "Type d'activité", value: valeurType)
             BlocInfos(title: "ACCRE", value: valeurAccre)
@@ -171,11 +164,10 @@ struct StructureBlocInfosRevenu: View {
     }
 }
 struct ZoomQRCodeView : View {
-    @State var name : String
-    @State var emailAddress : String
+    @State var document: FilesDocuments
     var body : some View{
         Text("Ma Carte de Visite").font(.title).padding()
-        Image(uiImage: generateQRCode(from: "\(name)\n\(emailAddress)"))
+        Image(uiImage: generateQRCode(from: document.message))
             .interpolation(.none)
             .resizable()
             .scaledToFit()

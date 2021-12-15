@@ -47,7 +47,7 @@ struct DetailDocumentView: View {
 
 struct DetailDocumentView_Previews: PreviewProvider {
     static var previews: some View {
-        DetailDocumentView(element: Doc(id: 1, texte: "KBIS.pdf", dateDoc: Date()))
+        DetailDocumentView(element: Doc(texte: "KBIS.pdf", dateDoc: Date()))
         //CardView(element: Doc(texte: "ok", dateDoc: Date()))
     }
 }

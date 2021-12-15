@@ -37,6 +37,7 @@ class Entreprise: ObservableObject {
 //    @Published var avancement: Avancement
 
 }
+
 var entrepriseParDefaut = Entreprise(nomination: "Mon Entreprise", Siret: 123456789, dateeDebutActivite: Date(), domiciliation: .France, secteur: .Artisanale, typeActivite: .ActiviteDeVente, CA: 70600.0, ACCRE: .non, activitePrincipal: .non, impot: .non, frequenceDecl: .trimestriel)
 
 enum Reponses : String, CaseIterable, Identifiable {
@@ -139,7 +140,7 @@ func generateQRCode(from string: String) -> UIImage {
 }
 
 struct Doc : Identifiable, Hashable {
-    var id : Int
+    var id = UUID()
     var texte: String
     var dateDoc: Date
 }
@@ -166,5 +167,28 @@ struct FilesDocuments: FileDocument {
     func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
         return FileWrapper(regularFileWithContents: message.data(using: .utf8)!)
     }
-    
 }
+
+
+//COMMENTE CAR BUG BUILD SINON - NORMALEMENT POUR LE GRAPHIQUE DE CA
+//struct LineGraph: Shape {
+//    var dataPoints: [CGFloat]
+//
+//    func path(in rect: CGRect) -> Path {
+//        func point(at ix: Int) -> CGPoint {
+//            let point = dataPoints[ix]
+//            let x = rect.width * CGFloat(ix) / CGFloat(dataPoints.count - 1)
+//            let y = (1-point) * rect.height
+//            return CGPoint(x: x, y: y)
+//        }
+//
+//        return Path { p in
+//            guard dataPoints.count > 1 else { return }
+//            let start = dataPoints[0]
+//            p.move(to: CGPoint(x: 0, y: (1-start) * rect.height))
+//            for idx in dataPoints.indices {
+//                p.addLine(to: point(at: idx))
+//            }
+//        }
+//    }
+//}
