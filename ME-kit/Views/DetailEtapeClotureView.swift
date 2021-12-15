@@ -1,5 +1,5 @@
 //
-//  ClotureView.swift
+//  DetailEtapeClotureView.swift
 //  ME-kit
 //
 //  Created by Apprenant 67 on 14/12/2021.
@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct DetailEtapeClotureView: View {
+    @Binding var showOnboarding: Bool
     var etape: EtapeDemarche
+    
     var body: some View {
         ScrollView {
             VStack {
@@ -29,7 +31,7 @@ struct DetailEtapeClotureView: View {
                 
                 //BOUTON TERMINE
                 Button { //ACTION(S)
-                    print("étape validée")
+                    showOnboarding.toggle()
                 } label: {
                     BoutonPlein(label: "Terminé")
                 }
@@ -38,8 +40,8 @@ struct DetailEtapeClotureView: View {
     }
 }
 
-struct DetailEtapeClotureView_Previews: PreviewProvider {
-    static var previews: some View {
-        DetailEtapeClotureView(etape: etape13)
-    }
-}
+//struct DetailEtapeClotureView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        DetailEtapeClotureView(etape: etape13)
+//    }
+//}

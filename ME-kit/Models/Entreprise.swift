@@ -37,7 +37,7 @@ class Entreprise: ObservableObject {
 //    @Published var avancement: Avancement
 
 }
-var entrepriseParDefaut = Entreprise(nomination: "Mon Entreprise", Siret: 12345678901234, dateeDebutActivite: Date(), domiciliation: .France, secteur: .Artisanale, typeActivite: .ActiviteDeVente, CA: 70000.0, ACCRE: .non, activitePrincipal: .non, impot: .non, frequenceDecl: .trimestriel)
+var entrepriseParDefaut = Entreprise(nomination: "Mon Entreprise", Siret: 123456789, dateeDebutActivite: Date(), domiciliation: .France, secteur: .Artisanale, typeActivite: .ActiviteDeVente, CA: 70600.0, ACCRE: .non, activitePrincipal: .non, impot: .non, frequenceDecl: .trimestriel)
 
 enum Reponses : String, CaseIterable, Identifiable {
     
@@ -66,6 +66,7 @@ enum SecteurDActivite : String, CaseIterable, Identifiable {
     case Commerciale = "Commerçant"
     case Artisanale = "Artisanat"
     case Liberales = "Libéraux/Libérales"
+    //pas utilisés ?
     case activitésAgricoles = "Activités Agricoles"
     case Immobiliere = "Immobiler"
     case Artiste = "Artiste"

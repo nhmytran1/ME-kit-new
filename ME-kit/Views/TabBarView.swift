@@ -36,7 +36,7 @@ struct TabBarView: View {
                     .tag(Tab.demarche)
             }
             
-            HomeMonEntrepriseView()
+            HomeMonEntrepriseView(showOnboarding: $showOnboarding)
                 .tabItem {
                     Image(systemName: "suitcase")
                     Text("Mon entreprise")

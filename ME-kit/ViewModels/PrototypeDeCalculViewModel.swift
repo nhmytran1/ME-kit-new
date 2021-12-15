@@ -1,5 +1,5 @@
 //
-//  PrototypeDeCalcul.swift
+//  PrototypeDeCalculViewModel.swift
 //  ME-kit
 //
 //  Created by François-Xavier Méité on 13/12/2021.
@@ -12,7 +12,7 @@ var cfe = 0.0
 var impotLiberatoire = 0.0
 var totalTaxes = 0.0
 
-struct PrototypeDeCalcul: View {
+struct PrototypeDeCalculViewModel: View {
     var body: some View {
         VStack {
             Text(String(format: "%.2f", totalTaxes))
@@ -95,6 +95,6 @@ func getCotisations() -> Double {
 }
 struct PrototypeDeCalcul_Previews: PreviewProvider {
     static var previews: some View {
-        PrototypeDeCalcul()
+        PrototypeDeCalculViewModel()
     }
 }

@@ -100,7 +100,7 @@ struct HomeDemarcheCreaView: View {
                 .toolbar {
                     //Bouton pour la démo - raccourci pour aller à la fin du workflow
                     ToolbarItem (placement: .cancellationAction) {
-                        Button(action: { etapeEnCours = 8 } , label: { Text("Racc. démo")} )
+                        Button(action: { etapeEnCours = 8 } , label: { Text("Racc. démo").foregroundColor(.white)} )
                     }
                     
                     ToolbarItem {

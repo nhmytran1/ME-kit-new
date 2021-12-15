@@ -1,12 +1,13 @@
 import SwiftUI
 
-struct HomeMonEntrepriseView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeMonEntrepriseView()
-    }
-}
+//struct HomeMonEntrepriseView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        HomeMonEntrepriseView()
+//    }
+//}
 
 struct HomeMonEntrepriseView: View {
+    @Binding var showOnboarding: Bool
     @State var document: FilesDocuments = FilesDocuments(message: "Hello, World!")
     @State private var isImporting: Bool = false
     @State var affichage : Bool = false
@@ -32,7 +33,7 @@ struct HomeMonEntrepriseView: View {
                 if selectorIndex == 0 {
                     ScrollView {
                         StructureResumeInfos(affichage: true)
-                        NavigationLink(destination: DetailEtapeClotureView(etape: etape13)){
+                        NavigationLink(destination: DetailEtapeClotureView(showOnboarding: $showOnboarding, etape: etape13)){
                             BoutonPlein(label: "Clôturer son entreprise")
                         }
                     }

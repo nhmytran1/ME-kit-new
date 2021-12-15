@@ -22,11 +22,11 @@ struct HomeRevenuNetView: View {
                     ZStack {
                         //StructureRectangle(largueur: 350, hauteur: 350)
                         VStack(spacing: 20) {
-                            Text("Chiffre d'affaire :")
+                            Text("Chiffre d'affaires :")
                             ZStack {
                                 StructureRectangle(largueur: 300, hauteur: 50)
                                     .padding(-20)
-                                //TextField("Votre chiffre d'affaire...", text: $chiffreAffaire)
+                                //TextField("Votre chiffre d'affaires...", text: $chiffreAffaire)
                                 Text(String(format:"%.2f",entreprise.CA))
                                     .frame(width: 300, height: 50)
                                 //.background(Color.secondary.opacity(0.2))
