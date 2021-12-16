@@ -3,8 +3,7 @@ import CoreImage.CIFilterBuiltins
 
 
 struct StructureResumeInfos: View {
-    @State private var document: FilesDocuments = FilesDocuments(message: "Hello, World!")
-    @State private var isImporting: Bool = false
+    @State private var document: FilesDocuments = FilesDocuments(message: "")
     @State private var name = "Anonymous"
     @State private var emailAddress = "you@yoursite.com"
     @State var showingSheet : Bool = false
@@ -16,12 +15,25 @@ struct StructureResumeInfos: View {
                 HStack{
                     //                    Spacer()
                     NavigationLink(destination: ZoomQRCodeView(document: document)) {
-                        Image(uiImage: generateQRCode(from: document.message))
-                            .interpolation(.none)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 150, height: 150)
-                    }.padding()
+                        
+                        if document.message == "" {
+                            ZStack{
+                                RoundedRectangle(cornerRadius: 20)
+                                    .scaledToFit()
+                                    .foregroundColor(.gray)
+                                    .frame(width: 150, height: 150)
+                                Text("Vous pouvez ajouter votre carte de visite").frame(width: 150, height: 150)
+                                    .foregroundColor(.black)
+                            }
+                        } else {
+                            Image(uiImage: generateQRCode(from: document.message))
+                                .interpolation(.none)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 150, height: 150)
+                                .padding()
+                        }
+                    }
                     //IDEE DE BOUTON POUR QUE L'UTILISATEUR AILLE CHERCHER UNE IMAGE DEPUIS SON TEL
                     //                    Button(action: {
                     //                        isImporting = true
@@ -77,7 +89,7 @@ struct StructureResumeInfos: View {
                     
                     
                 } else {
-//                    StructureRectangle(largueur: 350, hauteur: 250)
+                    //                    StructureRectangle(largueur: 350, hauteur: 250)
                     StructureBlocInfosRevenu(valeurDate: dateFormatter.string(from: entreprise.dateeDebutActivite), valeurSecteur: entreprise.secteur.rawValue, valeurType: entreprise.typeActivite.rawValue, valeurAccre: entreprise.ACCRE.rawValue, valeurActPrincipal: entreprise.activitePrincipal.rawValue, valeurImpot: entreprise.impot.rawValue)
                 }
             }
@@ -93,7 +105,7 @@ struct StructureResumeInfos: View {
 }
 struct StructureResumeInfos_Previews: PreviewProvider {
     static var previews: some View {
-        StructureResumeInfos(affichage: false)
+        StructureResumeInfos(affichage: true)
     }
 }
 //1 Rectangle
@@ -179,18 +191,40 @@ struct StructureBlocInfosRevenu: View {
             BlocInfos(title: "Impôt libératoire :", value: valeurImpot)
                 .padding(.bottom, 15)
         }
-//        .padding(.leading, 20)
-//            .padding(.trailing, 20)
+        //        .padding(.leading, 20)
+        //            .padding(.trailing, 20)
     }
 }
 struct ZoomQRCodeView : View {
+    @State private var isImporting: Bool = false
     @State var document: FilesDocuments
     var body : some View{
-        Text("Ma Carte de Visite").font(.title).padding()
-        Image(uiImage: generateQRCode(from: document.message))
-            .interpolation(.none)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 300, height: 300)
+        VStack{
+            Text("Ma Carte de Visite").font(.title).padding()
+            Image(uiImage: generateQRCode(from: document.message))
+                .interpolation(.none)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 300, height: 300)
+            
+            Button(action: {
+                isImporting = true
+            }) {
+                Text("ajouter un document/lien")
+            }.fileImporter(
+                isPresented: $isImporting,
+                allowedContentTypes: [.plainText],
+                allowsMultipleSelection: false
+            ) { result in
+                do {
+                    guard let selectedFile: URL = try result.get().first else { return }
+                    guard let message = String(data: try Data(contentsOf: selectedFile), encoding: .utf8) else { return }
+                    
+                    document.message = message
+                } catch {
+                    print ("Fail")
+                }
+            }
+        }
     }
 }

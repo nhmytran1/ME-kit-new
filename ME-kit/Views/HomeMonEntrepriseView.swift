@@ -9,7 +9,7 @@ struct HomeMonEntrepriseView: View {
     @State private var selectorIndex = 0
     @State private var numbers = ["Mes données","Mon CA et mes docs"]
     @State var documents = [
-        Doc(texte: "KBIS.pdf", dateDoc: (Date.now - 1))
+        Doc(texte: "KBIS.pdf", dateDoc: Date.now)
     ]
     let columns = [
         GridItem(.flexible()),
@@ -21,10 +21,11 @@ struct HomeMonEntrepriseView: View {
     @State var ca: [CGFloat] = [
         CGFloat(0)
     ]
-    @State var ajout : CGFloat = CGFloat()
-    @State var ajouter : CGFloat = CGFloat()
-    @State var message : String = ""
-    @State var prevent = false
+    @State var ajout : Double = entrepriseParDefaut.CA
+    @State var ajouter : Double = Double()
+    @State var valueCA : Double = Double()
+    @State var valueCA2 : Double = Double()
+    @State var prevent = "Veuillez renseigner au dessus votre chiffre d'affaires pour votre suivis annuel"
     @State var on : Bool = false
     var body: some View {
         NavigationView{
@@ -34,7 +35,6 @@ struct HomeMonEntrepriseView: View {
                         Text(self.numbers[index]).tag(index)
                     }
                 }.pickerStyle(SegmentedPickerStyle())
-//                Text(numbers[selectorIndex]).padding()
                 if selectorIndex == 0 {
                     ScrollView{
                     StructureResumeInfos(affichage: true)
@@ -45,415 +45,253 @@ struct HomeMonEntrepriseView: View {
                     }
                 } else {
                     ScrollView{
-                        HStack{
-                            Button{
-                                affichage = true
-                                withAnimation(.easeInOut(duration: 2)) {
-                                   on = true
-                                }
-                            } label: {
-                                if affichage == false {
-                                    Image(systemName: "chart.line.uptrend.xyaxis.circle").resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .opacity(0.5)
-                                        .foregroundColor(.gray)
-                                        .frame(width: 70, height: 70)
-                                        .padding()
-                                } else {
-                                    Image(systemName: "chart.line.uptrend.xyaxis.circle.fill").resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .foregroundColor(Color("greenMEkit"))
-                                        .frame(width: 70, height: 70)
-                                        .padding()
-                                }
-                            }
-                            Button {
-                                affichage = false
-                                on = false
-                            } label: {
-                                if affichage == false {
-                                    Image(systemName: "capsule.lefthalf.filled").resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .foregroundColor(Color("greenMEkit"))
-                                        .frame(width: 70, height: 70)
-                                        .padding()
-                                } else {
-                                    Image(systemName: "capsule").resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .opacity(0.5)
-                                        .foregroundColor(.gray)
-                                        .frame(width: 70, height: 70)
-                                        .padding()
-                                }
-                            }
-                        }
                             if entrepriseParDefaut.domiciliation == .DomTom
                             {
                                 if entrepriseParDefaut.typeActivite == .Mixte {
-                                    if affichage == false {
-                                        MaxCA(max: 100000)
-                                        ProgressingView(max: 100000).padding()
+                                        MaxCA(max : 100000)
+                                    HStack{
+                                        TextField("Quel est votre CA ?", value: $ajout,format: .currency(code: ""))
+                                            .background(RoundedRectangle(cornerRadius: 50)
+                                                            .keyboardType(.numberPad).foregroundColor(.white))
+                                            .textFieldStyle(.roundedBorder)
+                                            .padding()
+                                        Button(){
+                                            clavier.toggle()
+                                            entrepriseParDefaut.CA = ajout
+                                            withAnimation(.easeInOut(duration: 2)) {
+                                                on = true
+                                            }
+                                            valueCA = ajout
+                                            if ajout/100000 > 1.0 {
+                                                prevent = "Vous dépassez le seuil maximum (Vous serez majouré)"
+                                                caAnnee.append(CGFloat(1.0))
+                                            } else {
+                                                caAnnee.append(CGFloat(ajouter/100000))
+                                                prevent = "\(entrepriseParDefaut.CA)"
+                                            }
+                                        } label: {
+                                            Image(systemName: "arrow.right.to.line.circle").font(.title3)
+                                                .foregroundColor(Color("greenMEkit")).padding()
+                                        }
+                                    }
+                                    Text(prevent).padding()
+                                    ProgressingView(CA: $valueCA, max: 100000)
+                                    MaxCA2(max: 50000)
+                                    HStack{
+                                        TextField("Quel est votre CA ?", value: $ajouter,format: .currency(code: ""))
+                                            .background(RoundedRectangle(cornerRadius: 50)
+                                                            .keyboardType(.numberPad).foregroundColor(.white))
+                                            .textFieldStyle(.roundedBorder)
+                                            .padding()
+                                        Button(){
+                                            clavier.toggle()
+                                            entrepriseParDefaut.CA = ajouter
+                                            withAnimation(.easeInOut(duration: 2)) {
+                                                on = true
+                                            }
+                                            valueCA2 = ajouter
+                                            if ajouter/50000 > 1.0 {
+                                                prevent = "Vous dépassez le seuil maximum (Vous serez majouré)"
+                                                ca.append(CGFloat(1.0))
+                                            } else {
+                                                ca.append(CGFloat(ajouter/50000))
+                                                prevent = "\(entrepriseParDefaut.CA)"
+                                            }
+                                        } label: {
+                                            Image(systemName: "arrow.right.to.line.circle").font(.title3)
+                                                .foregroundColor(Color("greenMEkit")).padding()
+                                        }
+                                    }
+                                    Text(prevent).padding()
+                                    ProgressingView(CA: $valueCA2, max: 50000)
+                                    ZStack{
+                                        LineGraph(dataPoints: caAnnee)
+                                            .trim(to: on ? 1 : 0)
+                                            .stroke(Color.green, lineWidth: 5)
+                                        LineGraph(dataPoints: ca)
+                                            .trim(to: on ? 1 : 0)
+                                            .stroke(Color.green, lineWidth: 5)
+                                            .aspectRatio(16/9, contentMode: .fit)
+                                            .border(Color.gray, width: 1)
+                                    }
+                                        .padding()
+                                } else if entrepriseParDefaut.typeActivite == .PrestationDeServices {
                                         MaxCA2(max: 50000)
-                                        ProgressingView(max: 50000).padding()
-                                    } else {
-                                        Section {
-                                            MaxCA(max: Int(100000))
-                                            HStack{
-                                                TextField("Votre Chiffre d'Affaire ?", value: $ajout, format: .currency(code: ""))
-                                                    .keyboardType(.decimalPad)
-                                                    .padding()
-                                                if prevent == true {
-                                                    Text(message)
-                                                } else {
-                                                    Text("\(Int(ajout))€")
-                                                }
-                                                Button(action : {
-                                                    clavier.toggle()
-                                                    if ajout == CGFloat() {
-                                                        prevent = true
-                                                        message = "Erreur"
-                                                    } else if ajout/100000 > 1.0 {
-                                                        prevent = true
-                                                        message = "Vous dépassez le seuil maximum"
-                                                        caAnnee.append(CGFloat(1.0))
-                                                    } else {
-                                                        prevent = false
-                                                        caAnnee.append(CGFloat(ajout/100000))
-                                                    }
-                                                }) {
-                                                    Image(systemName: "keyboard.chevron.compact.down")
-                                                }
-                                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    HStack{
+                                        TextField("Quel est votre CA ?", value: $ajout,format: .currency(code: ""))
+                                            .background(RoundedRectangle(cornerRadius: 50)
+                                                            .keyboardType(.numberPad).foregroundColor(.white))
+                                            .textFieldStyle(.roundedBorder)
+                                            .padding()
+                                        Button(){
+                                            clavier.toggle()
+                                            entrepriseParDefaut.CA = ajout
+                                            withAnimation(.easeInOut(duration: 2)) {
+                                                on = true
+                                            }
+                                            valueCA = ajout
+                                            if ajout/50000 > 1.0 {
+                                                prevent = "Vous dépassez le seuil maximum (Vous serez majouré)"
+                                                caAnnee.append(CGFloat(1.0))
+                                            } else {
+                                                caAnnee.append(CGFloat(ajout/50000))
+                                                prevent = "\(entrepriseParDefaut.CA)"
+                                            }
+                                        } label: {
+                                            Image(systemName: "arrow.right.to.line.circle").font(.title3)
+                                                .foregroundColor(Color("greenMEkit")).padding()
+                                        }
+                                    }
+                                    Text(prevent).padding()
+                                    ProgressingView(CA: $valueCA, max: 50000)
+                                    LineGraph(dataPoints: caAnnee)
+                                        .trim(to: on ? 1 : 0)
+                                        .stroke(Color.green, lineWidth: 5)
+                                        .aspectRatio(16/9, contentMode: .fit)
+                                        .border(Color.gray, width: 1)
+                                        .padding()
+                                }
+                            } else if entrepriseParDefaut.domiciliation == .France {
+                                    if entrepriseParDefaut.typeActivite == .Mixte {
+                                                MaxCA(max: 85800)
+                                        HStack{
+                                            TextField("Quel est votre CA ?", value: $ajout,format: .currency(code: ""))
+                                                .background(RoundedRectangle(cornerRadius: 50)
+                                                                .keyboardType(.numberPad).foregroundColor(.white))
+                                                .textFieldStyle(.roundedBorder)
                                                 .padding()
+                                            Button(){
+                                                clavier.toggle()
+                                                entrepriseParDefaut.CA = ajout
+                                                withAnimation(.easeInOut(duration: 2)) {
+                                                    on = true
+                                                }
+                                                valueCA = ajout
+                                                if ajout/85800 > 1.0 {
+                                                    prevent = "Vous dépassez le seuil maximum (Vous serez majouré)"
+                                                    caAnnee.append(CGFloat(1.0))
+                                                } else {
+                                                    caAnnee.append(CGFloat(ajout/85800))
+                                                    prevent = "\(entrepriseParDefaut.CA)"
+                                                }
+                                            } label: {
+                                                Image(systemName: "arrow.right.to.line.circle").font(.title3)
+                                                    .foregroundColor(Color("greenMEkit")).padding()
                                             }
                                         }
-                                        Section {
-                                            MaxCA2(max: Int(50000))
-                                            HStack{
-                                                TextField("Votre Chiffre d'Affaire ?", value: $ajouter, format: .currency(code: ""))
-                                                    .keyboardType(.decimalPad)
-                                                    .padding()
-                                                if prevent == true {
-                                                    Text(message)
-                                                } else {
-                                                    Text("\(Int(ajouter)) €")
-                                                }
-                                                Button(action : {
-                                                    clavier.toggle()
-                                                    if ajouter == CGFloat() {
-                                                        prevent = true
-                                                        message = "Erreur"
-                                                    } else if ajout/50000 > 1.0 {
-                                                        prevent = true
-                                                        message = "Vous dépassez le seuil maximum"
-                                                        caAnnee.append(CGFloat(1.0))
-                                                    } else {
-                                                        prevent = false
-                                                        ca.append(CGFloat(ajouter/50000))
-                                                    }
-                                                }) {
-                                                    Image(systemName: "keyboard.chevron.compact.down")
-                                                }
-                                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                        Text(prevent).padding()
+                                        ProgressingView(CA: $valueCA, max: 85800)
+                                        MaxCA2(max: 34400)
+                                        HStack{
+                                            TextField("Quel est votre CA ?", value: $ajouter,format: .currency(code: ""))
+                                                .background(RoundedRectangle(cornerRadius: 50)
+                                                                .keyboardType(.numberPad).foregroundColor(.white))
+                                                .textFieldStyle(.roundedBorder)
                                                 .padding()
+                                            Button(){
+                                                clavier.toggle()
+                                                entrepriseParDefaut.CA = ajouter
+                                                withAnimation(.easeInOut(duration: 2)) {
+                                                    on = true
+                                                }
+                                                valueCA = ajouter
+                                                if ajouter/34400 > 1.0 {
+                                                    prevent = "Vous dépassez le seuil maximum (Vous serez majouré)"
+                                                    ca.append(CGFloat(1.0))
+                                                } else {
+                                                    ca.append(CGFloat(ajouter/34400))
+                                                    prevent = "\(entrepriseParDefaut.CA)"
+                                                }
+                                            } label: {
+                                                Image(systemName: "arrow.right.to.line.circle").font(.title3)
+                                                    .foregroundColor(Color("greenMEkit")).padding()
                                             }
                                         }
+                                        Text(prevent).padding()
+                                        ProgressingView(CA: $valueCA, max: 34400)
                                         ZStack{
                                             LineGraph(dataPoints: caAnnee)
                                                 .trim(to: on ? 1 : 0)
-                                                .stroke(Color.blue, lineWidth: 5)
-                                                .aspectRatio(16/9, contentMode: .fit)
+                                                .stroke(Color.green, lineWidth: 5)
                                             LineGraph(dataPoints: ca)
                                                 .trim(to: on ? 1 : 0)
                                                 .stroke(Color.green, lineWidth: 5)
                                                 .aspectRatio(16/9, contentMode: .fit)
-                                            
-                                        }.border(Color.gray, width: 1)
-                                            .padding()
-                                    }
-                                }else if entrepriseParDefaut.typeActivite == .ActiviteDeVente {
-                                    if affichage == false {
-                                        MaxCA(max: 100000)
-                                        ProgressingView(max: 100000).padding()
-                                    } else {
-                                        MaxCA(max: 100000)
-                                        HStack{
-                                            Section {
-                                                TextField("Votre Chiffre d'Affaire ?", value: $ajout, format: .currency(code: ""))
-                                                    .keyboardType(.decimalPad)
-                                                    .padding()
-                                                if prevent == true {
-                                                    Text(message)
-                                                } else {
-                                                    Text("\(Int(ajout))")
-                                                }
-                                            }
-                                            Button(action : {
-                                                clavier.toggle()
-                                                if ajout == CGFloat() {
-                                                    prevent = true
-                                                    message = "Erreur"
-                                                } else if ajout/100000 > 1.0 {
-                                                    prevent = true
-                                                    message = "Vous dépassez le seuil maximum"
-                                                    caAnnee.append(CGFloat(1.0))
-                                                } else {
-                                                    prevent = false
-                                                    caAnnee.append(CGFloat(ajout/100000))
-                                                }
-                                            }) {
-                                                Image(systemName: "keyboard.chevron.compact.down")
-                                            }
-                                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                                            .padding()
-                                        }
-                                        HStack{
-                                            Text("Année ".capitalized)
-                                            Text(Date.now, format: .dateTime.year())
-                                        }
-                                        VStack{
-                                            LineGraph(dataPoints: caAnnee)
-                                                .trim(to: on ? 1 : 0)
-                                                .stroke(Color.green, lineWidth: 5)
-                                                .aspectRatio(16/9, contentMode: .fit)
                                                 .border(Color.gray, width: 1)
-                                                .padding()
                                         }
-                                    }
-                                } else if entrepriseParDefaut.typeActivite == .PrestationDeServices {
-                                    if affichage == false {
-                                        MaxCA2(max: 50000)
-                                        ProgressingView(max: 50000).padding()
-                                    } else {
-                                        MaxCA2(max: 50000)
-                                        HStack{
-                                            Section {
-                                                TextField("Votre Chiffre d'Affaire ?", value: $ajout, format: .currency(code: ""))
-                                                    .keyboardType(.decimalPad)
-                                                    .padding()
-                                                if prevent == true {
-                                                    Text(message)
-                                                } else {
-                                                    Text("\(Int(ajout))")
-                                                }
-                                            }
-                                            Button(action : {
-                                                clavier.toggle()
-                                                if ajout == CGFloat() {
-                                                    prevent = true
-                                                    message = "Erreur"
-                                                } else if ajout/50000 > 1.0 {
-                                                    prevent = true
-                                                    message = "Vous dépassez le seuil maximum"
-                                                    caAnnee.append(CGFloat(1.0))
-                                                } else {
-                                                    prevent = false
-                                                    caAnnee.append(CGFloat(ajout/50000))
-                                                }
-                                            }) {
-                                                Image(systemName: "keyboard.chevron.compact.down")
-                                            }
-                                            .textFieldStyle(RoundedBorderTextFieldStyle())
                                             .padding()
-                                        }
-                                        HStack{
-                                            Text("Année ".capitalized)
-                                            Text(Date.now, format: .dateTime.year())
-                                        }
-                                        VStack{
-                                            LineGraph(dataPoints: caAnnee)
-                                                .trim(to: on ? 1 : 0)
-                                                .stroke(Color.green, lineWidth: 5)
-                                                .aspectRatio(16/9, contentMode: .fit)
-                                                .border(Color.gray, width: 1)
-                                                .padding()
-                                        }
-                                    }
-                                }
-                                    
-                            } else if entrepriseParDefaut.domiciliation == .France {
-                                    if entrepriseParDefaut.typeActivite == .Mixte {
-                                        if affichage == false {
-                                            VStack{
-                                                MaxCA(max: 85800)
-                                                ProgressingView(max: 85800)
-                                                MaxCA2(max: 34400)
-                                                ProgressingView(max: 34400)
-                                            }
-                                        } else {
-                                            Section {
-                                                MaxCA(max: Int(85800))
-                                                HStack{
-                                                    TextField("Votre Chiffre d'Affaire ?", value: $ajout, format: .currency(code: ""))
-                                                        .keyboardType(.decimalPad)
-                                                        .padding()
-                                                    if prevent == true {
-                                                        Text(message)
-                                                    } else {
-                                                        Text("\(Int(ajout))€")
-                                                    }
-                                                    Button(action : {
-                                                        clavier.toggle()
-                                                        if ajout == CGFloat() {
-                                                            prevent = true
-                                                            message = "Erreur"
-                                                        } else if ajout/85800 > 1.0 {
-                                                            prevent = true
-                                                            message = "Vous dépassez le seuil maximum"
-                                                            caAnnee.append(CGFloat(1.0))
-                                                        } else {
-                                                            prevent = false
-                                                            caAnnee.append(CGFloat(ajout/85800))
-                                                        }
-                                                    }) {
-                                                        Image(systemName: "keyboard.chevron.compact.down")
-                                                    }
-                                                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                                                    .padding()
-                                                }
-                                            }
-                                            Section {
-                                                MaxCA2(max: Int(34400))
-                                                HStack{
-                                                    TextField("Votre Chiffre d'Affaire ?", value: $ajouter, format: .currency(code: ""))
-                                                        .keyboardType(.decimalPad)
-                                                        .padding()
-                                                    if prevent == true {
-                                                        Text(message)
-                                                    } else {
-                                                        Text("\(Int(ajouter)) €")
-                                                    }
-                                                    Button(action : {
-                                                        clavier.toggle()
-                                                        if ajouter == CGFloat() {
-                                                            prevent = true
-                                                            message = "Erreur"
-                                                        } else if ajout/34400 > 1.0 {
-                                                            prevent = true
-                                                            message = "Vous dépassez le seuil maximum"
-                                                            caAnnee.append(CGFloat(1.0))
-                                                        } else {
-                                                            prevent = false
-                                                            ca.append(CGFloat(ajouter/34400))
-                                                        }
-                                                    }) {
-                                                        Image(systemName: "keyboard.chevron.compact.down")
-                                                    }
-                                                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                                                    .padding()
-                                                }
-                                            }
-                                            ZStack{
-                                                LineGraph(dataPoints: caAnnee)
-                                                    .trim(to: on ? 1 : 0)
-                                                    .stroke(Color.blue, lineWidth: 5)
-                                                    .aspectRatio(16/9, contentMode: .fit)
-                                                LineGraph(dataPoints: ca)
-                                                    .trim(to: on ? 1 : 0)
-                                                    .stroke(Color.green, lineWidth: 5)
-                                                    .aspectRatio(16/9, contentMode: .fit)
-                                                
-                                            }.border(Color.gray, width: 1)
-                                                .padding()
-                                        }
+                                       
                                     } else if entrepriseParDefaut.secteur == .Commerciale {
-                                        if affichage == false {
                                             MaxCA(max: 85800)
-                                            ProgressingView(max: 85800).padding()
-                                        } else {
-                                            MaxCA(max: 85800)
-                                            HStack{
-                                                Section {
-                                                    TextField("Votre Chiffre d'Affaire ?", value: $ajout, format: .currency(code: ""))
-                                                        .keyboardType(.decimalPad)
-                                                        .padding()
-                                                    if prevent == true {
-                                                        Text(message)
-                                                    } else {
-                                                        Text("\(Int(ajout))")
-                                                    }
-                                                }
-                                                Button(action : {
-                                                    clavier.toggle()
-                                                    if ajout == CGFloat() {
-                                                        prevent = true
-                                                        message = "Erreur"
-                                                    } else if ajout/85800 > 1.0 {
-                                                        prevent = true
-                                                        message = "Vous dépassez le seuil maximum"
-                                                        caAnnee.append(CGFloat(1.0))
-                                                    } else {
-                                                        prevent = false
-                                                        caAnnee.append(CGFloat(ajout/85800))
-                                                    }
-                                                }) {
-                                                    Image(systemName: "keyboard.chevron.compact.down")
-                                                }
-                                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                        HStack{
+                                            TextField("Quel est votre CA ?", value: $ajout,format: .currency(code: ""))
+                                                .background(RoundedRectangle(cornerRadius: 50)
+                                                                .keyboardType(.numberPad).foregroundColor(.white))
+                                                .textFieldStyle(.roundedBorder)
                                                 .padding()
-                                            }
-                                            HStack{
-                                                Text("Année ".capitalized)
-                                                Text(Date.now, format: .dateTime.year())
-                                            }
-                                            VStack{
-                                                LineGraph(dataPoints: caAnnee)
-                                                    .trim(to: on ? 1 : 0)
-                                                    .stroke(Color.green, lineWidth: 5)
-                                                    .aspectRatio(16/9, contentMode: .fit)
-                                                    .border(Color.gray, width: 1)
-                                                    .padding()
+                                            Button(){
+                                                clavier.toggle()
+                                                entrepriseParDefaut.CA = ajout
+                                                withAnimation(.easeInOut(duration: 2)) {
+                                                    on = true
+                                                }
+                                                valueCA = ajout
+                                                if ajout/85800 > 1.0 {
+                                                    prevent = "Vous dépassez le seuil maximum (Vous serez majouré)"
+                                                    caAnnee.append(CGFloat(1.0))
+                                                } else {
+                                                    caAnnee.append(CGFloat(ajout/85800))
+                                                    prevent = "\(entrepriseParDefaut.CA)"
+                                                }
+                                            } label: {
+                                                Image(systemName: "arrow.right.to.line.circle").font(.title3)
+                                                    .foregroundColor(Color("greenMEkit")).padding()
                                             }
                                         }
+                                        Text(prevent).padding()
+                                        ProgressingView(CA: $valueCA, max: 34400)
+                                        LineGraph(dataPoints: caAnnee)
+                                            .trim(to: on ? 1 : 0)
+                                            .stroke(Color.green, lineWidth: 5)
+                                            .aspectRatio(16/9, contentMode: .fit)
+                                            .border(Color.gray, width: 1)
+                                            .padding()
                                     } else if entrepriseParDefaut.secteur == .Artisanale || entrepriseParDefaut.secteur == .Liberales {
-                                        if affichage == false {
                                             MaxCA2(max: 34400)
-                                            ProgressingView(max: 34400)
-                                        } else {
-                                            MaxCA2(max: 34400)
-                                            HStack{
-                                                Section {
-                                                    TextField("Votre Chiffre d'Affaire ?", value: $ajout, format: .currency(code: ""))
-                                                        .keyboardType(.decimalPad)
-                                                        .padding()
-                                                    if prevent == true {
-                                                        Text(message)
-                                                    } else {
-                                                        Text("\(Int(ajout))")
-                                                    }
-                                                }
-                                                Button(action : {
-                                                    clavier.toggle()
-                                                    if ajout == CGFloat() {
-                                                        prevent = true
-                                                        message = "Erreur"
-                                                    } else if ajout/34400 > 1.0 {
-                                                        prevent = true
-                                                        message = "Vous dépassez le seuil maximum"
-                                                        caAnnee.append(CGFloat(1.0))
-                                                    } else {
-                                                        prevent = false
-                                                        caAnnee.append(CGFloat(ajout/34400))
-                                                    }
-                                                }) {
-                                                    Image(systemName: "keyboard.chevron.compact.down")
-                                                }
-                                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                        HStack{
+                                            TextField("Quel est votre CA ?", value: $ajout,format: .currency(code: ""))
+                                                .background(RoundedRectangle(cornerRadius: 50)
+                                                                .keyboardType(.numberPad).foregroundColor(.white))
+                                                .textFieldStyle(.roundedBorder)
                                                 .padding()
-                                            }
-                                            HStack{
-                                                Text("Année ".capitalized)
-                                                Text(Date.now, format: .dateTime.year())
-                                            }
-                                            VStack{
-                                                LineGraph(dataPoints: caAnnee)
-                                                    .trim(to: on ? 1 : 0)
-                                                    .stroke(Color.green, lineWidth: 5)
-                                                    .aspectRatio(16/9, contentMode: .fit)
-                                                    .border(Color.gray, width: 1)
-                                                    .padding()
+                                            Button(){
+                                                clavier.toggle()
+                                                entrepriseParDefaut.CA = ajout
+                                                withAnimation(.easeInOut(duration: 2)) {
+                                                    on = true
+                                                }
+                                                valueCA = ajout
+                                                if ajout/34400 > 1.0 {
+                                                    prevent = "Vous dépassez le seuil maximum (Vous serez majouré)"
+                                                    caAnnee.append(CGFloat(1.0))
+                                                } else {
+                                                    caAnnee.append(CGFloat(ajout/34400))
+                                                    prevent = "\(entrepriseParDefaut.CA)"
+                                                }
+                                            } label: {
+                                                Image(systemName: "arrow.right.to.line.circle").font(.title3)
+                                                    .foregroundColor(Color("greenMEkit")).padding()
                                             }
                                         }
+                                        Text(prevent).padding()
+                                        ProgressingView(CA: $valueCA, max: 34400)
+                                        LineGraph(dataPoints: caAnnee)
+                                            .trim(to: on ? 1 : 0)
+                                            .stroke(Color.green, lineWidth: 5)
+                                            .aspectRatio(16/9, contentMode: .fit)
+                                            .border(Color.gray, width: 1)
+                                            .padding()
+                                           
                                     }
                             } else {
                                 Text("Votre Chiffre d'affaire est de \(entrepriseParDefaut.CA)")
@@ -544,10 +382,9 @@ struct Modifieur: View {
             Button(){
                 dismiss()
             } label: {
-                Image(systemName: "clear.fill")
+                BoutonVide(label: "Annuler")
                 
-            } .font(.title)
-                .foregroundColor(Color("greenMEkit"))
+            }.foregroundColor(Color("greenMEkit"))
                 .padding()
             ScrollView{
                 Group{
@@ -682,25 +519,24 @@ struct Modifieur: View {
 }
 
 struct ProgressingView: View {
-    @State var CA = entrepriseParDefaut.CA
-    @State var valueCA = Double()
+    @Binding var CA : Double
     @State var max : Double
     var body: some View {
         VStack {
-            HStack{
-                TextField("Quel est votre CA ?", value: self.$valueCA,formatter: formatCA)
-                    .background(RoundedRectangle(cornerRadius: 50)
-                                    .keyboardType(.numberPad).foregroundColor(.white))
-                    .textFieldStyle(.roundedBorder)
-                    .padding()
-                Text("\(Int(CA)) €").padding()
-                Button(){
-                    CA = valueCA
-                } label: {
-                    Image(systemName: "arrow.right.to.line.circle").font(.title3)
-                        .foregroundColor(Color("greenMEkit")).padding()
-                }
-            }
+//            HStack{
+//                TextField("Quel est votre CA ?", value: self.$valueCA,formatter: formatCA)
+//                    .background(RoundedRectangle(cornerRadius: 50)
+//                                    .keyboardType(.numberPad).foregroundColor(.white))
+//                    .textFieldStyle(.roundedBorder)
+//                    .padding()
+//                Text("\(Int(CA)) €").padding()
+//                Button(){
+//                    CA = valueCA
+//                } label: {
+//                    Image(systemName: "arrow.right.to.line.circle").font(.title3)
+//                        .foregroundColor(Color("greenMEkit")).padding()
+//                }
+//            }
             if CA == Double() || CA == 0 {
                 Progression(etatDeProgression: 0.0, pourcentage: 0, color: .green)
             } else if CA < max/2 && CA > 0 {
@@ -767,8 +603,8 @@ struct MaxCA2: View {
     }
 }
 
-//struct HomeMonEntrepriseView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        HomeMonEntrepriseView(showOnboarding: .constant(true))
-//    }
-//}
+struct HomeMonEntrepriseView_Previews: PreviewProvider {
+    static var previews: some View {
+        HomeMonEntrepriseView(showOnboarding: .constant(true))
+    }
+}
