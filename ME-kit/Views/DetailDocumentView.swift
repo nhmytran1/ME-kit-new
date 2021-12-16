@@ -11,11 +11,19 @@ struct DetailDocumentView: View {
     var element : Doc
     @State private var showingSheet = false
     @State private var isExporting: Bool = false
-    @State private var document: FilesDocuments = FilesDocuments(message: "Hello, World!")
+    @State private var document: FilesDocuments = FilesDocuments(message: "Facture.pdf")
     var body: some View {
         VStack{
             ZStack{
-                RoundedRectangle(cornerRadius: 20).frame(width: 350, height: 500).foregroundColor(.gray)
+                if element.texte == "KBIS.pdf" {
+                    Image("KBIS.pdf")
+                        .resizable()
+                        .frame(width: 350, height: 500)
+                } else {
+                    Image("Facture")
+                        .resizable()
+                        .frame(width: 350, height: 500)
+                }
                 ZStack{
                     Button(action: {
                         self.showingSheet = true
@@ -24,7 +32,8 @@ struct DetailDocumentView: View {
                     }
                     .sheet(isPresented: $showingSheet,
                            content: {
-                        ActivityView(activityItems: [NSURL(string: "https://KBIS.pdf")!] as [Any], applicationActivities: nil) })
+                        ActivityView(activityItems: [NSURL(string: "https:// \(element.texte)") ?? "https:// \(element.texte)"] as [Any], applicationActivities: nil) }
+                    )
                 }.position(x: 300, y: 450)
             }
             Button(action: { isExporting = true }, label: {
@@ -47,8 +56,8 @@ struct DetailDocumentView: View {
 
 struct DetailDocumentView_Previews: PreviewProvider {
     static var previews: some View {
-        DetailDocumentView(element: Doc(texte: "KBIS.pdf", dateDoc: Date()))
-        //CardView(element: Doc(texte: "ok", dateDoc: Date()))
+//        DetailDocumentView(element: Doc(texte: "KBIS.pdf", dateDoc: Date()))
+        CardView(element: Doc(texte: "ok", dateDoc: Date()))
     }
 }
 
@@ -64,7 +73,7 @@ struct CardView: View {
                     .opacity(0.5)
                     .foregroundColor(.gray)
                     .frame(width: 70, height: 70)
-                    .padding()
+                    //.padding()
                // Spacer()
            // }
             HStack {
@@ -80,8 +89,8 @@ struct CardView: View {
                 }
                 //.layoutPriority(100)
             }
-        }.padding()
-            .frame(width: 150, height: 200, alignment: .leading)
+        }//.padding()
+           // .frame(width: 150, height: 200, alignment: .leading)
         //.padding()
     }
 }

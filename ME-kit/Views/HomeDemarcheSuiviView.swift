@@ -100,7 +100,7 @@ struct HomeDemarcheSuiviView: View {
                         
                         
                         //DECLARATION URSSAF
-                        NavigationLink(destination: DetailEtapeView(etape: etape9, shouldPopToRootView: self.$isActive), isActive: $isActive) {
+                        NavigationLink(destination: DetailEtapeView(etape: etape9, shouldPopToRootView: self.$isActive)) {
                             
                             if entrepriseParDefaut.frequenceDecl == .mensuel {
                                 CercleVertAFaire(text: etape9.name, echeance: "\(endDateOfMonthDayURSSAF) \(endDateOfMonthMonthURSSAF)")
@@ -178,7 +178,7 @@ struct HomeDemarcheSuiviView: View {
                         
                         
                         //DECLARATION IMPÔTS
-                        NavigationLink(destination: DetailEtapeView(etape: etape10, shouldPopToRootView: self.$isActive), isActive: $isActive) {
+                        NavigationLink(destination: DetailEtapeView(etape: etape10, shouldPopToRootView: self.$isActive)) {
                             
                             if entrepriseParDefaut.frequenceDecl == .mensuel {
                                 CercleVertAFaire(text: etape10.name, echeance: "\(endDateOfMonthDayImpots) \(endDateOfMonthMonthImpots)")
@@ -218,7 +218,7 @@ struct HomeDemarcheSuiviView: View {
                         }
                         
                         //DECLARATION CFE
-                        NavigationLink(destination: DetailEtapeView(etape: etape11, shouldPopToRootView: self.$isActive), isActive: $isActive) {
+                        NavigationLink(destination: DetailEtapeView(etape: etape11, shouldPopToRootView: self.$isActive)) {
                             
                             CercleVertAFaire(text: etape11.name, echeance: etape11.echeance)
                             ///possibilité versement moitié  30 juin
@@ -230,8 +230,7 @@ struct HomeDemarcheSuiviView: View {
                         
                         
                         //ajouter condition si CA > XX afficher ce bloc en vert
-                        NavigationLink(destination: DetailEtapeView(etape: etapeTVA12, shouldPopToRootView: self.$isActive),
-                                       isActive: $isActive) {
+                        NavigationLink(destination: DetailEtapeView(etape: etapeTVA12, shouldPopToRootView: self.$isActive)) {
                             if entrepriseParDefaut.CA <= 36500.0 {
                                 VStack (alignment: .leading) {
                                     titreTypeEtapeInactif(label: "Seuil TVA dépassé")

@@ -3,7 +3,7 @@ import SwiftUI
 struct HomeMonEntrepriseView: View {
     @Binding var showOnboarding: Bool
     @FocusState private var clavier : Bool
-    @State var document: FilesDocuments = FilesDocuments(message: "Hello, World!")
+    @State var document: FilesDocuments = FilesDocuments(message: "")
     @State private var isImporting: Bool = false
     @State var affichage : Bool = false
     @State private var selectorIndex = 0
@@ -25,8 +25,9 @@ struct HomeMonEntrepriseView: View {
     @State var ajouter : Double = Double()
     @State var valueCA : Double = Double()
     @State var valueCA2 : Double = Double()
-    @State var prevent = "Veuillez renseigner au dessus votre chiffre d'affaires pour votre suivis annuel"
+    @State var prevent = ""
     @State var on : Bool = false
+    @StateObject var entreprise = entrepriseParDefaut
     var body: some View {
         NavigationView{
             VStack {
@@ -37,277 +38,290 @@ struct HomeMonEntrepriseView: View {
                 }.pickerStyle(SegmentedPickerStyle())
                 if selectorIndex == 0 {
                     ScrollView{
-                    StructureResumeInfos(affichage: true)
-                    NavigationLink(destination: DetailEtapeClotureView(showOnboarding: $showOnboarding, etape: etape13)){
-                        BoutonPlein(label: "Clôturer son entreprise")
-                            .padding()
-                    }
+                        StructureResumeInfos(document: $document, affichage: true)
+                        NavigationLink(destination: DetailEtapeClotureView(showOnboarding: $showOnboarding, etape: etape13)){
+                            BoutonPlein(label: "Clôturer son entreprise")
+                                .padding()
+                        }
                     }
                 } else {
                     ScrollView{
-                            if entrepriseParDefaut.domiciliation == .DomTom
-                            {
-                                if entrepriseParDefaut.typeActivite == .Mixte {
-                                        MaxCA(max : 100000)
-                                    HStack{
-                                        TextField("Quel est votre CA ?", value: $ajout,format: .currency(code: ""))
-                                            .background(RoundedRectangle(cornerRadius: 50)
-                                                            .keyboardType(.numberPad).foregroundColor(.white))
-                                            .textFieldStyle(.roundedBorder)
-                                            .padding()
-                                        Button(){
-                                            clavier.toggle()
-                                            entrepriseParDefaut.CA = ajout
-                                            withAnimation(.easeInOut(duration: 2)) {
-                                                on = true
-                                            }
-                                            valueCA = ajout
-                                            if ajout/100000 > 1.0 {
-                                                prevent = "Vous dépassez le seuil maximum (Vous serez majouré)"
-                                                caAnnee.append(CGFloat(1.0))
-                                            } else {
-                                                caAnnee.append(CGFloat(ajouter/100000))
-                                                prevent = "\(entrepriseParDefaut.CA)"
-                                            }
-                                        } label: {
-                                            Image(systemName: "arrow.right.to.line.circle").font(.title3)
-                                                .foregroundColor(Color("greenMEkit")).padding()
-                                        }
-                                    }
-                                    Text(prevent).padding()
-                                    ProgressingView(CA: $valueCA, max: 100000)
-                                    MaxCA2(max: 50000)
-                                    HStack{
-                                        TextField("Quel est votre CA ?", value: $ajouter,format: .currency(code: ""))
-                                            .background(RoundedRectangle(cornerRadius: 50)
-                                                            .keyboardType(.numberPad).foregroundColor(.white))
-                                            .textFieldStyle(.roundedBorder)
-                                            .padding()
-                                        Button(){
-                                            clavier.toggle()
-                                            entrepriseParDefaut.CA = ajouter
-                                            withAnimation(.easeInOut(duration: 2)) {
-                                                on = true
-                                            }
-                                            valueCA2 = ajouter
-                                            if ajouter/50000 > 1.0 {
-                                                prevent = "Vous dépassez le seuil maximum (Vous serez majouré)"
-                                                ca.append(CGFloat(1.0))
-                                            } else {
-                                                ca.append(CGFloat(ajouter/50000))
-                                                prevent = "\(entrepriseParDefaut.CA)"
-                                            }
-                                        } label: {
-                                            Image(systemName: "arrow.right.to.line.circle").font(.title3)
-                                                .foregroundColor(Color("greenMEkit")).padding()
-                                        }
-                                    }
-                                    Text(prevent).padding()
-                                    ProgressingView(CA: $valueCA2, max: 50000)
-                                    ZStack{
-                                        LineGraph(dataPoints: caAnnee)
-                                            .trim(to: on ? 1 : 0)
-                                            .stroke(Color.green, lineWidth: 5)
-                                        LineGraph(dataPoints: ca)
-                                            .trim(to: on ? 1 : 0)
-                                            .stroke(Color.green, lineWidth: 5)
-                                            .aspectRatio(16/9, contentMode: .fit)
-                                            .border(Color.gray, width: 1)
-                                    }
+                        HStack{
+                        Text("Chiffre d’affaires annuel")
+                            .font(.title)
+                            .fontWeight(.semibold)
+                            Spacer()
+                        }.padding()
+                        if entrepriseParDefaut.domiciliation == .DomTom
+                        {
+                            if entrepriseParDefaut.typeActivite == .Mixte {
+                                HStack{
+                                    TextField("Quel est votre CA ?", value: $ajout,format: .currency(code: ""))
+                                        .background(RoundedRectangle(cornerRadius: 50)
+                                                        .keyboardType(.numberPad).foregroundColor(.white))
+                                        .textFieldStyle(.roundedBorder)
                                         .padding()
-                                } else if entrepriseParDefaut.typeActivite == .PrestationDeServices {
-                                        MaxCA2(max: 50000)
-                                    HStack{
-                                        TextField("Quel est votre CA ?", value: $ajout,format: .currency(code: ""))
-                                            .background(RoundedRectangle(cornerRadius: 50)
-                                                            .keyboardType(.numberPad).foregroundColor(.white))
-                                            .textFieldStyle(.roundedBorder)
-                                            .padding()
-                                        Button(){
-                                            clavier.toggle()
-                                            entrepriseParDefaut.CA = ajout
-                                            withAnimation(.easeInOut(duration: 2)) {
-                                                on = true
-                                            }
-                                            valueCA = ajout
-                                            if ajout/50000 > 1.0 {
-                                                prevent = "Vous dépassez le seuil maximum (Vous serez majouré)"
-                                                caAnnee.append(CGFloat(1.0))
-                                            } else {
-                                                caAnnee.append(CGFloat(ajout/50000))
-                                                prevent = "\(entrepriseParDefaut.CA)"
-                                            }
-                                        } label: {
-                                            Image(systemName: "arrow.right.to.line.circle").font(.title3)
-                                                .foregroundColor(Color("greenMEkit")).padding()
+                                    Button(){
+                                        clavier.toggle()
+                                        entreprise.CA = ajout
+                                        withAnimation(.easeInOut(duration: 2)) {
+                                            on = true
                                         }
+                                        valueCA = ajout
+                                        if ajout/100000 > 1.0 {
+                                            prevent = "Seuil majoré dépassé"
+                                            caAnnee.append(CGFloat(1.0))
+                                        } else {
+                                            caAnnee.append(CGFloat(ajouter/100000))
+                                            prevent = "\(entrepriseParDefaut.CA)"
+                                        }
+                                    } label: {
+                                        Image(systemName: "arrow.right.to.line.circle").font(.title3)
+                                            .foregroundColor(Color("greenMEkit")).padding()
                                     }
-                                    Text(prevent).padding()
-                                    ProgressingView(CA: $valueCA, max: 50000)
+                                }
+                                Text(prevent).padding()
+                                ProgressingView(CA: $valueCA, max: 100000)
+//                                Text("Saisie chiffre d’affaires annuel").font(.title)
+                                HStack{
+                                    TextField("Quel est votre CA ?", value: $ajouter,format: .currency(code: ""))
+                                        .background(RoundedRectangle(cornerRadius: 50)
+                                                        .keyboardType(.numberPad).foregroundColor(.white))
+                                        .textFieldStyle(.roundedBorder)
+                                        .padding()
+                                    Button(){
+                                        clavier.toggle()
+                                        entreprise.CA = ajouter
+                                        withAnimation(.easeInOut(duration: 2)) {
+                                            on = true
+                                        }
+                                        valueCA2 = ajouter
+                                        if ajouter/50000 > 1.0 {
+                                            prevent = "Seuil majoré dépassé"
+                                            ca.append(CGFloat(1.0))
+                                        } else {
+                                            ca.append(CGFloat(ajouter/50000))
+                                            prevent = "\(entrepriseParDefaut.CA)"
+                                        }
+                                    } label: {
+                                        Image(systemName: "arrow.right.to.line.circle").font(.title3)
+                                            .foregroundColor(Color("greenMEkit")).padding()
+                                    }
+                                }
+                                MaxCA2(max: 50000)
+                                Text(prevent).padding()
+                                ProgressingView(CA: $valueCA2, max: 50000)
+                                ZStack{
                                     LineGraph(dataPoints: caAnnee)
                                         .trim(to: on ? 1 : 0)
-                                        .stroke(Color.green, lineWidth: 5)
+                                        .stroke(Color("greenMEkit"), lineWidth: 5)
+                                    LineGraph(dataPoints: ca)
+                                        .trim(to: on ? 1 : 0)
+                                        .stroke(Color("greenMEkit"), lineWidth: 5)
                                         .aspectRatio(16/9, contentMode: .fit)
                                         .border(Color.gray, width: 1)
-                                        .padding()
                                 }
-                            } else if entrepriseParDefaut.domiciliation == .France {
-                                    if entrepriseParDefaut.typeActivite == .Mixte {
-                                                MaxCA(max: 85800)
-                                        HStack{
-                                            TextField("Quel est votre CA ?", value: $ajout,format: .currency(code: ""))
-                                                .background(RoundedRectangle(cornerRadius: 50)
-                                                                .keyboardType(.numberPad).foregroundColor(.white))
-                                                .textFieldStyle(.roundedBorder)
-                                                .padding()
-                                            Button(){
-                                                clavier.toggle()
-                                                entrepriseParDefaut.CA = ajout
-                                                withAnimation(.easeInOut(duration: 2)) {
-                                                    on = true
-                                                }
-                                                valueCA = ajout
-                                                if ajout/85800 > 1.0 {
-                                                    prevent = "Vous dépassez le seuil maximum (Vous serez majouré)"
-                                                    caAnnee.append(CGFloat(1.0))
-                                                } else {
-                                                    caAnnee.append(CGFloat(ajout/85800))
-                                                    prevent = "\(entrepriseParDefaut.CA)"
-                                                }
-                                            } label: {
-                                                Image(systemName: "arrow.right.to.line.circle").font(.title3)
-                                                    .foregroundColor(Color("greenMEkit")).padding()
-                                            }
+                                .padding()
+                            } else if entrepriseParDefaut.typeActivite == .PrestationDeServices {
+//                                Text("Saisie chiffre d’affaires annuel").fontWeight(.semibold)
+//                                    .padding()
+                                HStack{
+                                    TextField("Quel est votre CA ?", value: $ajout,format: .currency(code: ""))
+                                        .background(RoundedRectangle(cornerRadius: 50)
+                                                        .keyboardType(.numberPad).foregroundColor(.white))
+                                        .textFieldStyle(.roundedBorder)
+                                        .padding()
+                                    Button(){
+                                        clavier.toggle()
+                                        entreprise.CA = ajout
+                                        withAnimation(.easeInOut(duration: 2)) {
+                                            on = true
                                         }
-                                        Text(prevent).padding()
-                                        ProgressingView(CA: $valueCA, max: 85800)
-                                        MaxCA2(max: 34400)
-                                        HStack{
-                                            TextField("Quel est votre CA ?", value: $ajouter,format: .currency(code: ""))
-                                                .background(RoundedRectangle(cornerRadius: 50)
-                                                                .keyboardType(.numberPad).foregroundColor(.white))
-                                                .textFieldStyle(.roundedBorder)
-                                                .padding()
-                                            Button(){
-                                                clavier.toggle()
-                                                entrepriseParDefaut.CA = ajouter
-                                                withAnimation(.easeInOut(duration: 2)) {
-                                                    on = true
-                                                }
-                                                valueCA = ajouter
-                                                if ajouter/34400 > 1.0 {
-                                                    prevent = "Vous dépassez le seuil maximum (Vous serez majouré)"
-                                                    ca.append(CGFloat(1.0))
-                                                } else {
-                                                    ca.append(CGFloat(ajouter/34400))
-                                                    prevent = "\(entrepriseParDefaut.CA)"
-                                                }
-                                            } label: {
-                                                Image(systemName: "arrow.right.to.line.circle").font(.title3)
-                                                    .foregroundColor(Color("greenMEkit")).padding()
-                                            }
+                                        valueCA = ajout
+                                        if ajout/50000 > 1.0 {
+                                            prevent = "Seuil majoré dépassé"
+                                            caAnnee.append(CGFloat(1.0))
+                                        } else {
+                                            caAnnee.append(CGFloat(ajout/50000))
+                                            prevent = "\(entrepriseParDefaut.CA)"
                                         }
-                                        Text(prevent).padding()
-                                        ProgressingView(CA: $valueCA, max: 34400)
-                                        ZStack{
-                                            LineGraph(dataPoints: caAnnee)
-                                                .trim(to: on ? 1 : 0)
-                                                .stroke(Color.green, lineWidth: 5)
-                                            LineGraph(dataPoints: ca)
-                                                .trim(to: on ? 1 : 0)
-                                                .stroke(Color.green, lineWidth: 5)
-                                                .aspectRatio(16/9, contentMode: .fit)
-                                                .border(Color.gray, width: 1)
-                                        }
-                                            .padding()
-                                       
-                                    } else if entrepriseParDefaut.secteur == .Commerciale {
-                                            MaxCA(max: 85800)
-                                        HStack{
-                                            TextField("Quel est votre CA ?", value: $ajout,format: .currency(code: ""))
-                                                .background(RoundedRectangle(cornerRadius: 50)
-                                                                .keyboardType(.numberPad).foregroundColor(.white))
-                                                .textFieldStyle(.roundedBorder)
-                                                .padding()
-                                            Button(){
-                                                clavier.toggle()
-                                                entrepriseParDefaut.CA = ajout
-                                                withAnimation(.easeInOut(duration: 2)) {
-                                                    on = true
-                                                }
-                                                valueCA = ajout
-                                                if ajout/85800 > 1.0 {
-                                                    prevent = "Vous dépassez le seuil maximum (Vous serez majouré)"
-                                                    caAnnee.append(CGFloat(1.0))
-                                                } else {
-                                                    caAnnee.append(CGFloat(ajout/85800))
-                                                    prevent = "\(entrepriseParDefaut.CA)"
-                                                }
-                                            } label: {
-                                                Image(systemName: "arrow.right.to.line.circle").font(.title3)
-                                                    .foregroundColor(Color("greenMEkit")).padding()
-                                            }
-                                        }
-                                        Text(prevent).padding()
-                                        ProgressingView(CA: $valueCA, max: 34400)
-                                        LineGraph(dataPoints: caAnnee)
-                                            .trim(to: on ? 1 : 0)
-                                            .stroke(Color.green, lineWidth: 5)
-                                            .aspectRatio(16/9, contentMode: .fit)
-                                            .border(Color.gray, width: 1)
-                                            .padding()
-                                    } else if entrepriseParDefaut.secteur == .Artisanale || entrepriseParDefaut.secteur == .Liberales {
-                                            MaxCA2(max: 34400)
-                                        HStack{
-                                            TextField("Quel est votre CA ?", value: $ajout,format: .currency(code: ""))
-                                                .background(RoundedRectangle(cornerRadius: 50)
-                                                                .keyboardType(.numberPad).foregroundColor(.white))
-                                                .textFieldStyle(.roundedBorder)
-                                                .padding()
-                                            Button(){
-                                                clavier.toggle()
-                                                entrepriseParDefaut.CA = ajout
-                                                withAnimation(.easeInOut(duration: 2)) {
-                                                    on = true
-                                                }
-                                                valueCA = ajout
-                                                if ajout/34400 > 1.0 {
-                                                    prevent = "Vous dépassez le seuil maximum (Vous serez majouré)"
-                                                    caAnnee.append(CGFloat(1.0))
-                                                } else {
-                                                    caAnnee.append(CGFloat(ajout/34400))
-                                                    prevent = "\(entrepriseParDefaut.CA)"
-                                                }
-                                            } label: {
-                                                Image(systemName: "arrow.right.to.line.circle").font(.title3)
-                                                    .foregroundColor(Color("greenMEkit")).padding()
-                                            }
-                                        }
-                                        Text(prevent).padding()
-                                        ProgressingView(CA: $valueCA, max: 34400)
-                                        LineGraph(dataPoints: caAnnee)
-                                            .trim(to: on ? 1 : 0)
-                                            .stroke(Color.green, lineWidth: 5)
-                                            .aspectRatio(16/9, contentMode: .fit)
-                                            .border(Color.gray, width: 1)
-                                            .padding()
-                                           
+                                    } label: {
+                                        Image(systemName: "arrow.right.to.line.circle").font(.title3)
+                                            .foregroundColor(Color("greenMEkit")).padding()
                                     }
-                            } else {
-                                Text("Votre Chiffre d'affaire est de \(entrepriseParDefaut.CA)")
+                                }
+                                MaxCA2(max: 50000)
+                                Text(prevent).padding()
+                                ProgressingView(CA: $valueCA, max: 50000)
+                                LineGraph(dataPoints: caAnnee)
+                                    .trim(to: on ? 1 : 0)
+                                    .stroke(Color("greenMEkit"), lineWidth: 5)
+                                    .aspectRatio(16/9, contentMode: .fit)
+                                    .border(Color.gray, width: 1)
+                                    .padding()
                             }
+                        } else if entrepriseParDefaut.domiciliation == .France {
+                            if entrepriseParDefaut.typeActivite == .Mixte {
+                                HStack{
+                                    TextField("Quel est votre CA ?", value: $ajout,format: .currency(code: ""))
+                                        .background(RoundedRectangle(cornerRadius: 50)
+                                                        .keyboardType(.numberPad).foregroundColor(.white))
+                                        .textFieldStyle(.roundedBorder)
+                                        .padding()
+                                    Button(){
+                                        clavier.toggle()
+                                        entreprise.CA = ajout
+                                        withAnimation(.easeInOut(duration: 2)) {
+                                            on = true
+                                        }
+                                        valueCA = ajout
+                                        if ajout/85800 > 1.0 {
+                                            prevent = "Seuil majoré dépassé"
+                                            caAnnee.append(CGFloat(1.0))
+                                        } else {
+                                            caAnnee.append(CGFloat(ajout/85800))
+                                            prevent = "\(entrepriseParDefaut.CA)"
+                                        }
+                                    } label: {
+                                        Image(systemName: "arrow.right.to.line.circle").font(.title3)
+                                            .foregroundColor(Color("greenMEkit")).padding()
+                                    }
+                                }
+                                MaxCA(max: 85800)
+                                ProgressingView(CA: $valueCA, max: 85800)
+                                HStack{
+                                    TextField("Quel est votre CA ?", value: $ajouter,format: .currency(code: ""))
+                                        .background(RoundedRectangle(cornerRadius: 50)
+                                                        .keyboardType(.numberPad).foregroundColor(.white))
+                                        .textFieldStyle(.roundedBorder)
+                                        .padding()
+                                    Text(prevent).padding()
+                                    Button(){
+                                        clavier.toggle()
+                                        entreprise.CA = ajouter
+                                        withAnimation(.easeInOut(duration: 2)) {
+                                            on = true
+                                        }
+                                        valueCA = ajouter
+                                        if ajouter/34400 > 1.0 {
+                                            prevent = "Seuil majoré dépassé"
+                                            ca.append(CGFloat(1.0))
+                                        } else {
+                                            ca.append(CGFloat(ajouter/34400))
+                                            prevent = "\(entrepriseParDefaut.CA)"
+                                        }
+                                    } label: {
+                                        Image(systemName: "arrow.right.to.line.circle").font(.title3)
+                                            .foregroundColor(Color("greenMEkit")).padding()
+                                    }
+                                }
+                                MaxCA2(max: 34400)
+                                ProgressingView(CA: $valueCA, max: 34400)
+                                ZStack{
+                                    LineGraph(dataPoints: caAnnee)
+                                        .trim(to: on ? 1 : 0)
+                                        .stroke(Color("greenMEkit"), lineWidth: 5)
+                                    LineGraph(dataPoints: ca)
+                                        .trim(to: on ? 1 : 0)
+                                        .stroke(Color("greenMEkit"), lineWidth: 5)
+                                        .aspectRatio(16/9, contentMode: .fit)
+                                        .border(Color.gray, width: 1)
+                                }
+                                .padding()
+                                
+                            } else if entrepriseParDefaut.secteur == .Commerciale {
+                                HStack{
+                                    TextField("Quel est votre CA ?", value: $ajout,format: .currency(code: ""))
+                                        .background(RoundedRectangle(cornerRadius: 50)
+                                                        .keyboardType(.numberPad).foregroundColor(.white))
+                                        .textFieldStyle(.roundedBorder)
+                                        .padding()
+                                    Text(prevent).padding()
+                                    Button(){
+                                        clavier.toggle()
+                                        entreprise.CA = ajout
+                                        withAnimation(.easeInOut(duration: 2)) {
+                                            on = true
+                                        }
+                                        valueCA = ajout
+                                        if ajout/85800 > 1.0 {
+                                            prevent = "Seuil majoré dépassé"
+                                            caAnnee.append(CGFloat(1.0))
+                                        } else {
+                                            caAnnee.append(CGFloat(ajout/85800))
+                                            prevent = "\(entrepriseParDefaut.CA)"
+                                        }
+                                    } label: {
+                                        Image(systemName: "arrow.right.to.line.circle").font(.title3)
+                                            .foregroundColor(Color("greenMEkit")).padding()
+                                    }
+                                }
+                                MaxCA(max: 85800)
+                                ProgressingView(CA: $valueCA, max: 34400)
+                                LineGraph(dataPoints: caAnnee)
+                                    .trim(to: on ? 1 : 0)
+                                    .stroke(Color.green, lineWidth: 5)
+                                    .aspectRatio(16/9, contentMode: .fit)
+                                    .border(Color.gray, width: 1)
+                                    .padding()
+                            } else if entrepriseParDefaut.secteur == .Artisanale || entrepriseParDefaut.secteur == .Liberales {
+//                                Text("Saisie chiffre d’affaires annuel").font(.title)
+                                HStack{
+                                    TextField("Quel est votre CA ?", value: $ajout,format: .currency(code: ""))
+                                        .background(RoundedRectangle(cornerRadius: 50)
+                                                        .keyboardType(.numberPad).foregroundColor(.white))
+                                        .textFieldStyle(.roundedBorder)
+                                        .padding()
+                                    Text(prevent).padding()
+                                    Button(){
+                                        clavier.toggle()
+                                        entreprise.CA = ajout
+                                        withAnimation(.easeInOut(duration: 2)) {
+                                            on = true
+                                        }
+                                        valueCA = ajout
+                                        if ajout/34400 > 1.0 {
+                                            prevent = "Seuil majoré dépassé"
+                                            caAnnee.append(CGFloat(1.0))
+                                        } else {
+                                            caAnnee.append(CGFloat(ajout/34400))
+                                            prevent = "\(entrepriseParDefaut.CA)"
+                                        }
+                                    } label: {
+                                        Image(systemName: "arrow.right.to.line.circle").font(.title3)
+                                            .foregroundColor(Color("greenMEkit")).padding()
+                                    }
+                                }
+                                MaxCA2(max: 34400)
+                                ProgressingView(CA: $valueCA, max: 34400)
+                                LineGraph(dataPoints: caAnnee)
+                                    .trim(to: on ? 1 : 0)
+                                    .stroke(Color("greenMEkit"), lineWidth: 5)
+                                    .aspectRatio(16/9, contentMode: .fit)
+                                    .border(Color.gray, width: 1)
+                                    .padding()
+                                
+                            }
+                        } else {
+                            Text("Votre Chiffre d'affaire est de \(entrepriseParDefaut.CA)")
+                        }
+                        Text("Votre Chiffre d'affaire est de \(entrepriseParDefaut.CA)")
                         HStack {
-                            Text("Mes Documents").padding()
+                            Text("Mes Documents")
+                                .font(.title)
+                                .fontWeight(.semibold)
+                                .padding()
                             Spacer()
                             Button(action: {
-                                isImporting = true
-                                self.documents.append(Doc(texte: "Greffe.pdf", dateDoc: Date.now))
+                                    isImporting = true
+                                self.documents.append(Doc(texte: "Facture.pdf", dateDoc: Date.now))
                             }) {
+                                
                                 ZStack {
                                     Image(systemName: "plus.circle.fill")
                                         .font(.system(size: 44, weight: .bold))
                                         .foregroundColor(Color("greenMEkit"))
-                                }
+                                }.padding(.trailing)
                                 .fileImporter(
                                     isPresented: $isImporting,
                                     allowedContentTypes: [.plainText],
@@ -330,22 +344,28 @@ struct HomeMonEntrepriseView: View {
                                     ZStack {
                                         VStack{
                                             HStack{
+                                                Spacer()
                                                 Button{
                                                     documents.remove(at: index)
                                                 } label: {
-                                                    Image(systemName: "multiply.circle").resizable()
+                                                    Image(systemName: "multiply.circle")
+                                                        .resizable()
                                                         .aspectRatio(contentMode: .fit)
-                                                        .foregroundColor(Color("greenMEkit"))
+                                                        .foregroundColor(.gray)
+                                                        .opacity(0.5)
                                                         .frame(width: 44, height: 44)
+                                                        .padding(10)
                                                 }
                                             }
-                                            CardView(element: documents[index])
+
+                                                CardView(element: documents[index]).padding()
                                         }.overlay(
                                             RoundedRectangle(cornerRadius: 20)
                                                 .stroke(lineWidth: 1)
-                                                .foregroundColor(.black)
-                                            
-                                        )
+                                                .foregroundColor(.gray)
+                                                
+                                        ).padding(.leading)
+                                            .padding(.trailing)
                                     }
                                 }
                             }
@@ -509,10 +529,8 @@ struct Modifieur: View {
                     
                     dismiss()
                 }) {
-                    Text("Valider").foregroundColor(.white)
-                        .padding()
+                    BoutonPlein(label: "Valider")
                 }
-                .background(RoundedRectangle(cornerRadius: 50).foregroundColor(Color("greenMEkit")))
             }.padding()
         }
     }
@@ -523,20 +541,6 @@ struct ProgressingView: View {
     @State var max : Double
     var body: some View {
         VStack {
-//            HStack{
-//                TextField("Quel est votre CA ?", value: self.$valueCA,formatter: formatCA)
-//                    .background(RoundedRectangle(cornerRadius: 50)
-//                                    .keyboardType(.numberPad).foregroundColor(.white))
-//                    .textFieldStyle(.roundedBorder)
-//                    .padding()
-//                Text("\(Int(CA)) €").padding()
-//                Button(){
-//                    CA = valueCA
-//                } label: {
-//                    Image(systemName: "arrow.right.to.line.circle").font(.title3)
-//                        .foregroundColor(Color("greenMEkit")).padding()
-//                }
-//            }
             if CA == Double() || CA == 0 {
                 Progression(etatDeProgression: 0.0, pourcentage: 0, color: .green)
             } else if CA < max/2 && CA > 0 {
@@ -544,7 +548,7 @@ struct ProgressingView: View {
             } else if CA >=  max/2  &&  CA < max {
                 Progression(etatDeProgression: CA/max, pourcentage: Int(100*CA/max), color: .orange)
             } else if CA >= max {
-                Progression(etatDeProgression: CA/max, pourcentage: Int(100*CA/max), color: .red)
+                Progression(etatDeProgression: max/max, pourcentage: Int(100*CA/max), color: .red)
             } else {
                 Progression(etatDeProgression: 0.0, pourcentage: 0, color: .green)
                 Text("Erreur")
@@ -585,21 +589,37 @@ struct DarkBlueShadowProgressViewStyle: ProgressViewStyle {
 struct MaxCA: View {
     @State var max : Int
     var body: some View {
-        HStack{
-            Text("Mon Chiffre d'Affaire pour une activité de vente (max: \(max) € / 1 an):")
-                .padding(.leading)
-            Spacer()
-        }
+        VStack{
+            HStack{
+                Text("Votre type d’activité : prestation de vente CA annuel")
+                Spacer()
+            }
+            HStack{
+                Text("Seuil majoré : \(max)")
+                Spacer()
+            }
+        }.foregroundColor(.gray)
+            .font(.footnote)
+            .padding(.leading)
+            .padding(.trailing)
     }
 }
 struct MaxCA2: View {
     @State var max : Int
     var body: some View {
-        HStack{
-            Text("Mon Chiffre d'Affaire pour la prestation de service(max: \(max) € / 1 an):")
-                .padding(.leading)
-            Spacer()
-        }
+        VStack{
+            HStack{
+                Text("Votre type d’activité : prestation de services CA annuel")
+                Spacer()
+            }
+            HStack{
+                Text("Seuil majoré : \(max)")
+                Spacer()
+            }
+        }.foregroundColor(.gray)
+            .font(.footnote)
+            .padding(.leading)
+            .padding(.trailing)
     }
 }
 

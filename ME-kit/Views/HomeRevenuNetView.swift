@@ -13,7 +13,7 @@ struct HomeRevenuNetView: View {
                         .font(.title2)
                         .padding(.top, 10)
                     //                    ZStack {
-                    StructureResumeInfos(affichage: false)
+                    StructureResumeInfos(document: .constant(FilesDocuments(message: "")), affichage: false)
                     //                    }
                     ZStack {
                         //StructureRectangle(largueur: 350, hauteur: 350)

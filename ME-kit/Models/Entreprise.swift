@@ -38,7 +38,7 @@ class Entreprise: ObservableObject {
 
 }
 
-var entrepriseParDefaut = Entreprise(nomination: "GAFAZ", Siret: 123456789, dateeDebutActivite: Date(), domiciliation: .France, secteur: .Artisanale, typeActivite: .ActiviteDeVente, CA: 600.0, ACCRE: .non, activitePrincipal: .non, impot: .oui, frequenceDecl: .trimestriel)
+var entrepriseParDefaut = Entreprise(nomination: "GAFAZ", Siret: 123456789, dateeDebutActivite: Date(), domiciliation: .France, secteur: .Artisanale, typeActivite: .ActiviteDeVente, CA: 600000.0, ACCRE: .non, activitePrincipal: .oui, impot: .oui, frequenceDecl: .trimestriel)
 
 enum Reponses : String, CaseIterable, Identifiable {
     
